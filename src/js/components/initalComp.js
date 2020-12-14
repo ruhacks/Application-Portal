@@ -1,26 +1,16 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
-import NavBar from './navbar.js';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const InitalComp = () => {
-    const [state, setState] = React.useState({
-        open: false,
-    });
+class Initial extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log(this.props);
+    }
 
-    const toggleDrawer = (anchor, open) => (event) => {
-        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-            return;
-        }
+    render() {
+        return <div>test</div>;
+    }
+}
 
-        setState({...state, [anchor]: open})
-    };
-
-    return (
-        <div>
-            <NavBar></NavBar>
-            <Container maxWidth="sm"></Container>
-        </div>
-    );
-};
-
-export default InitalComp;
+export default Initial;
