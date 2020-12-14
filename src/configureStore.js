@@ -4,6 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 import monitorReducersEnhancer from './enhancers/monitorReducer';
 import loggerMiddleware from './middleware/logger';
 import rootReducer from './redux/reducers/';
+import { verifyAuth } from './redux/actions';
 
 export default function configureStore(preloadedState) {
     const middlewares = [loggerMiddleware, thunkMiddleware];
@@ -13,6 +14,6 @@ export default function configureStore(preloadedState) {
     const composedEnhancers = compose(...enhancers);
 
     const store = createStore(rootReducer, preloadedState, composedEnhancers);
-
+    store.dispatch(verifyAuth());
     return store;
 }

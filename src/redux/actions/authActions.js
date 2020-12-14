@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { myFirebase } from '../../db/index';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';

@@ -1,5 +1,4 @@
 import firebase from 'firebase/app';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 import 'firebase/auth';
@@ -22,8 +21,6 @@ const rrfConfig = {
     userProfile: 'users',
     useFirestoreForProfile: true,
 };
-
-firebase.analytics();
 
 export const myFirebase = firebase.initializeApp(firebaseConfig);
 const baseDB = myFirebase.firestore();
