@@ -4,17 +4,16 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import ProtectedRoute from './ProtectedRoute';
-import Login from './Login';
+import Login from './Login/Login';
 import Home from './Home';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
     }
 
     render() {
-        const { isAuthenticated, isVerifying } = props;
+        const { isAuthenticated, isVerifying } = this.props;
         return (
             <Switch>
                 <ProtectedRoute

@@ -11,15 +11,16 @@ import { rootReducer } from './redux/reducers';
 
 import 'firebase/auth';
 import 'firebase/firestore';
-import { createStore } from 'redux';
 
 import { BrowserRouter } from 'react-router-dom';
 
-console.log('process.env', process.env.FIREBASE_API_KEY);
-
-const store = createStore(rootReducer, initialState);
+import configureStore from './configureStore'
 
 const initialState = {};
+
+const store = configureStore(initialState)
+
+
 
 const Root = () => {
     return (

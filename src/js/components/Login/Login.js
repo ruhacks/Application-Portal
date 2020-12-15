@@ -1,5 +1,7 @@
 import React from 'react';
 
+import classes from '../../config/classes';
+
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -10,10 +12,14 @@ import { loginUser } from '../../../redux/actions/authActions';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+
+import './style/login.css'
+
+import { default as logo } from '../../../../assets/images/RU_RGB.svg'
 
 class Login extends React.Component {
     static propTypes = {
@@ -44,8 +50,12 @@ class Login extends React.Component {
         this.setState({ email: target.value });
     };
 
+    handleRegister = () => {
+        console.log('pressed register!')
+    }
+
     render() {
-        const { classes, loginError, isAuthenticated } = this.props;
+        const { loginError, isAuthenticated } = this.props;
 
         if (isAuthenticated) {
             return <Redirect to="/" />;
@@ -54,7 +64,7 @@ class Login extends React.Component {
                 <Container component="main" maxWidth="xs">
                     <Paper className={classes.paper}>
                         <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon />
+                            <img src={logo} alt='RU Hacks' className={classes.logo}/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             Sign in
@@ -83,16 +93,30 @@ class Login extends React.Component {
                                 Incorrect email or password.
                             </Typography>
                         )}
-                        <Button
-                            type="button"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                            onClick={this.handleSubmit}
-                        >
-                            Sign In
-                        </Button>
+                        <Box m={0.5} width="100%">
+                            <Button
+                                type="button"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={this.handleSubmit}
+                            >
+                                Sign In
+                            </Button>
+                        </Box>
+                        <Box m={0.5} width="100%">
+                            <Button
+                                type="button"
+                                fullWidth
+                                variant="contained"
+                                color="secondary"
+                                className={classes.register}
+                                onClick={this.handle}
+                            >
+                                Register
+                            </Button>
+                        </Box>
                     </Paper>
                 </Container>
             );
@@ -111,7 +135,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         loginUser: (email, password) => {
-            dispatch(loginUser(email, password));
+            dispatch(loginUser(email, password))
         },
     };
 }

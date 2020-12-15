@@ -61,18 +61,19 @@ export const receiveVerify = () => {
     };
 };
 
-export const loginUser = (email, password) => (dispatch) => {
+export const loginUser = (email, password) => dispatch => {
     dispatch(requestLogin());
     myFirebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((user) => {
-            dispatch(receiveLogin(user));
-        })
-        .catch((error) => {
-            dispatch(loginError());
-        });
-};
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(user => {
+        dispatch(receiveLogin(user));
+      })
+      .catch(error => {
+        //Do something with the error if you want!
+        dispatch(loginError());
+      });
+  };
 
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout());
