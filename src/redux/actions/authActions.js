@@ -12,6 +12,10 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 export const VERIFY_REQUEST = 'VERIFY_REQUEST';
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
 
+export const VERIFICATION_LINK_SENT = 'VERIFICATION_LINK_SENT';
+export const VERIFICATION_LINK_REQUEST = 'VERIFICATION_LINK_REQUEST';
+export const VERIFICATION_LINK_ERROR = 'VERIFICATION_LINK_ERROR';
+
 export const requestLogin = () => {
     return {
         type: LOGIN_REQUEST,
@@ -61,19 +65,44 @@ export const receiveVerify = () => {
     };
 };
 
-export const loginUser = (email, password) => dispatch => {
+export const requestRegister = () => {
+    return {
+        type: VERIFY_SUCCESS,
+    };
+};
+
+export const verificationRequest = () => {
+    return {
+        type: VERIFICATION_LINK_REQUEST,
+    };
+};
+
+export const verificationSend = () => {
+    return {
+        type: VERIFICATION_LINK_SENT,
+    };
+};
+
+export const verificationLinkError = () => {
+    return {
+        type: VERIFICATION_LINK_ERROR,
+    };
+};
+
+export const loginUser = (email, password) => (dispatch) => {
     dispatch(requestLogin());
     myFirebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(user => {
-        dispatch(receiveLogin(user));
-      })
-      .catch(error => {
-        //Do something with the error if you want!
-        dispatch(loginError());
-      });
-  };
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((user) => {
+            dispatch(receiveLogin(user));
+        })
+        .catch((error) => {
+            //Do something with the error if you want!
+            console.log(error);
+            dispatch(loginError());
+        });
+};
 
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout());
@@ -96,4 +125,14 @@ export const verifyAuth = () => (dispatch) => {
         }
         dispatch(receiveVerify(user));
     });
+};
+
+export const resendVerificationLink = () => (dispatch) => {
+    dispatch(verificationRequest());
+    myFirebase
+        .auth()
+        .currentUser.sendEmailVerification()
+        .then(() => {
+            dispatch(verificationSend());
+        });
 };

@@ -1,0 +1,22 @@
+.toolbarButtons{
+    margin-left: auto;
+}
+
+.qa{
+	margin: 30px;
+	width: 25%;
+	text-align: center;
+	color: white;
+	background-color: #004c94;
+	border-radius: 5px;
+	padding: 20px 20px 20px 20px;
+	box-shadow: 16px 13px #ffdc00;
+	z-index: 1000;
+}
+
+.verifiedBox{
+    background-color: green;
+}
+.unverifiedBox{
+    background-color: red;
+}

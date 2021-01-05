@@ -8,6 +8,9 @@ import {
     LOGOUT_FAILURE,
     VERIFY_REQUEST,
     VERIFY_SUCCESS,
+    VERIFICATION_LINK_SENT,
+    VERIFICATION_LINK_REQUEST,
+    VERIFICATION_LINK_ERROR,
 } from '../actions/authActions';
 
 export default (
@@ -18,6 +21,9 @@ export default (
         loginError: false,
         logoutError: false,
         isAuthenticated: false,
+        verificationLinkRequest: false,
+        verificationLinkSent: false,
+        verificationLinkError: false,
         user: {},
     },
     action,
@@ -76,6 +82,25 @@ export default (
             return {
                 ...state,
                 isVerifying: false,
+            };
+        case VERIFICATION_LINK_REQUEST:
+            return {
+                ...state,
+                verificationLinkRequest: true,
+                verificationLinkSent: false,
+            };
+        case VERIFICATION_LINK_SENT:
+            return {
+                ...state,
+                verificationLinkRequest: false,
+                verificationLinkSent: true,
+            };
+        case VERIFICATION_LINK_ERROR:
+            return {
+                ...state,
+                verificationLinkError: true,
+                verificationLinkRequest: false,
+                verificationLinkSent: false,
             };
         default:
             return state;
