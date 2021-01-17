@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
+/*                                  authActions.js
+Description:    Initialize action strings, action functions that returns action objects to the reducer (redux/reducers/auth.js) and action functions that actually does the work needed.
+                Notable things that happen here:
+                    -   Dispatch various action functions that dispatches actions that get sent to the reducer which changes 
+
+                     
+*/
 import { myFirebase } from '../../db/index';
 
+// Action strings
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
@@ -16,6 +25,7 @@ export const VERIFICATION_LINK_SENT = 'VERIFICATION_LINK_SENT';
 export const VERIFICATION_LINK_REQUEST = 'VERIFICATION_LINK_REQUEST';
 export const VERIFICATION_LINK_ERROR = 'VERIFICATION_LINK_ERROR';
 
+//action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 export const requestLogin = () => {
     return {
         type: LOGIN_REQUEST,
@@ -89,34 +99,41 @@ export const verificationLinkError = () => {
     };
 };
 
+// The functions that do the work when called upon and the ones that dispatches actions to the reducer at various stages
+
+//Attempts to login the user
 export const loginUser = (email, password) => (dispatch) => {
-    dispatch(requestLogin());
+    dispatch(requestLogin()); //Dispatches the LOGIN_REQUEST event to the reducer to change redux store state variables
     myFirebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((user) => {
+            //Once we get a successful login, dispatch the action that acknowledges that we've received a valid user and dispatches LOGIN_SUCCESS action in the reducer
             dispatch(receiveLogin(user));
         })
         .catch((error) => {
-            //Do something with the error if you want!
-            console.log(error);
+            // Received error and dispatch LOGIN_ERROR action in the reducer
             dispatch(loginError());
         });
 };
 
+// Logs out the current user
 export const logoutUser = () => (dispatch) => {
-    dispatch(requestLogout());
+    dispatch(requestLogout()); //Dispatches the LOGOUT_REQUEST event to the reducer to change redux store state variables
     myFirebase
         .auth()
         .signOut()
         .then(() => {
+            // Once we get a successful logout, dispatch the action that acknowledges we've logged out a valid user and dispatches LOGOUT_SUCCESS event
             dispatch(receiveLogout());
         })
         .catch((error) => {
+            // Received error and dispatch LOGOUT_ERROR action in the reducer
             dispatch(logoutError());
         });
 };
 
+// Verify if we have a user logged in already (used in protected Route and on inital app entry)
 export const verifyAuth = () => (dispatch) => {
     dispatch(requestVerify());
     myFirebase.auth().onAuthStateChanged((user) => {
@@ -127,6 +144,7 @@ export const verifyAuth = () => (dispatch) => {
     });
 };
 
+// Resends verification link for the current logged in user from the home page
 export const resendVerificationLink = () => (dispatch) => {
     dispatch(verificationRequest());
     myFirebase
@@ -136,3 +154,7 @@ export const resendVerificationLink = () => (dispatch) => {
             dispatch(verificationSend());
         });
 };
+/* 
+From here you can go to:
+    -   auth.js in src/redux/reducers/auth.js to see the reducer and how it works if you haven't seen it
+*/

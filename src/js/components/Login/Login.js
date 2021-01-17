@@ -1,27 +1,34 @@
+/*                                  Login.js
+Description:    This is our Login page. This is where we'll handle rendering the login page, dealing with user input for it and sending the submission of credentials
+
+                Notable things that happen here:
+                    -   Render page using material ui components
+                    -   Dispatch actions for submitting a login request with given credentials
+                    -   Keep track of user input and change state variables containing email and password accordingly
+                    -   Routing user to register page on request via register button
+                    -   TODO: forgot password 
+                     
+*/
+
 import React from 'react';
 
-import classes from '../../config/classes';
+import classes from '../../config/classes'; //import class names for components
 
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 
-import { loginUser } from '../../../redux/actions/authActions';
+import { loginUser } from '../../../redux/actions/authActions'; // import loginUser function from authentication actions
 
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
-import { Grid } from '@material-ui/core';
+import { Avatar, Box, Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
 
 import { default as logo } from '../../../../assets/images/RU_RGB.svg';
 
 import './style/login.css';
 
 class Login extends React.Component {
+    //Declare prop variables types
     static propTypes = {
         classes: PropTypes.object,
         loginUser: PropTypes.func,
@@ -30,6 +37,7 @@ class Login extends React.Component {
     };
     constructor(props) {
         super(props);
+        //init state
         this.state = {
             email: '',
             password: '',
@@ -37,33 +45,29 @@ class Login extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        window.scrollTo(0, 0);
-    }
-
+    // Key listener that changes email state variable to whatever the email user input is on each keypress
     handleEmailChange = ({ target }) => {
         this.setState({ email: target.value });
     };
 
+    // Key listener that changes password state variable to whatever the password user input is on each keypress
     handlePasswordChange = ({ target }) => {
         this.setState({ password: target.value });
     };
 
+    // Handle submit button action
     handleSubmit = () => {
-        const { email, password } = this.state;
-        this.props.loginUser(email, password);
-    };
-
-    handleRegister = () => {
-        return;
+        const { email, password } = this.state; //Gather email and password from component state
+        this.props.loginUser(email, password); //Call loginUser function from our props given to us via mapDispatchToProps()
     };
 
     render() {
-        const { loginError, isAuthenticated } = this.props;
+        const { loginError, isAuthenticated } = this.props; //gather prop variables given to us from our redux store via mapStateToProps()
 
         if (isAuthenticated) {
             return <Redirect to="/" />;
         } else {
+            //render login page components
             return (
                 <div className={classes.loginContainer}>
                     <Grid
@@ -138,6 +142,7 @@ class Login extends React.Component {
     }
 }
 
+// Maps required auth state variables from our store
 function mapStateToProps(state) {
     return {
         isLoggingIn: state.auth.isLoggingIn,
@@ -146,6 +151,7 @@ function mapStateToProps(state) {
     };
 }
 
+// Map the loginUser function to our props so that it dispatches the loginUser action when called from this.props.loginUser
 function mapDispatchToProps(dispatch) {
     return {
         loginUser: (email, password) => {
@@ -155,3 +161,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+/* 
+From here you can go to:
+    -   authActions in src/redux/actions/authActions to see what the loginUser function does when dispatched with a user email and password
+*/

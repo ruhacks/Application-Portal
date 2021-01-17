@@ -1,9 +1,19 @@
+/*                                  Register.js
+Description:    This is our Registration page. This is where we'll handle rendering the register page, dealing with user input for it and sending the submission of credentials
+
+                Notable things that happen here:
+                    -   Render page using material ui components
+                    -   Dispatch actions for submitting a registration request with given credentials
+                    -   Keep track of user input and change state variables containing email, password and password confirmation accordingly
+                    -   Routing user to home page on registration or login on request
+                     
+*/
 import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import classes from '../../../config/classes';
-import text from '../../../config/text';
+import classes from '../../../config/classes'; //import class names
+import text from '../../../config/text'; //Text TODO: Localize?
 
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
@@ -11,9 +21,10 @@ import { Redirect, Link } from 'react-router-dom';
 import { Avatar, Button, TextField, Typography, Paper, Box, Grid } from '@material-ui/core';
 
 import { default as logo } from '../../../../../assets/images/RU_RGB.svg';
-import { registerUser } from '../../../../redux/actions';
+import { registerUser } from '../../../../redux/actions'; //import registerUser() from registration actions in src/redux/actions/registerActions.js
 
 class Register extends React.Component {
+    //Declare prop variables types
     static propTypes = {
         verifyAuth: PropTypes.object,
         errorText: PropTypes.string,
@@ -22,7 +33,7 @@ class Register extends React.Component {
     };
     constructor(props) {
         super(props);
-
+        //init state
         this.state = {
             email: '',
             password: '',
@@ -33,6 +44,7 @@ class Register extends React.Component {
         };
     }
 
+    // Handles form submission
     handleSubmit = () => {
         const { email, password } = this.state;
         if (!this.isThereAnyError()) {
@@ -43,7 +55,7 @@ class Register extends React.Component {
         }
     };
 
-    //Will return message if error or false if not
+    //Check if form for registartion is valid
     isThereAnyError = () => {
         const { email, password, password_confirm } = this.state;
         if (email !== '' && password !== '') {
@@ -61,23 +73,28 @@ class Register extends React.Component {
         return true;
     };
 
+    // Key listener that changes email state variable to whatever the email user input is on each keypress
     handleEmailChange = ({ target }) => {
         this.setState({ email: target.value });
     };
 
+    // Key listener that changes password state variable to whatever the password user input is on each keypress
     handlePasswordChange = ({ target }) => {
         this.setState({ password: target.value });
     };
 
+    // Key listener that changes password confirmation state variable to whatever the password confirmation user input is on each keypress
     handlePasswordConfirmChange = ({ target }) => {
         this.setState({ password_confirm: target.value });
     };
 
     render() {
         const { registrationProcessComplete } = this.props;
+
         if (registrationProcessComplete) {
-            return <Redirect to="/login" />;
+            return <Redirect to="/login" />; //if user is registered redirect to login
         } else {
+            //Render Registration page elements
             return (
                 <div className={classes.loginContainer}>
                     <Grid
@@ -169,17 +186,16 @@ class Register extends React.Component {
     }
 }
 
+// Maps required auth state variables from our store
 function mapStateToProps(state) {
-    console.log(state);
     return {
         isVerifying: state.register.isVerifying,
         registrationProcessComplete: state.register.registrationProcessComplete,
     };
 }
 
+// Map the loginUser function to our props so that it dispatches the loginUser action when called from this.props.loginUser
 function mapDispatchToProps(dispatch) {
-    console.log('INNNN');
-
     return {
         registerUser: (email, password) => {
             dispatch(registerUser(email, password));
@@ -188,3 +204,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Register);
+
+/* 
+From here you can go to:
+    -   registerActions in src/redux/actions/registerActions.js to see what the registerUser function does when dispatched with a user email and password
+*/

@@ -1,4 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
+/*                                  register.js
+Description:    Initializes state variables regarding registration. Then whenever an action is dispatched like REGISTER_REQUEST it adjusts the state variables accordingly.
+                This reducer function will be called everytime an action is dispatched from ../actions/registerActions.js
+                Notable things that happen here:
+                    -   Take action type (like REGISTER_REQUEST) and adjust the redux store state variables that are being used by various components
+
+                     
+*/
 import {
     REGISTER_REQUEST,
     REGISTRATION_SUCCESSFUL,
@@ -57,3 +66,8 @@ export default (
             return state;
     }
 };
+
+/* 
+From here you can go to:
+    -   registerActions in src/redux/actions/registerActions.js to see what the registerUser function does when dispatched with a user email and password and where these actions comes from if you haven't seen it
+*/

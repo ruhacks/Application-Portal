@@ -1,4 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
+/*                                  auth.js
+Description:    Initializes state variables regarding authentication. Then whenever an action is dispatched like LOGIN_REQUEST it adjusts the state variables accordingly.
+                This reducer function will be called everytime an action is dispatched from ../actions/authActions
+                Notable things that happen here:
+                    -   Take action type (like LOGIN_REQUEST) and adjust the redux store state variables that are being used by various components
+
+                     
+*/
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -106,3 +115,8 @@ export default (
             return state;
     }
 };
+
+/* 
+From here you can go to:
+    -   authActions in src/redux/actions/authActions to see what the loginUser function does when dispatched with a user email and password and where these actions comes from if you haven't seen it
+*/

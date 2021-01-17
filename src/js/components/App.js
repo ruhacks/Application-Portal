@@ -1,3 +1,12 @@
+/*                                  App.js
+Description:    This is where we route the user to the right place by checking their URL and then sending authentication variables as we receive them from our "Redux Store" if necessary
+                Notable things that happen here:
+                    -   We pull in "isAuthenticated" and "isVerifiying" from our redux store and send them to our ProtectedRoute
+                    -   We use our own made ProtectedRoute and the react router route elements to route the user to the right place
+                        -   As in send them to their home page (/) if they are authenticated or send them to /login or /register if they request it
+                        -   Will probably need to add some more paths here for verifying users for various reasons
+                     
+*/
 import React from 'react';
 
 import { Route, Switch } from 'react-router-dom';
@@ -6,11 +15,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import ProtectedRoute from './ProtectedRoute';
-import { Login } from './Login';
-import Home from './Home';
-import { Register } from './Login/Register';
+import { Login } from './Login'; //Import our login page
+import Home from './Home'; // Import our Home Page initiation
+import { Register } from './Login/Register'; //Import our Register page
 
 class App extends React.Component {
+    // This is where we dsecribe our prop variables that we import from the mapStateToProps
     static propTypes = {
         isAuthenticated: PropTypes.bool,
         isVerifying: PropTypes.bool,
@@ -35,8 +45,15 @@ class App extends React.Component {
             </Switch>
         );
     }
+    /*
+        Send user to a route based on url given
+            <ProtectedRoute /> if URL is '/'
+            <Login /> if URL is '/login'
+            <Register /> if URL is '/register'
+    */
 }
 
+//Function for mapping variables from the redux store state to the props of our element
 function mapStateToProps(state) {
     return {
         isAuthenticated: state.auth.isAuthenticated,
@@ -44,4 +61,13 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(App); //Export our App element with mapstatetoprops attached to it
+
+/* 
+From here you can go to:
+
+    - <ProtectedRoute /> or './ProtectedRoute.js' to see how we use isAuthenticated and isVerifiying to check if we should render the home page 
+    - <Login /> or src/js/components/Login/Login.js to see what will render if the user accesses app via /login
+    - <Register /> or src/js/components/Login/Register/Register.js to see what will render if the user accesses app via /register
+    - src/redux/reducers/auth.js to see where the variables isAuthenticated and isVerifying come from and what a reducer is
+*/
