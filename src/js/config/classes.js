@@ -1,5 +1,7 @@
 const classes = {
+    appIncompleteBox: 'appIncompleteBox',
     avatar: 'avatar',
+    descriptionText: 'descriptionText',
     errorText: 'error',
     homeContainer: 'homeContainer',
     loginContainer: 'loginContainer',
@@ -11,7 +13,7 @@ const classes = {
     submit: 'submit',
     successText: 'success_text',
     toolbarButtons: 'toolbarButtons',
-    verifiedBox: 'verifiedBox',
+    textLink: 'textLink',
     unverifiedBox: 'unverifiedBox',
 };
 

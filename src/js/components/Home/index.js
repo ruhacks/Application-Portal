@@ -14,6 +14,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import './style/home.css';
+import text from '../../config/text';
 class Home extends React.Component {
     static propTypes = {
         user: PropTypes.object,
@@ -44,8 +45,8 @@ class Home extends React.Component {
         const renderStatusBox = () => {
             if (emailVerified) {
                 return (
-                    <Box className={classes.verifiedBox}>
-                        <Typography variant="h4">VERIFIED</Typography>
+                    <Box className={classes.appIncompleteBox}>
+                        <Typography variant="h4">Application Incomplete</Typography>
                     </Box>
                 );
             } else {
@@ -78,6 +79,16 @@ class Home extends React.Component {
             }
         };
 
+        const renderStatusText = () => {
+            if (emailVerified) {
+                return (
+                    <Box className={classes.descriptionText}>
+                        <Typography variant="h5">{text.incompleteApplication}</Typography>
+                    </Box>
+                );
+            }
+        };
+
         return (
             <div className={classes.homeContainer}>
                 <AppBar position="static">
@@ -103,6 +114,8 @@ class Home extends React.Component {
                     <Typography variant="h3">Your Status: </Typography>
                     <hr />
                     {renderStatusBox()}
+                    <hr />
+                    {renderStatusText()}
                 </div>
             </div>
         );
