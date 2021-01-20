@@ -5,6 +5,8 @@ const text = {
     noPasswordOrPasswordConfirm: ' Password and password confirmation fields are empty...',
     noPasswordConfirm: 'Password confirmation is empty...',
     passwordsDoNotMatch: 'Passwords do not match',
+
+    incompleteApplication: 'Your application has not yet been completed!',
 };
 
 export default text;

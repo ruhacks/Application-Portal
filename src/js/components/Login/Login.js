@@ -21,8 +21,7 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { loginUser } from '../../../redux/actions/authActions'; // import loginUser function from authentication actions
 
-import { Avatar, Box, Button, Grid, Paper, TextField, Typography } from '@material-ui/core';
-
+import { Avatar, Box, Button, Grid, Link as LinkMaterial, Paper, TextField, Typography } from '@material-ui/core';
 import { default as logo } from '../../../../assets/images/RU_RGB.svg';
 
 import './style/login.css';
@@ -133,6 +132,16 @@ class Login extends React.Component {
                                         Register
                                     </Button>
                                 </Box>
+                                <LinkMaterial
+                                    component="button"
+                                    className={classes.textLink}
+                                    variant="body2"
+                                    onClick={() => {
+                                        console.log('push');
+                                    }}
+                                >
+                                    Forgot Password?
+                                </LinkMaterial>
                             </Paper>
                         </Grid>
                     </Grid>
