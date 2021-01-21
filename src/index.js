@@ -34,7 +34,7 @@ const initialState = {}; //This our initialized state. We may need to have some 
 const store = configureStore(initialState); // initialized store...
 
 const Root = () => {
-    //Creating our custom theme pallete between our 3 colors with ligh, dark and main versions of each color (different shades basically)
+    //Creating our custom theme pallete between our 3 colors with light, dark and main versions of each color (different shades basically)
     const theme = createMuiTheme({
         palette: {
             primary: {
