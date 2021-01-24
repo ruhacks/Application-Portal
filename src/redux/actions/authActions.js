@@ -25,7 +25,31 @@ export const VERIFICATION_LINK_SENT = 'VERIFICATION_LINK_SENT';
 export const VERIFICATION_LINK_REQUEST = 'VERIFICATION_LINK_REQUEST';
 export const VERIFICATION_LINK_ERROR = 'VERIFICATION_LINK_ERROR';
 
+export const FORGOT_REQUEST = 'FORGOT_REQUEST';
+export const FORGOT_SUCCESS = 'FORGOT_SUCCESS';
+export const FORGOT_FAILURE = 'FORGOT_FAILURE';
+
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
+
+export const requestForgotPassword = () => {
+    return {
+        type: FORGOT_REQUEST,
+    };
+};
+
+export const receiveForgotPassword = () => {
+    return {
+        type: FORGOT_SUCCESS,
+    };
+};
+
+export const ForgotPasswordError = (error = {}) => {
+    return {
+        type: FORGOT_FAILURE,
+        error,
+    };
+};
+
 export const requestLogin = () => {
     return {
         type: LOGIN_REQUEST,
@@ -39,9 +63,10 @@ export const receiveLogin = (user) => {
     };
 };
 
-export const loginError = () => {
+export const loginError = (error) => {
     return {
         type: LOGIN_FAILURE,
+        error,
     };
 };
 
@@ -57,9 +82,10 @@ export const receiveLogout = () => {
     };
 };
 
-export const logoutError = () => {
+export const logoutError = (error = {}) => {
     return {
         type: LOGOUT_FAILURE,
+        error,
     };
 };
 
@@ -93,9 +119,10 @@ export const verificationSend = () => {
     };
 };
 
-export const verificationLinkError = () => {
+export const verificationLinkError = (error = {}) => {
     return {
         type: VERIFICATION_LINK_ERROR,
+        error,
     };
 };
 
@@ -154,6 +181,22 @@ export const resendVerificationLink = () => (dispatch) => {
             dispatch(verificationSend());
         });
 };
+
+// Sends Forgot Password link to user's email
+
+export const sendForgotPassword = (email) => (dispatch) => {
+    dispatch(requestForgotPassword());
+    myFirebase
+        .auth()
+        .sendPasswordResetEmail(email)
+        .then(() => {
+            dispatch(receiveForgotPassword());
+        })
+        .catch((error) => {
+            dispatch(ForgotPasswordError(error));
+        });
+};
+
 /* 
 From here you can go to:
     -   auth.js in src/redux/reducers/auth.js to see the reducer and how it works if you haven't seen it
