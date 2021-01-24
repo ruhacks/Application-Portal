@@ -20,6 +20,9 @@ import {
     VERIFICATION_LINK_SENT,
     VERIFICATION_LINK_REQUEST,
     VERIFICATION_LINK_ERROR,
+    FORGOT_REQUEST,
+    FORGOT_SUCCESS,
+    FORGOT_FAILURE,
 } from '../actions/authActions';
 
 export default (
@@ -33,11 +36,37 @@ export default (
         verificationLinkRequest: false,
         verificationLinkSent: false,
         verificationLinkError: false,
+        fpRequest: false,
+        fpSent: false,
+        fpFail: false,
+        fpError: false,
         user: {},
+        forgotErrorObject: {},
+        loginErrorObject: {},
     },
     action,
 ) => {
     switch (action.type) {
+        case FORGOT_REQUEST:
+            return {
+                ...state,
+                fpRequest: true,
+                fpFail: false,
+            };
+            break;
+        case FORGOT_SUCCESS:
+            return {
+                ...state,
+                fpSent: true,
+                fpRequest: false,
+            };
+        case FORGOT_FAILURE:
+            return {
+                ...state,
+                fpFail: true,
+                fpRequest: false,
+                forgotErrorObject: action.error,
+            };
         case LOGIN_REQUEST:
             return {
                 ...state,
@@ -59,6 +88,7 @@ export default (
                 isLoggingIn: false,
                 isAuthenticated: false,
                 loginError: true,
+                loginErrorObject: action.error,
             };
             break;
         case LOGOUT_REQUEST:

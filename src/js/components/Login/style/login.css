@@ -13,3 +13,11 @@
 .textLink{
     width: 100%;
 }
+
+.loginMsg{
+    color: green;
+}
+
+.error {
+    color: red;
+}
