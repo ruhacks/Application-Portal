@@ -1,4 +1,5 @@
 const classes = {
+    appCompleteBox: 'appCompleteBox',
     appIncompleteBox: 'appIncompleteBox',
     avatar: 'avatar',
     descriptionText: 'descriptionText',

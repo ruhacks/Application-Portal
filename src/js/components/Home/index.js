@@ -5,16 +5,21 @@ import classes from '../../config/classes';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 
 import { logoutUser, resendVerificationLink } from '../../../redux/actions/authActions';
 
-import { AppBar, Button, Box, Toolbar, IconButton, Typography, TextField } from '@material-ui/core';
+import { AppBar, Button, Box, Toolbar, IconButton, Typography, TextField, CircularProgress } from '@material-ui/core';
 
 import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import './style/home.css';
 import text from '../../config/text';
+import { getUsersApplication } from '../../../redux/actions/appActions';
+import Application from '../Applications';
+import { Chat } from '@material-ui/icons';
 class Home extends React.Component {
     static propTypes = {
         user: PropTypes.object,
@@ -27,6 +32,9 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            cantAccesEmailNotVerified: false,
+        }
     }
 
     handleLogOut = () => {
@@ -38,17 +46,28 @@ class Home extends React.Component {
     };
 
     render() {
-        const { user, verificationLinkRequest, verificationLinkSent, verificationLinkError } = this.props;
+        const { user, profile, gettingProfile, verificationLinkRequest, verificationLinkSent, verificationLinkError } = this.props;
+
+        if(!user || gettingProfile ) return <CircularProgress />
 
         const { emailVerified } = user;
+        const { admitted, completedProfile, confirmed, declined, rejected } = profile.status
 
         const renderStatusBox = () => {
             if (emailVerified) {
-                return (
-                    <Box className={classes.appIncompleteBox}>
-                        <Typography variant="h4">Application Incomplete</Typography>
-                    </Box>
-                );
+                if(!completedProfile){
+                    return (
+                        <Box className={classes.appIncompleteBox}>
+                            <Typography variant="h4">Application Incomplete</Typography>
+                        </Box>
+                    );
+                } else {
+                    return(
+                        <Box className={classes.appCompleteBox}>
+                            <Typography variant="h4">Application Done!</Typography>
+                        </Box>
+                    )
+                }
             } else {
                 return (
                     <div>
@@ -80,23 +99,35 @@ class Home extends React.Component {
         };
 
         const renderStatusText = () => {
+            const { admitted, completedProfile, confirmed, declined, rejected } = profile.status
+
             if (emailVerified) {
-                return (
-                    <Box className={classes.descriptionText}>
-                        <Typography variant="h5">{text.incompleteApplication}</Typography>
-                    </Box>
-                );
+                if(completedProfile){
+                    return (
+                        <Box className={classes.descriptionText}>
+                            <Typography variant="h5">{text.completeApplication}</Typography>
+                        </Box>
+                    );
+                }else{
+                    return (
+                        <Box className={classes.descriptionText}>
+                            <Typography variant="h5">{text.incompleteApplication}</Typography>
+                        </Box>
+                    );
+                }
+                
             }
         };
+
+        
 
         return (
             <div className={classes.homeContainer}>
                 <AppBar position="static">
+                    
                     <Toolbar>
-                        <IconButton edge="start" className="menu" color="inherit" aria-label="menu">
-                            <MenuIcon />
-                        </IconButton>
                         <Typography variant="h5">RU Hacks</Typography>
+                        
                         <div className={classes.toolbarButtons}>
                             <IconButton
                                 className="logout"
@@ -106,6 +137,17 @@ class Home extends React.Component {
                             >
                                 <ExitToAppIcon type="button" variant="contained" color="secondary"></ExitToAppIcon>
                             </IconButton>
+                            {emailVerified && 
+                            <Link to='/application'>
+                                <IconButton
+                                    className="logout"
+                                    color="inherit"
+                                    aria-label="menu"
+                                >
+                                    <Chat type = 'button' variant = 'contained' color='secondary'/>
+                                </IconButton>
+                            </Link>
+                            }
                         </div>
                     </Toolbar>
                 </AppBar>
@@ -123,14 +165,18 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state.auth);
+    console.log('STATE IN HOME', state);
     return {
+        application: state.app.app,
+        isRequestingApp: state.app.isRequestingApp,
         isLoggingOut: state.auth.isLoggingOut,
         logoutError: state.auth.logoutError,
         isAuthenticated: state.auth.isAuthenticated,
         verificationLinkRequest: state.auth.verificationLinkRequest,
         verificationLinkSent: state.auth.verificationLinkSent,
         user: state.auth.user,
+        gettingProfile: state.auth.gettingProfile,
+        profile: state.auth.profile,
     };
 }
 
@@ -142,6 +188,9 @@ function mapDispatchToProps(dispatch) {
         resendVerificationLink: () => {
             dispatch(resendVerificationLink());
         },
+        getApplication: (user) => {
+            dispatch(getUsersApplication(user))
+        }
     };
 }
 

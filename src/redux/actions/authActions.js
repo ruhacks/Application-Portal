@@ -7,7 +7,9 @@ Description:    Initialize action strings, action functions that returns action 
 
                      
 */
-import { myFirebase } from '../../db/index';
+
+import { auth, firestore } from '../../firebase'
+import { getUserDocument } from './registerActions';
 
 // Action strings
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -28,6 +30,9 @@ export const VERIFICATION_LINK_ERROR = 'VERIFICATION_LINK_ERROR';
 export const FORGOT_REQUEST = 'FORGOT_REQUEST';
 export const FORGOT_SUCCESS = 'FORGOT_SUCCESS';
 export const FORGOT_FAILURE = 'FORGOT_FAILURE';
+
+export const REQUEST_PROFILE = 'REQUEST_PROFILE';
+export const SET_PROFILE = 'SET_PROFILE';
 
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 
@@ -62,6 +67,19 @@ export const receiveLogin = (user) => {
         user,
     };
 };
+
+export const requestProfile = () => {
+    return {
+        type: REQUEST_PROFILE,
+    }
+}
+ 
+export const setProfile = (profile) => {
+    return {
+        type: SET_PROFILE,
+        profile,
+    }
+}
 
 export const loginError = (error) => {
     return {
@@ -131,12 +149,19 @@ export const verificationLinkError = (error = {}) => {
 //Attempts to login the user
 export const loginUser = (email, password) => (dispatch) => {
     dispatch(requestLogin()); //Dispatches the LOGIN_REQUEST event to the reducer to change redux store state variables
-    myFirebase
-        .auth()
+    auth
         .signInWithEmailAndPassword(email, password)
         .then((user) => {
             //Once we get a successful login, dispatch the action that acknowledges that we've received a valid user and dispatches LOGIN_SUCCESS action in the reducer
             dispatch(receiveLogin(user));
+            dispatch(requestProfile());
+            firestore.doc(`users/${user.uid}`).get().then(profile =>{
+                console.log('PROFILE PROFILE PROFILE', profile.data())
+                dispatch(setProfile(profile))
+            })
+            .catch(error =>{
+                console.error(error)
+            })
         })
         .catch((error) => {
             // Received error and dispatch LOGIN_ERROR action in the reducer
@@ -147,8 +172,7 @@ export const loginUser = (email, password) => (dispatch) => {
 // Logs out the current user
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout()); //Dispatches the LOGOUT_REQUEST event to the reducer to change redux store state variables
-    myFirebase
-        .auth()
+    auth
         .signOut()
         .then(() => {
             // Once we get a successful logout, dispatch the action that acknowledges we've logged out a valid user and dispatches LOGOUT_SUCCESS event
@@ -163,9 +187,17 @@ export const logoutUser = () => (dispatch) => {
 // Verify if we have a user logged in already (used in protected Route and on inital app entry)
 export const verifyAuth = () => (dispatch) => {
     dispatch(requestVerify());
-    myFirebase.auth().onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user) => {
         if (user !== null) {
             dispatch(receiveLogin(user));
+            dispatch(requestProfile());
+            firestore.doc(`users/${user.uid}`).get().then(profile =>{
+                console.log('PROFILE PROFILE PROFILE', profile.data())
+                dispatch(setProfile(profile.data()))
+            })
+            .catch(error =>{
+                console.error(error)
+            })
         }
         dispatch(receiveVerify(user));
     });
@@ -174,8 +206,7 @@ export const verifyAuth = () => (dispatch) => {
 // Resends verification link for the current logged in user from the home page
 export const resendVerificationLink = () => (dispatch) => {
     dispatch(verificationRequest());
-    myFirebase
-        .auth()
+    auth
         .currentUser.sendEmailVerification()
         .then(() => {
             dispatch(verificationSend());
@@ -186,8 +217,7 @@ export const resendVerificationLink = () => (dispatch) => {
 
 export const sendForgotPassword = (email) => (dispatch) => {
     dispatch(requestForgotPassword());
-    myFirebase
-        .auth()
+    auth
         .sendPasswordResetEmail(email)
         .then(() => {
             dispatch(receiveForgotPassword());
@@ -196,6 +226,17 @@ export const sendForgotPassword = (email) => (dispatch) => {
             dispatch(ForgotPasswordError(error));
         });
 };
+
+export const getUserProfile = (user) => (dispatch) => {
+    dispatch(requestProfile())
+    firestore.doc(`users/${user.uid}`).get()
+    .then(profile => {
+        dispatch(setProfile(profile))
+    })
+    .catch(error =>{
+        console.error(error)
+    })
+}
 
 /* 
 From here you can go to:

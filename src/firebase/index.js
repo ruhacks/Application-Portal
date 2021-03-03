@@ -17,11 +17,12 @@ var firebaseConfig = {
     measurementId: process.env.MEASUREMENT_ID,
 };
 
+firebase.initializeApp(firebaseConfig)
+
 const rrfConfig = {
     userProfile: 'users',
     useFirestoreForProfile: true,
 };
 
-export const myFirebase = firebase.initializeApp(firebaseConfig);
-const baseDB = myFirebase.firestore();
-export const db = baseDB;
+export const firestore = firebase.firestore();
+export const auth = firebase.auth();

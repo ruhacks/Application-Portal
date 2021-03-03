@@ -18,6 +18,9 @@
 .appIncompleteBox{
     background-color: gray;
 }
+.appCompleteBox {
+	background-color: lightgreen;
+}
 .unverifiedBox{
     background-color: red;
 }

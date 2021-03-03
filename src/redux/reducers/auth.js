@@ -23,6 +23,8 @@ import {
     FORGOT_REQUEST,
     FORGOT_SUCCESS,
     FORGOT_FAILURE,
+    REQUEST_PROFILE,
+    SET_PROFILE,
 } from '../actions/authActions';
 
 export default (
@@ -43,6 +45,8 @@ export default (
         user: {},
         forgotErrorObject: {},
         loginErrorObject: {},
+        gettingProfile: false,
+        profile: {},
     },
     action,
 ) => {
@@ -141,6 +145,17 @@ export default (
                 verificationLinkRequest: false,
                 verificationLinkSent: false,
             };
+        case REQUEST_PROFILE:
+            return{
+                ...state,
+                gettingProfile: true,
+            };
+        case SET_PROFILE:
+            return {
+                ...state,
+                profile: action.profile,
+                gettingProfile: false,
+            }
         default:
             return state;
     }

@@ -7,6 +7,7 @@ const text = {
     passwordsDoNotMatch: 'Passwords do not match',
 
     incompleteApplication: 'Your application has not yet been completed!',
+    completeApplication: 'Your application is complete, we\'ll get back to you soon! '
 };
 
 export default text;

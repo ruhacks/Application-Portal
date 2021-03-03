@@ -22,9 +22,6 @@ import App from './js/components/App'; //Import our next main component to be re
 
 import { Provider } from 'react-redux';
 
-import 'firebase/auth';
-import 'firebase/firestore';
-
 import { BrowserRouter } from 'react-router-dom';
 
 import configureStore from './configureStore'; // Import our configure store function to configure our Redux Store

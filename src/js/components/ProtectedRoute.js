@@ -31,7 +31,27 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, isVerifying, ..
     />
 );
 
-export default ProtectedRoute;
+const ProtectedRouteEmailVerified = ({ component: Component, isAuthenticated, isVerifying, emailVerified, ...rest }) => (
+    <Route
+        {...rest}
+        render={(props) =>
+            isVerifying ? (
+                <div />
+            ) : (isAuthenticated && emailVerified) ? (
+                <Component {...props} />
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: '/',
+                        state: { from: props.location, cantAccesEmailNotVerified: true },
+                    }}
+                />
+            )
+        }
+    />
+);
+
+export {ProtectedRoute, ProtectedRouteEmailVerified}
 
 /* 
 From here you can go to:
