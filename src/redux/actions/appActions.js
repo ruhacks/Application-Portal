@@ -1,4 +1,4 @@
-const {  firestore } = require("../../firebase");
+import { firestore } from '../../firebase';
 
 export const APPLICATION_REQUEST = 'APPLICATION_REQUEST';
 export const APPLICATION_SUCCESS = 'APPLICATION_SUCCESS';
@@ -17,48 +17,50 @@ export const requestApplication = (uid) => {
         type: APPLICATION_REQUEST,
         uid,
     };
-}
+};
 
 export const applicationReceived = (appData) => {
     return {
         type: APPLICATION_SUCCESS,
         appData,
-    }
-}
+    };
+};
 
 export const applicationError = (error) => {
     return {
         type: APPLICATION_ERROR,
         error,
-    }
-}
+    };
+};
 
 export const updateAppRequest = (appData) => {
-    return{
+    return {
         type: UPDATE_APP_REQUEST,
         appData,
-    }
-}
+    };
+};
 
 export const updateAppSuccess = () => {
     return {
         type: UPDATE_APP_SUCCESS,
-    }
-}
+    };
+};
 
 export const updateAppError = () => {
     return {
         type: UPDATE_APP_ERROR,
-    }
-}
+    };
+};
 
 export const getUsersApplication = (user) => (dispatch) => {
     dispatch(requestApplication(user.uid));
-    firestore.doc(`applications/${user.uid}`).get()
-    .then(response => {
-        dispatch(applicationReceived(response.data()))
-    })
-    .catch(error => {
-        dispatch(applicationError(error))
-    })
-}
+    firestore
+        .doc(`applications/${user.uid}`)
+        .get()
+        .then((response) => {
+            dispatch(applicationReceived(response.data()));
+        })
+        .catch((error) => {
+            dispatch(applicationError(error));
+        });
+};

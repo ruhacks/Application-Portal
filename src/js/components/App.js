@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
-import {ProtectedRoute, ProtectedRouteEmailVerified} from './ProtectedRoute';
+import { ProtectedRoute, ProtectedRouteEmailVerified } from './ProtectedRoute';
 import { Login } from './Login'; //Import our login page
 import Home from './Home'; // Import our Home Page initiation
 import { Register } from './Login/Register'; //Import our Register page

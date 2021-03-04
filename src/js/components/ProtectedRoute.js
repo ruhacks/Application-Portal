@@ -10,6 +10,7 @@ Description:    This is kind of like an authentication checkpoint. We use this t
 */
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const ProtectedRoute = ({ component: Component, isAuthenticated, isVerifying, ...rest }) => (
     <Route
@@ -18,7 +19,10 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, isVerifying, ..
             isVerifying ? (
                 <div />
             ) : isAuthenticated ? (
-                <Component {...props} />
+                <div>
+                    <Navbar />
+                    <Component {...props} />
+                </div>
             ) : (
                 <Redirect
                     to={{
@@ -31,14 +35,23 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, isVerifying, ..
     />
 );
 
-const ProtectedRouteEmailVerified = ({ component: Component, isAuthenticated, isVerifying, emailVerified, ...rest }) => (
+const ProtectedRouteEmailVerified = ({
+    component: Component,
+    isAuthenticated,
+    isVerifying,
+    emailVerified,
+    ...rest
+}) => (
     <Route
         {...rest}
         render={(props) =>
             isVerifying ? (
                 <div />
-            ) : (isAuthenticated && emailVerified) ? (
-                <Component {...props} />
+            ) : isAuthenticated && emailVerified ? (
+                <div>
+                    <Navbar />
+                    <Component {...props} />
+                </div>
             ) : (
                 <Redirect
                     to={{
@@ -51,7 +64,7 @@ const ProtectedRouteEmailVerified = ({ component: Component, isAuthenticated, is
     />
 );
 
-export {ProtectedRoute, ProtectedRouteEmailVerified}
+export { ProtectedRoute, ProtectedRouteEmailVerified };
 
 /* 
 From here you can go to:

@@ -146,7 +146,7 @@ export default (
                 verificationLinkSent: false,
             };
         case REQUEST_PROFILE:
-            return{
+            return {
                 ...state,
                 gettingProfile: true,
             };
@@ -155,7 +155,7 @@ export default (
                 ...state,
                 profile: action.profile,
                 gettingProfile: false,
-            }
+            };
         default:
             return state;
     }

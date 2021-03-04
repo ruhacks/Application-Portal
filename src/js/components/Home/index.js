@@ -7,23 +7,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { resendVerificationLink, subscribeToUserProfile } from '../../../redux/actions/authActions';
 
-import { logoutUser, resendVerificationLink } from '../../../redux/actions/authActions';
+import { AppBar, Button, Box, Toolbar, IconButton, Typography, CircularProgress } from '@material-ui/core';
 
-import { AppBar, Button, Box, Toolbar, IconButton, Typography, TextField, CircularProgress } from '@material-ui/core';
-
-import MenuIcon from '@material-ui/icons/Menu';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import './style/home.css';
 import text from '../../config/text';
 import { getUsersApplication } from '../../../redux/actions/appActions';
-import Application from '../Applications';
 import { Chat } from '@material-ui/icons';
+import Navbar from '../Navbar';
 class Home extends React.Component {
     static propTypes = {
         user: PropTypes.object,
         logoutUser: PropTypes.func,
+        subscribeToUserProfile: PropTypes.func,
         verificationLinkRequest: PropTypes.bool,
         verificationLinkSent: PropTypes.bool,
         verificationLinkError: PropTypes.bool,
@@ -34,39 +33,61 @@ class Home extends React.Component {
         super(props);
         this.state = {
             cantAccesEmailNotVerified: false,
-        }
+            unsubscribeFromProfile: null,
+        };
+        console.log('INININNININININININSDNGIDNSAGINASDIDFNISA');
+        this.setUnsubscribe = this.setUnsubscribe.bind(this);
     }
 
-    handleLogOut = () => {
-        this.props.logoutUser();
-    };
+    setUnsubscribe(unsubVar) {
+        this.setState({
+            unsubscribeFromProfile: unsubVar,
+        });
+    }
 
-    handleResendVerification = () => {
-        this.props.resendVerificationLink();
-    };
+    componentDidMount() {
+        const { subscribeToUserProfile, user, gettingProfile } = this.props;
+        console.log('IS AUTHENTICATED', gettingProfile);
+        subscribeToUserProfile(user, this.setUnsubscribe);
+    }
+
+    componentWillUnmount() {
+        if (this.state.unsubscribeFromProfile === null) return;
+        this.state.unsubscribeFromProfile();
+    }
 
     render() {
-        const { user, profile, gettingProfile, verificationLinkRequest, verificationLinkSent, verificationLinkError } = this.props;
+        const {
+            user,
+            profile,
+            gettingProfile,
+            verificationLinkRequest,
+            verificationLinkSent,
+            verificationLinkError,
+        } = this.props;
 
-        if(!user || gettingProfile ) return <CircularProgress />
+        const { unsubscribeFromProfile } = this.state;
+
+        if (!user || gettingProfile || !profile || !profile.status || !unsubscribeFromProfile)
+            return <CircularProgress />;
 
         const { emailVerified } = user;
-        const { admitted, completedProfile, confirmed, declined, rejected } = profile.status
+        const { admitted, completedProfile, confirmed, declined, rejected } = profile.status;
 
         const renderStatusBox = () => {
             if (emailVerified) {
-                if(!completedProfile){
+                if (!completedProfile) {
                     return (
                         <Box className={classes.appIncompleteBox}>
                             <Typography variant="h4">Application Incomplete</Typography>
                         </Box>
                     );
                 } else {
-                    return(
+                    return (
                         <Box className={classes.appCompleteBox}>
                             <Typography variant="h4">Application Done!</Typography>
                         </Box>
-                    )
+                    );
                 }
             } else {
                 return (
@@ -99,59 +120,27 @@ class Home extends React.Component {
         };
 
         const renderStatusText = () => {
-            const { admitted, completedProfile, confirmed, declined, rejected } = profile.status
+            const { admitted, completedProfile, confirmed, declined, rejected } = profile.status;
 
             if (emailVerified) {
-                if(completedProfile){
+                if (completedProfile) {
                     return (
                         <Box className={classes.descriptionText}>
                             <Typography variant="h5">{text.completeApplication}</Typography>
                         </Box>
                     );
-                }else{
+                } else {
                     return (
                         <Box className={classes.descriptionText}>
                             <Typography variant="h5">{text.incompleteApplication}</Typography>
                         </Box>
                     );
                 }
-                
             }
         };
 
-        
-
         return (
             <div className={classes.homeContainer}>
-                <AppBar position="static">
-                    
-                    <Toolbar>
-                        <Typography variant="h5">RU Hacks</Typography>
-                        
-                        <div className={classes.toolbarButtons}>
-                            <IconButton
-                                className="logout"
-                                color="inherit"
-                                aria-label="menu"
-                                onClick={this.handleLogOut}
-                            >
-                                <ExitToAppIcon type="button" variant="contained" color="secondary"></ExitToAppIcon>
-                            </IconButton>
-                            {emailVerified && 
-                            <Link to='/application'>
-                                <IconButton
-                                    className="logout"
-                                    color="inherit"
-                                    aria-label="menu"
-                                >
-                                    <Chat type = 'button' variant = 'contained' color='secondary'/>
-                                </IconButton>
-                            </Link>
-                            }
-                        </div>
-                    </Toolbar>
-                </AppBar>
-
                 <div className="qa">
                     <Typography variant="h3">Your Status: </Typography>
                     <hr />
@@ -189,8 +178,11 @@ function mapDispatchToProps(dispatch) {
             dispatch(resendVerificationLink());
         },
         getApplication: (user) => {
-            dispatch(getUsersApplication(user))
-        }
+            dispatch(getUsersApplication(user));
+        },
+        subscribeToUserProfile: (user, setUnsubscribe) => {
+            dispatch(subscribeToUserProfile(user, setUnsubscribe));
+        },
     };
 }
 

@@ -8,8 +8,8 @@ Description:    Initialize action strings, action functions that returns action 
                      
 */
 
-import { auth, firestore } from '../../firebase'
-import { getUserDocument } from './registerActions';
+import { auth, firestore } from '../../firebase';
+import { userProfileDefault } from '../../js/config/defaultState';
 
 // Action strings
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -71,15 +71,15 @@ export const receiveLogin = (user) => {
 export const requestProfile = () => {
     return {
         type: REQUEST_PROFILE,
-    }
-}
- 
+    };
+};
+
 export const setProfile = (profile) => {
     return {
         type: SET_PROFILE,
         profile,
-    }
-}
+    };
+};
 
 export const loginError = (error) => {
     return {
@@ -149,19 +149,10 @@ export const verificationLinkError = (error = {}) => {
 //Attempts to login the user
 export const loginUser = (email, password) => (dispatch) => {
     dispatch(requestLogin()); //Dispatches the LOGIN_REQUEST event to the reducer to change redux store state variables
-    auth
-        .signInWithEmailAndPassword(email, password)
-        .then((user) => {
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
             //Once we get a successful login, dispatch the action that acknowledges that we've received a valid user and dispatches LOGIN_SUCCESS action in the reducer
-            dispatch(receiveLogin(user));
-            dispatch(requestProfile());
-            firestore.doc(`users/${user.uid}`).get().then(profile =>{
-                console.log('PROFILE PROFILE PROFILE', profile.data())
-                dispatch(setProfile(profile))
-            })
-            .catch(error =>{
-                console.error(error)
-            })
+            dispatch(receiveLogin(userCredential.user));
         })
         .catch((error) => {
             // Received error and dispatch LOGIN_ERROR action in the reducer
@@ -172,8 +163,7 @@ export const loginUser = (email, password) => (dispatch) => {
 // Logs out the current user
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout()); //Dispatches the LOGOUT_REQUEST event to the reducer to change redux store state variables
-    auth
-        .signOut()
+    auth.signOut()
         .then(() => {
             // Once we get a successful logout, dispatch the action that acknowledges we've logged out a valid user and dispatches LOGOUT_SUCCESS event
             dispatch(receiveLogout());
@@ -190,14 +180,6 @@ export const verifyAuth = () => (dispatch) => {
     auth.onAuthStateChanged((user) => {
         if (user !== null) {
             dispatch(receiveLogin(user));
-            dispatch(requestProfile());
-            firestore.doc(`users/${user.uid}`).get().then(profile =>{
-                console.log('PROFILE PROFILE PROFILE', profile.data())
-                dispatch(setProfile(profile.data()))
-            })
-            .catch(error =>{
-                console.error(error)
-            })
         }
         dispatch(receiveVerify(user));
     });
@@ -206,19 +188,16 @@ export const verifyAuth = () => (dispatch) => {
 // Resends verification link for the current logged in user from the home page
 export const resendVerificationLink = () => (dispatch) => {
     dispatch(verificationRequest());
-    auth
-        .currentUser.sendEmailVerification()
-        .then(() => {
-            dispatch(verificationSend());
-        });
+    auth.currentUser.sendEmailVerification().then(() => {
+        dispatch(verificationSend());
+    });
 };
 
 // Sends Forgot Password link to user's email
 
 export const sendForgotPassword = (email) => (dispatch) => {
     dispatch(requestForgotPassword());
-    auth
-        .sendPasswordResetEmail(email)
+    auth.sendPasswordResetEmail(email)
         .then(() => {
             dispatch(receiveForgotPassword());
         })
@@ -227,17 +206,23 @@ export const sendForgotPassword = (email) => (dispatch) => {
         });
 };
 
-export const getUserProfile = (user) => (dispatch) => {
-    dispatch(requestProfile())
-    firestore.doc(`users/${user.uid}`).get()
-    .then(profile => {
-        dispatch(setProfile(profile))
-    })
-    .catch(error =>{
-        console.error(error)
-    })
-}
+//******************************************************************************************** */
 
+export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
+    console.log('SET UNSUBSCRIBE', user);
+    if (!user || Object.keys(user).length === 0) return;
+    dispatch(requestProfile());
+    const { uid, email } = user;
+    const userRef = firestore.doc(`users/${uid}`);
+    const unsubscribe = userRef.onSnapshot((profile) => {
+        if (profile.exists) {
+            dispatch(setProfile(profile.data()));
+        } else {
+            dispatch(setProfile({ ...userProfileDefault, email: email, createdAt: new Date() }));
+        }
+    });
+    setUnsubscribe(unsubscribe);
+};
 /* 
 From here you can go to:
     -   auth.js in src/redux/reducers/auth.js to see the reducer and how it works if you haven't seen it
