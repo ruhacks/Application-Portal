@@ -6,3 +6,8 @@ firebase.json
 firestore.indexes.json
 firestore.rules
 .firebaserc
+.firebase/
+firestore-debug.log
+ui-debug.log
+
+functions/
