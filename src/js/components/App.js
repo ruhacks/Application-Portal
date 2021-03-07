@@ -7,54 +7,55 @@ Description:    This is where we route the user to the right place by checking t
                         -   Will probably need to add some more paths here for verifying users for various reasons
                      
 */
-import React from 'react';
+import React from "react";
 
-import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import { ProtectedRoute, ProtectedRouteEmailVerified } from './ProtectedRoute';
-import { Login } from './Login'; //Import our login page
-import Home from './Home'; // Import our Home Page initiation
-import { Register } from './Login/Register'; //Import our Register page
-import Application from './Applications';
+import { ProtectedRoute, ProtectedRouteEmailVerified } from "./ProtectedRoute";
+import { Login } from "./Login"; //Import our login page
+import Home from "./Home"; // Import our Home Page initiation
+import { Register } from "./Login/Register"; //Import our Register page
+import Application from "./Applications";
 
 class App extends React.Component {
-    // This is where we dsecribe our prop variables that we import from the mapStateToProps
-    static propTypes = {
-        isAuthenticated: PropTypes.bool,
-        isVerifying: PropTypes.bool,
-    };
+  // This is where we dsecribe our prop variables that we import from the mapStateToProps
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    isVerifying: PropTypes.bool,
+    emailVerified: PropTypes.bool,
+  };
 
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        const { isAuthenticated, isVerifying, emailVerified } = this.props;
-        return (
-            <Switch>
-                <ProtectedRoute
-                    exact
-                    path="/"
-                    component={Home}
-                    isAuthenticated={isAuthenticated}
-                    isVerifying={isVerifying}
-                />
-                <ProtectedRouteEmailVerified
-                    exact
-                    path="/application"
-                    component={Application}
-                    isAuthenticated={isAuthenticated}
-                    isVerifying={isVerifying}
-                    emailVerified={emailVerified}
-                />
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
-            </Switch>
-        );
-    }
-    /*
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    const { isAuthenticated, isVerifying, emailVerified } = this.props;
+    return (
+      <Switch>
+        <ProtectedRoute
+          exact
+          path="/"
+          component={Home}
+          isAuthenticated={isAuthenticated}
+          isVerifying={isVerifying}
+        />
+        <ProtectedRouteEmailVerified
+          exact
+          path="/application"
+          component={Application}
+          isAuthenticated={isAuthenticated}
+          isVerifying={isVerifying}
+          emailVerified={emailVerified}
+        />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+      </Switch>
+    );
+  }
+  /*
         Send user to a route based on url given
             <ProtectedRoute /> if URL is '/'
             <Login /> if URL is '/login'
@@ -64,11 +65,11 @@ class App extends React.Component {
 
 //Function for mapping variables from the redux store state to the props of our element
 function mapStateToProps(state) {
-    return {
-        isAuthenticated: state.auth.isAuthenticated,
-        isVerifying: state.auth.isVerifying,
-        emailVerified: state.auth.user.emailVerified,
-    };
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    isVerifying: state.auth.isVerifying,
+    emailVerified: state.auth.user.emailVerified,
+  };
 }
 
 export default connect(mapStateToProps)(App); //Export our App element with mapstatetoprops attached to it

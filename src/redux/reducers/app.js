@@ -1,45 +1,68 @@
 import {
-    APPLICATION_REQUEST,
-    APPLICATION_SUCCESS,
-    APPLICATION_ERROR,
-    CREATE_APP_REQUEST,
-    CREATE_APP_SUCCESS,
-    CREATE_APP_ERROR,
-    UPDATE_APP_REQUEST,
-    UPDATE_APP_SUCCESS,
-    UPDATE_APP_ERROR,
-} from '../actions/appActions'
+  APPLICATION_REQUEST,
+  APPLICATION_SUCCESS,
+  APPLICATION_ERROR,
+  UPDATE_APP_REQUEST,
+  UPDATE_APP_SUCCESS,
+  UPDATE_APP_ERROR,
+  APP_FIELDS_GET,
+  APP_FIELDS_SUCCESS,
+  APP_FIELDS_ERROR,
+} from "../actions/appActions";
 
 export default (
-    state = {
-        isRequestingApp: false,
-        appError: false,
-        app: {},
-    },
-    action
+  state = {
+    isRequestingApp: false,
+    isRequestFields: false,
+    appError: "",
+    app: {},
+    fields: [],
+  },
+  action
 ) => {
-    switch(action.type) {
-        case APPLICATION_REQUEST:
-            return {
-                ...state,
-                isRequestingApp: true,
-                appError: false,
-                app: {},
-            }
-        
-        case APPLICATION_SUCCESS:
-            return{
-                app: action.appData,
-                isRequestingApp: false,
-                appError: false,
-            }
-        case APPLICATION_ERROR:
-            return{
-                app: {},
-                isRequestingApp: false,
-                appError: action.error,
-            }
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case APPLICATION_REQUEST:
+      return {
+        ...state,
+        isRequestingApp: true,
+        appError: "",
+        app: {},
+      };
+
+    case APPLICATION_SUCCESS:
+      return {
+        ...state,
+        app: action.appData,
+        isRequestingApp: false,
+        appError: "",
+      };
+    case APPLICATION_ERROR:
+      return {
+        ...state,
+        app: {},
+        isRequestingApp: false,
+        appError: action.error,
+      };
+    case APP_FIELDS_GET:
+      return {
+        ...state,
+        isRequestFields: true,
+        fields: [],
+      };
+    case APP_FIELDS_SUCCESS:
+      return {
+        ...state,
+        isRequestFields: false,
+        fields: action.fields,
+      };
+    case APP_FIELDS_ERROR:
+      return {
+        ...state,
+        isRequestFields: false,
+        fields: [],
+        appError: action.error,
+      };
+    default:
+      return state;
+  }
+};
