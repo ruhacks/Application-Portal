@@ -8,20 +8,28 @@ Description:    This is our Registration page. This is where we'll handle render
                     -   Routing user to home page on registration or login on request
                      
 */
-import React from 'react';
+import React from "react";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import classes from '../../../config/classes'; //import class names
-import text from '../../../config/text'; //Text TODO: Localize?
+import classes from "../../../config/classes"; //import class names
+import text from "../../../config/text"; //Text TODO: Localize?
 
-import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { Redirect, Link } from "react-router-dom";
 
-import { Avatar, Button, TextField, Typography, Paper, Box, Grid } from '@material-ui/core';
+import {
+    Avatar,
+    Button,
+    TextField,
+    Typography,
+    Paper,
+    Box,
+    Grid,
+} from "@material-ui/core";
 
-import { default as logo } from '../../../../../assets/images/RU_RGB.svg';
-import { registerUser } from '../../../../redux/actions'; //import registerUser() from registration actions in src/redux/actions/registerActions.js
+import { default as logo } from "../../../../../assets/images/RU_RGB.svg";
+import { registerUser } from "../../../../redux/actions"; //import registerUser() from registration actions in src/redux/actions/registerActions.js
 
 class Register extends React.Component {
     //Declare prop variables types
@@ -35,10 +43,10 @@ class Register extends React.Component {
         super(props);
         //init state
         this.state = {
-            email: '',
-            password: '',
-            password_confirm: '',
-            errorText: '',
+            email: "",
+            password: "",
+            password_confirm: "",
+            errorText: "",
             displayErrorText: false,
             submittedRegistration: false,
         };
@@ -58,14 +66,16 @@ class Register extends React.Component {
     //Check if form for registartion is valid
     isThereAnyError = () => {
         const { email, password, password_confirm } = this.state;
-        if (email !== '' && password !== '') {
-            this.setState({ errorText: '' });
+        if (email !== "" && password !== "") {
+            this.setState({ errorText: "" });
             return false;
-        } else if (email === '' && password === '' && password_confirm === '') {
-            this.setState({ errorText: text.noEmailOrPasswordOrPasswordConfirm });
-        } else if (email !== '' && password === '' && password_confirm === '') {
+        } else if (email === "" && password === "" && password_confirm === "") {
+            this.setState({
+                errorText: text.noEmailOrPasswordOrPasswordConfirm,
+            });
+        } else if (email !== "" && password === "" && password_confirm === "") {
             this.setState({ errorText: text.noPasswordOrPasswordConfirm });
-        } else if (email !== '' && password !== '' && password_confirm === '') {
+        } else if (email !== "" && password !== "" && password_confirm === "") {
             this.setState({ errorText: text.noPasswordConfirm });
         } else if (password !== password_confirm) {
             this.setState({ errorText: text.passwordsDoNotMatch });
@@ -103,7 +113,7 @@ class Register extends React.Component {
                         direction="row"
                         alignItems="center"
                         justify="center"
-                        style={{ minHeight: '100vh' }}
+                        style={{ minHeight: "100vh" }}
                     >
                         <Grid item xs={3}>
                             <Paper className={classes.paper}>
@@ -140,12 +150,18 @@ class Register extends React.Component {
                                             label="Password Confirmation"
                                             type="password"
                                             id="password_confirm"
-                                            onChange={this.handlePasswordConfirmChange}
+                                            onChange={
+                                                this.handlePasswordConfirmChange
+                                            }
                                         />
                                     </div>
                                 )}
                                 {this.state.displayErrorText && (
-                                    <Typography component="p" className={classes.errorText} color="error">
+                                    <Typography
+                                        component="p"
+                                        className={classes.errorText}
+                                        color="error"
+                                    >
                                         {this.state.errorText}
                                     </Typography>
                                 )}

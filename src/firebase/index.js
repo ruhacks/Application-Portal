@@ -1,8 +1,8 @@
-import firebase from 'firebase/app';
-import dotenv from 'dotenv';
+import firebase from "firebase/app";
+import dotenv from "dotenv";
 
-import 'firebase/auth';
-import 'firebase/firestore';
+import "firebase/auth";
+import "firebase/firestore";
 
 dotenv.config({ silent: true });
 
@@ -17,10 +17,10 @@ var firebaseConfig = {
     measurementId: process.env.MEASUREMENT_ID,
 };
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
 const rrfConfig = {
-    userProfile: 'users',
+    userProfile: "users",
     useFirestoreForProfile: true,
 };
 

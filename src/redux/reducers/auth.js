@@ -25,7 +25,7 @@ import {
     FORGOT_FAILURE,
     REQUEST_PROFILE,
     SET_PROFILE,
-} from '../actions/authActions';
+} from "../actions/authActions";
 
 export default (
     state = {
@@ -48,7 +48,7 @@ export default (
         gettingProfile: false,
         profile: {},
     },
-    action,
+    action
 ) => {
     switch (action.type) {
         case FORGOT_REQUEST:

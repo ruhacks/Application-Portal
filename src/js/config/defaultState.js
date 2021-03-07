@@ -1,7 +1,7 @@
 export const userProfileDefault = {
     confirmation: {
-        discord: '',
-        pNum: '',
+        discord: "",
+        pNum: "",
     },
     status: {
         admitted: false,
@@ -12,84 +12,115 @@ export const userProfileDefault = {
         isMentor: false,
         reimbursmentGiven: false,
         rejected: false,
-        timestampAdmitted: '',
+        timestampAdmitted: "",
     },
 };
 
-export const fields = {
-    name: {
-        titleLabel: 'What is your name?',
+export const fields = [
+    {
+        type: "String",
+        titleLabel: "What is your name?",
+        order: 1,
         required: true,
-        type: 'String',
+        keyRef: "name",
     },
-    school: {
-        titleLabel: 'What school do you go to?',
+    {
+        type: "String",
+        titleLabel: "What school do you go to?",
+        order: 2,
         required: true,
-        type: 'String',
+        keyRef: "school",
     },
-    program: {
-        titleLabel: 'What is your program name?',
+    {
         required: true,
-        type: 'String',
+        titleLabel: "What is your program name?",
+        order: 3,
+        type: "String",
+        keyRef: "program",
     },
-    studyLevel: {
-        titleLabel: 'What is your year of study?',
+    {
+        order: 4,
         required: true,
-        type: 'number',
+        titleLabel: "What is your year of study?",
+        type: "number",
+        keyRef: "studyLevel",
     },
-    age: {
-        titleLabel: 'What is your age?',
+    {
+        type: "number",
+        order: 5,
         required: true,
-        type: 'number',
+        titleLabel: "What is your age?",
+        keyRef: "age",
     },
-    country: {
-        country: 'What country are you from?',
+    {
         required: true,
-        type: 'String',
+        order: 6,
+        type: "String",
+        titleLabel: "What country are you from?",
+        keyRef: "country",
     },
-    city: {
-        titleLabel: 'What city are you from?',
+    {
+        titleLabel: "What city are you from?",
+        type: "String",
         required: false,
-        type: 'String',
+        order: 7,
+        keyRef: "city",
     },
-    description: {
-        titleLabel: 'Describe yourself',
+    {
+        order: 8,
         requred: true,
-        type: 'String',
+        type: "String",
+        titleLabel: "Describe yourself",
+        keyRef: "description",
     },
-    ethnicity: {
-        titleLabel: 'Etnhicity',
+    {
+        titleLabel: "Etnhicity",
+        type: "String",
+        order: 9,
         required: true,
-        type: 'String',
+        keyRef: "ethnicity",
     },
-    exp: {
-        titleLabel: 'exp?',
+    {
+        order: 10,
+        type: "String",
         required: true,
-        type: 'String',
+        titleLabel: "exp?",
+        keyRef: "exp",
     },
-    gender: {
-        titleLabel: 'Gender',
+    {
+        titleLabel: "Gender",
+        options: ["Male", "Female", "Non-binary", "Prefer not to answer"],
         required: true,
-        type: 'String',
+        type: "dropdown",
+        order: 11,
+        keyRef: "gender",
     },
-    gradYear: {
-        titleLabel: 'When will you graduate?',
+    {
+        titleLabel: "When will you graduate?",
+        order: 12,
         required: true,
-        type: 'number',
+        type: "number",
+        keyRef: "gradYear",
     },
-    hackNum: {
-        titleLabel: 'How many hackathons have you attended',
+    {
+        titleLabel: "How many hackathons have you attended",
+        type: "number",
         required: true,
-        type: 'number',
+        order: 13,
+        keyRef: "hackNum",
     },
-    hearAbout: {
-        titleLabel: 'How did you hear about us?',
+    {
+        order: 14,
+        type: "String",
+        titleLabel: "How did you hear about us?",
         required: true,
-        type: 'String',
+        keyRef: "hearAbout",
     },
-    mlhAuth: {
-        titleLabel: 'Do you agree to MLH terms?',
+    {
+        titleLabel: "Do you agree to MLH terms?",
+        type: "Boolean",
+        order: 15,
         required: true,
-        type: 'Boolean',
+        keyRef: "mlhAuth",
     },
-};
+];

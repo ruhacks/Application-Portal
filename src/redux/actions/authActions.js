@@ -8,31 +8,31 @@ Description:    Initialize action strings, action functions that returns action 
                      
 */
 
-import { auth, firestore } from '../../firebase';
-import { userProfileDefault } from '../../js/config/defaultState';
+import { auth, firestore } from "../../firebase";
+import { userProfileDefault } from "../../js/config/defaultState";
 
 // Action strings
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
-export const VERIFY_REQUEST = 'VERIFY_REQUEST';
-export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
+export const VERIFY_REQUEST = "VERIFY_REQUEST";
+export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
 
-export const VERIFICATION_LINK_SENT = 'VERIFICATION_LINK_SENT';
-export const VERIFICATION_LINK_REQUEST = 'VERIFICATION_LINK_REQUEST';
-export const VERIFICATION_LINK_ERROR = 'VERIFICATION_LINK_ERROR';
+export const VERIFICATION_LINK_SENT = "VERIFICATION_LINK_SENT";
+export const VERIFICATION_LINK_REQUEST = "VERIFICATION_LINK_REQUEST";
+export const VERIFICATION_LINK_ERROR = "VERIFICATION_LINK_ERROR";
 
-export const FORGOT_REQUEST = 'FORGOT_REQUEST';
-export const FORGOT_SUCCESS = 'FORGOT_SUCCESS';
-export const FORGOT_FAILURE = 'FORGOT_FAILURE';
+export const FORGOT_REQUEST = "FORGOT_REQUEST";
+export const FORGOT_SUCCESS = "FORGOT_SUCCESS";
+export const FORGOT_FAILURE = "FORGOT_FAILURE";
 
-export const REQUEST_PROFILE = 'REQUEST_PROFILE';
-export const SET_PROFILE = 'SET_PROFILE';
+export const REQUEST_PROFILE = "REQUEST_PROFILE";
+export const SET_PROFILE = "SET_PROFILE";
 
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 
@@ -209,7 +209,7 @@ export const sendForgotPassword = (email) => (dispatch) => {
 //******************************************************************************************** */
 
 export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
-    console.log('SET UNSUBSCRIBE', user);
+    console.log("SET UNSUBSCRIBE", user);
     if (!user || Object.keys(user).length === 0) return;
     dispatch(requestProfile());
     const { uid, email } = user;
@@ -218,7 +218,13 @@ export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
         if (profile.exists) {
             dispatch(setProfile(profile.data()));
         } else {
-            dispatch(setProfile({ ...userProfileDefault, email: email, createdAt: new Date() }));
+            dispatch(
+                setProfile({
+                    ...userProfileDefault,
+                    email: email,
+                    createdAt: new Date(),
+                })
+            );
         }
     });
     setUnsubscribe(unsubscribe);

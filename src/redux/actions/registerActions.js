@@ -7,16 +7,16 @@ Description:    Initialize action strings, action functions that returns action 
 
                      
 */
-import { auth } from '../../firebase/index';
+import { auth } from "../../firebase/index";
 
 // Action strings
-export const REGISTER_REQUEST = 'REGISTER REQUEST';
-export const REGISTRATION_SUCCESSFUL = 'REGISTRATION_SUCCESSFUL';
+export const REGISTER_REQUEST = "REGISTER REQUEST";
+export const REGISTRATION_SUCCESSFUL = "REGISTRATION_SUCCESSFUL";
 
-export const REGISTER_ERROR = 'REGISTER_ERROR';
+export const REGISTER_ERROR = "REGISTER_ERROR";
 
-export const VERIFICATION_REQUEST = 'VERIFIACTION_REQUEST';
-export const VERIFICATION_SUCCESSFULLY_SENT = 'VERIFICATION_SUCCESSFULLY_SENT';
+export const VERIFICATION_REQUEST = "VERIFIACTION_REQUEST";
+export const VERIFICATION_SUCCESSFULLY_SENT = "VERIFICATION_SUCCESSFULLY_SENT";
 
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 export const requestRegister = () => {
@@ -63,7 +63,7 @@ export const registerUser = (email, password) => (dispatch) => {
             user.user
                 .sendEmailVerification({
                     url:
-                        'https://ru-hacks-app-page.firebaseapp.com/__/auth/action?mode=action&oobCode=code&continueUrl=http://localhost:8080/',
+                        "https://ru-hacks-app-page.firebaseapp.com/__/auth/action?mode=action&oobCode=code&continueUrl=http://localhost:8080/",
                     handleCodeInApp: false,
                 })
                 .then(() => {

@@ -1,6 +1,6 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const dotenv = require('dotenv');
-const webpack = require('webpack');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const dotenv = require("dotenv");
+const webpack = require("webpack");
 
 module.exports = () => {
     // call dotenv and it will return an Object with a parsed key
@@ -12,59 +12,59 @@ module.exports = () => {
     }, {});
 
     return {
-        entry: './src/index.js',
+        entry: "./src/index.js",
         module: {
             rules: [
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    use: ['babel-loader'],
+                    use: ["babel-loader"],
                 },
                 {
                     test: /\.html$/,
                     use: [
                         {
-                            loader: 'html-loader',
+                            loader: "html-loader",
                         },
                     ],
                 },
                 {
                     test: /\.css$/,
-                    use: ['style-loader', 'css-loader' ]
+                    use: ["style-loader", "css-loader"],
                 },
                 {
                     test: /\.(png|jpg|gif|svg)$/i,
                     use: [
-                      {
-                        loader: 'url-loader',
-                        options: {
-                          limit: 8192,
+                        {
+                            loader: "url-loader",
+                            options: {
+                                limit: 8192,
+                            },
                         },
-                      },
                     ],
                 },
             ],
         },
         node: {
-            fs: 'empty',
+            fs: "empty",
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: './src/index.html',
-                filename: './index.html',
+                template: "./src/index.html",
+                filename: "./index.html",
             }),
             new webpack.DefinePlugin(envKeys),
         ],
         resolve: {
-            extensions: ['*', '.js', '.jsx'],
+            extensions: ["*", ".js", ".jsx"],
         },
         output: {
-            path: __dirname + '/dist',
-            publicPath: '/',
-            filename: 'bundle.js',
+            path: __dirname + "/dist",
+            publicPath: "/",
+            filename: "bundle.js",
         },
         devServer: {
-            contentBase: './dist',
+            contentBase: "./dist",
             historyApiFallback: true,
         },
     };

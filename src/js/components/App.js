@@ -21,41 +21,41 @@ import { Register } from "./Login/Register"; //Import our Register page
 import Application from "./Applications";
 
 class App extends React.Component {
-  // This is where we dsecribe our prop variables that we import from the mapStateToProps
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    isVerifying: PropTypes.bool,
-    emailVerified: PropTypes.bool,
-  };
+    // This is where we dsecribe our prop variables that we import from the mapStateToProps
+    static propTypes = {
+        isAuthenticated: PropTypes.bool,
+        isVerifying: PropTypes.bool,
+        emailVerified: PropTypes.bool,
+    };
 
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    const { isAuthenticated, isVerifying, emailVerified } = this.props;
-    return (
-      <Switch>
-        <ProtectedRoute
-          exact
-          path="/"
-          component={Home}
-          isAuthenticated={isAuthenticated}
-          isVerifying={isVerifying}
-        />
-        <ProtectedRouteEmailVerified
-          exact
-          path="/application"
-          component={Application}
-          isAuthenticated={isAuthenticated}
-          isVerifying={isVerifying}
-          emailVerified={emailVerified}
-        />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-      </Switch>
-    );
-  }
-  /*
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const { isAuthenticated, isVerifying, emailVerified } = this.props;
+        return (
+            <Switch>
+                <ProtectedRoute
+                    exact
+                    path="/"
+                    component={Home}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
+                />
+                <ProtectedRouteEmailVerified
+                    exact
+                    path="/application"
+                    component={Application}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
+                    emailVerified={emailVerified}
+                />
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
+            </Switch>
+        );
+    }
+    /*
         Send user to a route based on url given
             <ProtectedRoute /> if URL is '/'
             <Login /> if URL is '/login'
@@ -65,11 +65,11 @@ class App extends React.Component {
 
 //Function for mapping variables from the redux store state to the props of our element
 function mapStateToProps(state) {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    isVerifying: state.auth.isVerifying,
-    emailVerified: state.auth.user.emailVerified,
-  };
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        isVerifying: state.auth.isVerifying,
+        emailVerified: state.auth.user.emailVerified,
+    };
 }
 
 export default connect(mapStateToProps)(App); //Export our App element with mapstatetoprops attached to it

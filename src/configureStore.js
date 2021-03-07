@@ -6,13 +6,13 @@ Description:    This is where we configure our "Redux Store" with thunk middlewa
                     -   Dispatch an action in our auth.js that verifies if there is a user logged in or not
                      
 */
-import { applyMiddleware, compose, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { applyMiddleware, compose, createStore } from "redux";
+import thunkMiddleware from "redux-thunk";
 
-import monitorReducersEnhancer from './enhancers/monitorReducer';
-import loggerMiddleware from './middleware/logger'; //Our logging middleware
-import rootReducer from './redux/reducers/'; //Our root reducer map that contains ALL our reducers
-import { verifyAuth } from './redux/actions'; //Import the authentication verification action function that checks for a user
+import monitorReducersEnhancer from "./enhancers/monitorReducer";
+import loggerMiddleware from "./middleware/logger"; //Our logging middleware
+import rootReducer from "./redux/reducers/"; //Our root reducer map that contains ALL our reducers
+import { verifyAuth } from "./redux/actions"; //Import the authentication verification action function that checks for a user
 
 export default function configureStore(preloadedState) {
     const middlewares = [loggerMiddleware, thunkMiddleware];
