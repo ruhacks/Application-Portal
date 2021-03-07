@@ -17,11 +17,19 @@ class Field extends Component {
         titleLabel: PropTypes.string,
         type: PropTypes.string,
         options: PropTypes.array,
-        value: PropTypes.string || PropTypes.bool,
+        value: PropTypes.any,
+        eventHandler: PropTypes.func,
     };
 
     render() {
-        const { type, required, titleLabel, name, value } = this.props;
+        const {
+            type,
+            required,
+            titleLabel,
+            name,
+            value,
+            eventHandler,
+        } = this.props;
 
         if (type === "String" || type === "number") {
             return (
@@ -35,34 +43,38 @@ class Field extends Component {
                     type={type}
                     variant="outlined"
                     defaultValue={value}
+                    onChange={(event) => {
+                        eventHandler(event, name);
+                    }}
                 />
             );
         } else if (type === "Boolean") {
             return (
                 <FormControlLabel
                     label={titleLabel}
-                    control={
-                        <Checkbox
-                            name={titleLabel}
-                            checked={value}
-                            color="primary"
-                        />
-                    }
+                    id={name}
+                    onChange={(event) => {
+                        eventHandler(event, name);
+                    }}
+                    control={<Checkbox name={titleLabel} color="primary" />}
                 />
             );
         } else if (type === "dropdown") {
             const { options } = this.props;
             return (
                 <FormControl required={required} fullWidth>
-                    <InputLabel id={name}>{titleLabel}</InputLabel>
+                    <InputLabel id={name + "-label"}>{titleLabel}</InputLabel>
                     <Select
-                        labelId={name}
-                        id={name + "-select"}
-                        defaultValue={value ? value : null}
+                        labelId={name + "-label"}
+                        id={name}
+                        defaultValue={value ? value : ""}
+                        onChange={(event) => {
+                            eventHandler(event, name);
+                        }}
                     >
                         {options.map((option) => {
                             return (
-                                <MenuItem value={option} key={option}>
+                                <MenuItem value={option} key={option} id={name}>
                                     {option}
                                 </MenuItem>
                             );

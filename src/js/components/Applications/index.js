@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import AppForm from "./AppForm";
 import { connect } from "react-redux";
-import {
-    getApplicationFields,
-    getUsersApplication,
-} from "../../../redux/actions";
+import { getUsersApplication } from "../../../redux/actions";
 import { CircularProgress } from "@material-ui/core";
 import PropTypes from "prop-types";
 import isEmpty from "lodash/isEmpty";
@@ -14,7 +11,6 @@ class Application extends Component {
     static propTypes = {
         user: PropTypes.object,
         fields: PropTypes.array,
-        getApplicationFields: PropTypes.func,
         getUsersApplication: PropTypes.func,
         application: PropTypes.object,
         isRequestingApp: PropTypes.bool,
@@ -24,18 +20,11 @@ class Application extends Component {
 
     componentDidMount() {
         const { getUsersApplication, user } = this.props;
-        getApplicationFields();
         getUsersApplication(user);
     }
 
     render() {
-        getApplicationFields();
-        const {
-            application,
-            appError,
-            isRequestingApp,
-            isRequestingFields,
-        } = this.props;
+        const { application, appError, isRequestingApp } = this.props;
         if (isRequestingApp) {
             return <CircularProgress />;
         }
@@ -65,9 +54,6 @@ function mapDispatchToProps(dispatch) {
     return {
         getUsersApplication: (user) => {
             dispatch(getUsersApplication(user));
-        },
-        getApplicationFields: () => {
-            dispatch(getApplicationFields());
         },
     };
 }

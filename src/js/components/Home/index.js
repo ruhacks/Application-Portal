@@ -197,7 +197,6 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log("STATE IN HOME", state);
     return {
         application: state.app.app,
         isRequestingApp: state.app.isRequestingApp,

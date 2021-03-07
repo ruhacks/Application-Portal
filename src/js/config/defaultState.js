@@ -124,3 +124,5 @@ export const fields = [
         keyRef: "mlhAuth",
     },
 ];
+
+export const fieldKeys = fields.map((field) => field.keyRef);
