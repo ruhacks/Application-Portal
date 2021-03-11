@@ -8,9 +8,28 @@ const text = {
     noPasswordConfirm: "Password confirmation is empty...",
     passwordsDoNotMatch: "Passwords do not match",
 
-    incompleteApplication: "Your application has not yet been completed!",
-    completeApplication:
-        "Your application is complete, we'll get back to you soon! ",
+    quickStatus: {
+        incompleteApplication: "Application Incomplete!",
+        completeApplication: "Application Complete!",
+        confirmed: "Confirmation Complete!",
+        admitted: "Admitted!",
+        declined: "Declined Confirmation",
+        rejected: "Application Refused",
+    },
+
+    statusDescription: {
+        incompleteApplication: "Your application has not yet been completed!",
+        completeApplication:
+            "Your application is complete, we'll get back to you soon! ",
+        confirmed:
+            "We've recieved your confirmation, see our Discord for more details!",
+        admitted:
+            "Congratulations! You've been admitted. Please complete your confirmation by clicking below or in the navigation",
+        declined:
+            "We're sad to hear that you could not participate this year. Please reconsider applying next year!",
+        rejected:
+            "Unfortunately you have not been admitted to this year's hackathon. Please consider applying next year!",
+    },
 };
 
 export default text;

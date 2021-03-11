@@ -2,6 +2,7 @@ import {
     Checkbox,
     FormControl,
     FormControlLabel,
+    FormHelperText,
     InputLabel,
     MenuItem,
     Select,
@@ -19,6 +20,8 @@ class Field extends Component {
         options: PropTypes.array,
         value: PropTypes.any,
         eventHandler: PropTypes.func,
+        errorVar: PropTypes.bool,
+        errorText: PropTypes.string,
     };
 
     render() {
@@ -29,9 +32,11 @@ class Field extends Component {
             name,
             value,
             eventHandler,
+            errorVar,
+            errorText,
         } = this.props;
 
-        if (type === "String" || type === "number") {
+        if (type === "String" || type === "Integer") {
             return (
                 <TextField
                     id={name}
@@ -42,32 +47,45 @@ class Field extends Component {
                     required={required}
                     type={type}
                     variant="outlined"
-                    defaultValue={value}
+                    defaultValue={value ? value : ""}
                     onChange={(event) => {
                         eventHandler(event, name);
                     }}
+                    error={errorVar}
+                    helperText={errorText}
                 />
             );
         } else if (type === "Boolean") {
             return (
-                <FormControlLabel
-                    label={titleLabel}
-                    id={name}
-                    onChange={(event) => {
-                        eventHandler(event, name);
-                    }}
-                    control={<Checkbox name={titleLabel} color="primary" />}
-                />
+                <FormControl error={errorVar} required={required}>
+                    <FormControlLabel
+                        label={titleLabel}
+                        id={name}
+                        onChange={(event) => {
+                            event.target.value = event.target.checked;
+                            eventHandler(event, name);
+                        }}
+                        control={
+                            <Checkbox
+                                required={required}
+                                name={titleLabel}
+                                color="primary"
+                            />
+                        }
+                    />
+                    {errorVar && <FormHelperText>{errorText}</FormHelperText>}
+                </FormControl>
             );
         } else if (type === "dropdown") {
             const { options } = this.props;
             return (
-                <FormControl required={required} fullWidth>
+                <FormControl error={errorVar} required={required} fullWidth>
                     <InputLabel id={name + "-label"}>{titleLabel}</InputLabel>
                     <Select
                         labelId={name + "-label"}
                         id={name}
                         defaultValue={value ? value : ""}
+                        variant="outlined"
                         onChange={(event) => {
                             eventHandler(event, name);
                         }}
@@ -80,6 +98,7 @@ class Field extends Component {
                             );
                         })}
                     </Select>
+                    {errorVar && <FormHelperText>{errorText}</FormHelperText>}
                 </FormControl>
             );
         } else {

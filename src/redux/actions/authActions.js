@@ -9,7 +9,7 @@ Description:    Initialize action strings, action functions that returns action 
 */
 
 import { auth, firestore } from "../../firebase";
-import { userProfileDefault } from "../../js/config/defaultState";
+import { profileUpdateObject } from "../../js/config/defaultState";
 
 // Action strings
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
@@ -209,22 +209,17 @@ export const sendForgotPassword = (email) => (dispatch) => {
 //******************************************************************************************** */
 
 export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
-    console.log("SET UNSUBSCRIBE", user);
     if (!user || Object.keys(user).length === 0) return;
     dispatch(requestProfile());
     const { uid, email } = user;
-    const userRef = firestore.doc(`users/${uid}`);
+    const userRef = firestore.doc(`users/${uid}/status/fields`);
     const unsubscribe = userRef.onSnapshot((profile) => {
         if (profile.exists) {
             dispatch(setProfile(profile.data()));
         } else {
-            dispatch(
-                setProfile({
-                    ...userProfileDefault,
-                    email: email,
-                    createdAt: new Date(),
-                })
-            );
+            const currentTime = new Date();
+            const newProfile = profileUpdateObject(currentTime);
+            dispatch(setProfile(newProfile)); //if profile doesn't exist it's probably because we're provisioning it!
         }
     });
     setUnsubscribe(unsubscribe);

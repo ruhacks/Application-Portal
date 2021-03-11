@@ -1,6 +1,14 @@
 const classes = {
     appCompleteBox: "appCompleteBox",
     appIncompleteBox: "appIncompleteBox",
+    app: {
+        incompleteApplication: "app-incomplete",
+        completeApplication: "app-complete",
+        confirmed: "app-confirmed",
+        admitted: "app-admitted",
+        declined: "app-declined",
+        rejected: "app-rejected",
+    },
     avatar: "avatar",
     descriptionText: "descriptionText",
     errorText: "error",

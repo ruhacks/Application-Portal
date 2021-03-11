@@ -17,10 +17,18 @@ class Navbar extends Component {
         user: PropTypes.object,
         logoutUser: PropTypes.func,
         emailVerified: PropTypes.bool,
+        profile: PropTypes.shape({
+            admitted: PropTypes.bool,
+            completedProfile: PropTypes.bool,
+            confirmed: PropTypes.bool,
+            declined: PropTypes.bool,
+            rejected: PropTypes.bool,
+        }),
     };
     render() {
-        const { user, logoutUser } = this.props;
+        const { user, logoutUser, profile } = this.props;
         const { emailVerified } = user;
+        const displayConf = profile && profile.admitted;
         return (
             <AppBar position="static">
                 <Toolbar>
@@ -33,6 +41,11 @@ class Navbar extends Component {
                         {emailVerified && (
                             <Link to="/application">
                                 <Button color="secondary">Application</Button>
+                            </Link>
+                        )}
+                        {displayConf && (
+                            <Link to="/confirmation">
+                                <Button color="secondary">Confirmation</Button>
                             </Link>
                         )}
                         <Button color="secondary" onClick={logoutUser}>

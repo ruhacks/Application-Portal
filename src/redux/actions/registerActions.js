@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 /*                                  registerActions.js
 Description:    Initialize action strings, action functions that returns action objects to the reducer (redux/reducers/register.js) and action functions that actually does the work needed to handle registrations.
                 Notable things that happen here:
@@ -7,7 +5,8 @@ Description:    Initialize action strings, action functions that returns action 
 
                      
 */
-import { auth } from "../../firebase/index";
+import { auth, firestore } from "../../firebase/index";
+import { profileUpdateObject } from "../../js/config/defaultState";
 
 // Action strings
 export const REGISTER_REQUEST = "REGISTER REQUEST";
@@ -25,9 +24,10 @@ export const requestRegister = () => {
     };
 };
 
-export const registerError = () => {
+export const registerError = (error) => {
     return {
         type: REGISTER_ERROR,
+        error,
     };
 };
 
@@ -70,12 +70,10 @@ export const registerUser = (email, password) => (dispatch) => {
                     dispatch(verificationSent(user)); //Dispatches VERIFICATION_SUCCESSFULLY_SENT event to the reducer to change redux store state variables
                 })
                 .catch((error) => {
-                    console.log(error);
                     dispatch(registerError);
                 });
         })
         .catch((error) => {
-            console.log(error);
-            dispatch(registerError());
+            dispatch(registerError(error));
         });
 };

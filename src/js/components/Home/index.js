@@ -22,7 +22,7 @@ import {
     CircularProgress,
 } from "@material-ui/core";
 
-import "./style/home.css";
+import "./style/home.scss";
 import text from "../../config/text";
 import { getUsersApplication } from "../../../redux/actions/appActions";
 
@@ -35,6 +35,14 @@ class Home extends React.Component {
         verificationLinkSent: PropTypes.bool,
         verificationLinkError: PropTypes.bool,
         resendVerificationLink: PropTypes.func,
+        gettingProfile: PropTypes.func,
+        profile: PropTypes.shape({
+            admitted: PropTypes.bool,
+            completedProfile: PropTypes.bool,
+            confirmed: PropTypes.bool,
+            declined: PropTypes.bool,
+            rejected: PropTypes.bool,
+        }),
     };
 
     constructor(props) {
@@ -74,13 +82,7 @@ class Home extends React.Component {
 
         const { unsubscribeFromProfile } = this.state;
 
-        if (
-            !user ||
-            gettingProfile ||
-            !profile ||
-            !profile.status ||
-            !unsubscribeFromProfile
-        )
+        if (!user || gettingProfile || !profile || !unsubscribeFromProfile)
             return <CircularProgress />;
 
         const { emailVerified } = user;
@@ -90,27 +92,33 @@ class Home extends React.Component {
             confirmed,
             declined,
             rejected,
-        } = profile.status;
+        } = profile;
 
         const renderStatusBox = () => {
             if (emailVerified) {
-                if (!completedProfile) {
-                    return (
-                        <Box className={classes.appIncompleteBox}>
-                            <Typography variant="h4">
-                                Application Incomplete
-                            </Typography>
-                        </Box>
-                    );
-                } else {
-                    return (
-                        <Box className={classes.appCompleteBox}>
-                            <Typography variant="h4">
-                                Application Done!
-                            </Typography>
-                        </Box>
-                    );
+                let quickStatus = text.quickStatus.incompleteApplication;
+                let componentClass = classes.app.incompleteApplication;
+                if (confirmed) {
+                    quickStatus = text.quickStatus.confirmed;
+                    componentClass = classes.app.incompleteApplication;
+                } else if (admitted) {
+                    quickStatus = text.quickStatus.admitted;
+                    componentClass = classes.app.admitted;
+                } else if (declined) {
+                    quickStatus = text.quickStatus.declined;
+                    componentClass = classes.app.declined;
+                } else if (rejected) {
+                    quickStatus = text.quickStatus.rejected;
+                    componentClass = classes.app.rejected;
+                } else if (completedProfile) {
+                    quickStatus = text.quickStatus.completeApplication;
+                    componentClass = classes.app.completeApplication;
                 }
+                return (
+                    <Box className={componentClass}>
+                        <Typography variant="h4">{quickStatus}</Typography>
+                    </Box>
+                );
             } else {
                 return (
                     <div>
@@ -159,26 +167,26 @@ class Home extends React.Component {
                 confirmed,
                 declined,
                 rejected,
-            } = profile.status;
+            } = profile;
 
             if (emailVerified) {
-                if (completedProfile) {
-                    return (
-                        <Box className={classes.descriptionText}>
-                            <Typography variant="h5">
-                                {text.completeApplication}
-                            </Typography>
-                        </Box>
-                    );
-                } else {
-                    return (
-                        <Box className={classes.descriptionText}>
-                            <Typography variant="h5">
-                                {text.incompleteApplication}
-                            </Typography>
-                        </Box>
-                    );
+                let statusText = text.statusDescription.incompleteApplication;
+                if (confirmed) {
+                    statusText = text.statusDescription.confirmed;
+                } else if (admitted) {
+                    statusText = text.statusDescription.admitted;
+                } else if (completedProfile) {
+                    statusText = text.statusDescription.completeApplication;
+                } else if (declined) {
+                    statusText = text.statusDescription.declined;
+                } else if (rejected) {
+                    statusText = text.statusDescription.rejected;
                 }
+                return (
+                    <Box className={classes.descriptionText}>
+                        <Typography variant="h5">{statusText}</Typography>
+                    </Box>
+                );
             }
         };
 

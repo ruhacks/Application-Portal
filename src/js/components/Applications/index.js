@@ -2,10 +2,18 @@ import React, { Component } from "react";
 import AppForm from "./AppForm";
 import { connect } from "react-redux";
 import { getUsersApplication } from "../../../redux/actions";
-import { CircularProgress } from "@material-ui/core";
+import {
+    Button,
+    CircularProgress,
+    Grid,
+    Link,
+    Paper,
+    Typography,
+} from "@material-ui/core";
 import PropTypes from "prop-types";
 import isEmpty from "lodash/isEmpty";
 import { fields } from "../../config/defaultState";
+import { Redirect } from "react-router-dom";
 
 class Application extends Component {
     static propTypes = {
@@ -15,7 +23,9 @@ class Application extends Component {
         application: PropTypes.object,
         isRequestingApp: PropTypes.bool,
         isRequestingFields: PropTypes.bool,
+        isUpdatingFields: PropTypes.bool,
         appError: PropTypes.string,
+        updatedFieldsSuccessfully: PropTypes.bool,
     };
 
     componentDidMount() {
@@ -24,13 +34,24 @@ class Application extends Component {
     }
 
     render() {
-        const { application, appError, isRequestingApp } = this.props;
-        if (isRequestingApp) {
+        const {
+            application,
+            appError,
+            isRequestingApp,
+            isUpdatingFields,
+            updatedFieldsSuccessfully,
+        } = this.props;
+
+        if (isRequestingApp || isUpdatingFields) {
             return <CircularProgress />;
         }
 
         if (appError) {
             return <div> ERROR </div>;
+        }
+
+        if (updatedFieldsSuccessfully) {
+            return <Redirect to="/" />;
         }
 
         return <AppForm application={application} fields={fields} />;
@@ -44,7 +65,8 @@ function mapStateToProps(state) {
         fields: state.app.fields,
         gettingProfile: state.auth.gettingProfile,
         isRequestingApp: state.app.isRequestingApp,
-        isRequestFields: state.app.isRequestFields,
+        isUpdatingFields: state.app.isUpdatingFields,
+        updatedFieldsSuccessfully: state.app.updatedFieldsSuccessfully,
         profile: state.auth.profile,
         user: state.auth.user,
     };

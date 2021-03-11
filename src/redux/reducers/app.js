@@ -14,6 +14,8 @@ export default (
     state = {
         isRequestingApp: false,
         isRequestFields: false,
+        isUpdatingFields: false,
+        updatedFieldsSuccessfully: false,
         appError: "",
         app: {},
         fields: [],
@@ -42,6 +44,23 @@ export default (
                 app: {},
                 isRequestingApp: false,
                 appError: action.error,
+            };
+        case UPDATE_APP_REQUEST:
+            return {
+                ...state,
+                isUpdatingFields: true,
+            };
+        case UPDATE_APP_SUCCESS:
+            return {
+                ...state,
+                updatedFieldsSuccessfully: true,
+                isUpdatingFields: false,
+            };
+        case UPDATE_APP_ERROR:
+            return {
+                ...state,
+                appError: action.error,
+                isUpdatingFields: false,
             };
         case APP_FIELDS_GET:
             return {

@@ -5,11 +5,14 @@ import PropTypes from "prop-types";
 import isEmpty from "lodash/isEmpty";
 import { fieldKeys } from "../../config/defaultState";
 import classes from "../../config/classes";
+import { setUsersApplication } from "../../../redux/actions";
+import { connect } from "react-redux";
 
 class AppForm extends Component {
     static propTypes = {
         application: PropTypes.object,
         fields: PropTypes.array,
+        setUsersApplication: PropTypes.func,
     };
 
     constructor(props) {
@@ -30,12 +33,18 @@ class AppForm extends Component {
                     }
                 }
 
+                vars[keyRef] = {
+                    value: "",
+                    error: false,
+                    errorText: "",
+                };
+
                 if (type === "Boolean") {
-                    vars[keyRef] = value !== null ? value : false;
-                } else if (type === "number") {
-                    vars[keyRef] = value !== null ? value : 0;
+                    vars[keyRef].value = value !== null ? value : false;
+                } else if (type === "Integer") {
+                    vars[keyRef].value = value !== null ? value : 0;
                 } else {
-                    vars[keyRef] = value !== null ? value : "";
+                    vars[keyRef].value = value !== null ? value : "";
                 }
             });
             return vars;
@@ -52,12 +61,22 @@ class AppForm extends Component {
 
     handleVarChange = (e, stateVar) => {
         const { value } = e.target; //pull out value & id from input
-
-        this.setState({ applicationData: { [`${stateVar}`]: value } }); //SEt to appropriate state var
+        this.setState((prevState) => ({
+            applicationData: {
+                ...prevState.applicationData,
+                [`${stateVar}`]: {
+                    value,
+                    error: false,
+                    errorText: "",
+                },
+            },
+        }));
     };
 
     handleSubmitForm = (event) => {
         event.preventDefault();
+
+        const { setUsersApplication } = this.props;
 
         this.setState({
             errorText: "",
@@ -67,22 +86,136 @@ class AppForm extends Component {
             this.setState({
                 errorText: "There seems to be a problem in your submission",
             });
+        } else {
+            const convertedStateVars = {};
+            //Convert local state vars to what it would look like in firestore
+            Object.keys(this.state.applicationData).forEach((fieldName) => {
+                convertedStateVars[fieldName] = this.state.applicationData[
+                    fieldName
+                ].value;
+            });
+            convertedStateVars["submittedAt"] = new Date();
+            setUsersApplication(convertedStateVars);
         }
     };
 
     validateForm = () => {
-        let localFormValidated = false;
         const { fields } = this.props;
-        /*
-        Object.keys(this.state).forEach((appVar) => {
+        let requiredValidation = true,
+            typeValidation = true,
+            limitValidation = true,
+            optionValidation = true;
+        Object.keys(this.state.applicationData).forEach((appVar) => {
             if (fieldKeys.includes(appVar)) {
-                fields.forEach(fieldDetails => {
+                fields.forEach((fieldDetails) => {
+                    const checkValue = this.state.applicationData[appVar].value;
 
-                })
+                    if (fieldDetails.keyRef === appVar) {
+                        //Redundant check to see if required fields are filled
+                        if (
+                            fieldDetails.required &&
+                            (!checkValue || checkValue === 0)
+                        ) {
+                            this.setState((prevState) => ({
+                                applicationData: {
+                                    ...prevState.applicationData,
+                                    [`${appVar}`]: {
+                                        error: true,
+                                        errorText: "This field is required!",
+                                    },
+                                },
+                            }));
+                            requiredValidation = false;
+                        }
+                        switch (fieldDetails.type) {
+                            case "Integer":
+                                if (isNaN(checkValue)) {
+                                    typeValidation = false;
+                                    this.setState((prevState) => ({
+                                        applicationData: {
+                                            ...prevState.applicationData,
+                                            [`${appVar}`]: {
+                                                error: true,
+                                                errorText:
+                                                    "Field is not a number",
+                                            },
+                                        },
+                                    }));
+                                }
+                                if (fieldDetails.limit) {
+                                    const numVal = parseInt(checkValue);
+                                    const lim = fieldDetails.limit;
+                                    if (lim.length === 2) {
+                                        if (
+                                            numVal < lim[0] ||
+                                            numVal > lim[1]
+                                        ) {
+                                            this.setState((prevState) => ({
+                                                applicationData: {
+                                                    ...prevState.applicationData,
+                                                    [`${appVar}`]: {
+                                                        error: true,
+                                                        errorText:
+                                                            "Field is outside of acceptable range. Acceptable range is " +
+                                                            lim[0] +
+                                                            "< input <" +
+                                                            lim[1],
+                                                    },
+                                                },
+                                            }));
+                                        }
+                                    } //TODO: Maybe add features for 1 number limits
+                                }
+
+                            case "String":
+                                if (
+                                    fieldDetails.charLimit &&
+                                    fieldDetails.charLimit < checkValue.length
+                                ) {
+                                    limitValidation = false;
+                                    this.setState((prevState) => ({
+                                        applicationData: {
+                                            ...prevState.applicationData,
+                                            [`${appVar}`]: {
+                                                error: true,
+                                                errorText:
+                                                    "Field is too large. Acceptable length is " +
+                                                    fieldDetails.charLimit +
+                                                    " length",
+                                            },
+                                        },
+                                    }));
+                                }
+
+                            case "dropdown":
+                                if (
+                                    fieldDetails.options &&
+                                    !fieldDetails.options.includes(checkValue)
+                                ) {
+                                    optionValidation = false;
+                                    this.setState((prevState) => ({
+                                        applicationData: {
+                                            ...prevState.applicationData,
+                                            [`${appVar}`]: {
+                                                error: true,
+                                                errorText:
+                                                    "Invalid selection, please try again!",
+                                            },
+                                        },
+                                    }));
+                                }
+                        }
+                    }
+                });
             }
         });
-        */
-        return localFormValidated;
+
+        return (
+            requiredValidation &&
+            typeValidation &&
+            limitValidation &&
+            optionValidation
+        );
     };
 
     render() {
@@ -96,23 +229,27 @@ class AppForm extends Component {
                 const { keyRef, required, titleLabel, type } = fieldObj;
 
                 let value = false;
+                //Apply value if it exists in the user's application
                 if (!emptyApplication) {
                     if (Object.keys(application).includes(keyRef)) {
                         value = application[keyRef];
                     }
                 }
-
                 return (
                     <Grid item xs={12} key={keyRef}>
                         <Field
-                            type={type}
-                            required={required}
-                            titleLabel={titleLabel}
-                            name={keyRef}
-                            key={keyRef}
-                            options={fieldObj.options || []}
-                            value={value}
-                            eventHandler={this.handleVarChange}
+                            type={type} //Type of field
+                            required={required} // If field is required or not
+                            titleLabel={titleLabel} //Label Title
+                            name={keyRef} //name
+                            key={keyRef} //key
+                            options={fieldObj.options || []} //Options for dropdowns
+                            value={value} //Value if set from application
+                            eventHandler={this.handleVarChange} //Sets appropriate state variables for field
+                            errorVar={this.state.applicationData[keyRef].error} //Determines if there is an error for each component (i.e. should it highlight red?)
+                            errorText={
+                                this.state.applicationData[keyRef].errorText
+                            } //For displaying error text
                         />
                     </Grid>
                 );
@@ -154,4 +291,12 @@ class AppForm extends Component {
     }
 }
 
-export default AppForm;
+function mapDispatchToProps(dispatch) {
+    return {
+        setUsersApplication: (applicationData) => {
+            dispatch(setUsersApplication(applicationData));
+        },
+    };
+}
+
+export default connect(null, mapDispatchToProps)(AppForm);

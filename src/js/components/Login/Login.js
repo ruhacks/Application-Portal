@@ -37,7 +37,7 @@ import {
 } from "@material-ui/core";
 import { default as logo } from "../../../../assets/images/RU_RGB.svg";
 
-import "./style/login.css";
+import "./style/login.scss";
 
 class Login extends React.Component {
     //Declare prop variables types

@@ -1,4 +1,4 @@
-import { firestore } from "../../firebase";
+import { auth, firestore } from "../../firebase";
 import orderBy from "lodash/orderBy";
 import toPairs from "lodash/toPairs";
 import fromPairs from "lodash/fromPairs";
@@ -78,8 +78,8 @@ export const appFieldsError = (error) => {
 
 export const getUsersApplication = (user) => (dispatch) => {
     dispatch(requestApplication(user.uid));
-    firestore
-        .doc(`applications/${user.uid}`)
+    const userAppDoc = firestore.doc(`applications/${user.uid}`);
+    userAppDoc
         .get()
         .then((response) => {
             dispatch(applicationReceived(response.data()));
@@ -89,6 +89,23 @@ export const getUsersApplication = (user) => (dispatch) => {
         });
 };
 
+export const setUsersApplication = (application) => (dispatch) => {
+    const user = auth.currentUser;
+    if (user && user.uid) {
+        dispatch(updateAppRequest(application));
+        firestore
+            .doc(`applications/${user.uid}`)
+            .set(application)
+            .then(() => {
+                dispatch(updateAppSuccess());
+            })
+            .catch((error) => {
+                dispatch(updateAppError(error));
+            });
+    }
+};
+
+/* 
 export const getApplicationFields = () => (dispatch) => {
     dispatch(appFieldsGet());
     firestore
@@ -111,3 +128,4 @@ const sortFieldsOnOrder = (fields) => {
     });
     return orderBy(fields, ["order"], ["asc"]);
 };
+ */

@@ -1,21 +1,3 @@
-export const userProfileDefault = {
-    confirmation: {
-        discord: "",
-        pNum: "",
-    },
-    status: {
-        admitted: false,
-        checkedIn: false,
-        completeProfile: false,
-        confirmed: false,
-        declined: false,
-        isMentor: false,
-        reimbursmentGiven: false,
-        rejected: false,
-        timestampAdmitted: "",
-    },
-};
-
 export const fields = [
     {
         type: "String",
@@ -42,15 +24,17 @@ export const fields = [
         order: 4,
         required: true,
         titleLabel: "What is your year of study?",
-        type: "number",
+        type: "Integer",
         keyRef: "studyLevel",
+        limit: [1, 100],
     },
     {
-        type: "number",
+        type: "Integer",
         order: 5,
         required: true,
         titleLabel: "What is your age?",
         keyRef: "age",
+        limit: [12, 100],
     },
     {
         required: true,
@@ -72,6 +56,7 @@ export const fields = [
         type: "String",
         titleLabel: "Describe yourself",
         keyRef: "description",
+        charLimit: 1000,
     },
     {
         titleLabel: "Etnhicity",
@@ -84,7 +69,7 @@ export const fields = [
         order: 10,
         type: "String",
         required: true,
-        titleLabel: "exp?",
+        titleLabel: "What is your experience with programming?",
         keyRef: "exp",
     },
     {
@@ -99,15 +84,17 @@ export const fields = [
         titleLabel: "When will you graduate?",
         order: 12,
         required: true,
-        type: "number",
+        type: "Integer",
         keyRef: "gradYear",
+        limit: [2021, 3000000],
     },
     {
         titleLabel: "How many hackathons have you attended",
-        type: "number",
+        type: "Integer",
         required: true,
         order: 13,
         keyRef: "hackNum",
+        limit: [1, 10000],
     },
     {
         order: 14,
@@ -126,3 +113,7 @@ export const fields = [
 ];
 
 export const fieldKeys = fields.map((field) => field.keyRef);
+
+export const profileUpdateObject = (updatedAt) => ({
+    updatedAt,
+});
