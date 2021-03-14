@@ -8,6 +8,7 @@ import {
     APP_FIELDS_GET,
     APP_FIELDS_SUCCESS,
     APP_FIELDS_ERROR,
+    DISABLE_APP_REDIRECT,
 } from "../actions/appActions";
 
 export default (
@@ -27,6 +28,7 @@ export default (
             return {
                 ...state,
                 isRequestingApp: true,
+                updatedFieldsSuccessfully: false,
                 appError: "",
                 app: {},
             };
@@ -80,6 +82,11 @@ export default (
                 isRequestFields: false,
                 fields: [],
                 appError: action.error,
+            };
+        case DISABLE_APP_REDIRECT:
+            return {
+                ...state,
+                updatedFieldsSuccessfully: false,
             };
         default:
             return state;

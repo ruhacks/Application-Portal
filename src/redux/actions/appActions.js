@@ -12,6 +12,8 @@ export const APP_FIELDS_GET = "APP_FIELDS_GET";
 export const APP_FIELDS_SUCCESS = "APP_FIELDS_SUCCESS";
 export const APP_FIELDS_ERROR = "APP_FIELDS_ERROR";
 
+export const DISABLE_APP_REDIRECT = "DISABLE_APP_REDIRECT";
+
 export const requestApplication = (uid) => {
     return {
         type: APPLICATION_REQUEST,
@@ -73,6 +75,12 @@ export const appFieldsError = (error) => {
     };
 };
 
+export const cancelAppRedirect = () => {
+    return {
+        type: DISABLE_APP_REDIRECT,
+    };
+};
+
 export const getUsersApplication = (user) => (dispatch) => {
     dispatch(requestApplication(user.uid));
     const userAppDoc = firestore.doc(`applications/${user.uid}`);
@@ -100,4 +108,8 @@ export const setUsersApplication = (application) => (dispatch) => {
                 dispatch(updateAppError(error));
             });
     }
+};
+
+export const setAppRedirectToFalse = () => (dispatch) => {
+    dispatch(cancelAppRedirect());
 };

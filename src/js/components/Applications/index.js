@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import AppForm from "./AppForm";
 import { connect } from "react-redux";
-import { getUsersApplication } from "../../../redux/actions";
+import {
+    getUsersApplication,
+    setAppRedirectToFalse,
+} from "../../../redux/actions";
 import {
     Button,
     CircularProgress,
@@ -26,6 +29,7 @@ class Application extends Component {
         isUpdatingFields: PropTypes.bool,
         appError: PropTypes.string,
         updatedFieldsSuccessfully: PropTypes.bool,
+        setAppRedirectToFalse: PropTypes.func,
     };
 
     componentDidMount() {
@@ -35,6 +39,7 @@ class Application extends Component {
 
     componentWillUnmount() {
         //disable updatedFieldsSuccessfully
+        this.props.setAppRedirectToFalse();
     }
 
     render() {
@@ -80,6 +85,9 @@ function mapDispatchToProps(dispatch) {
     return {
         getUsersApplication: (user) => {
             dispatch(getUsersApplication(user));
+        },
+        setAppRedirectToFalse: () => {
+            dispatch(setAppRedirectToFalse());
         },
     };
 }
