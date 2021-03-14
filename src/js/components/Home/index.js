@@ -24,7 +24,10 @@ import {
 
 import "./style/home.scss";
 import text from "../../config/text";
-import { getUsersApplication } from "../../../redux/actions/appActions";
+import {
+    getUsersApplication,
+    setAppRedirectToFalse,
+} from "../../../redux/actions/appActions";
 
 class Home extends React.Component {
     static propTypes = {
@@ -43,6 +46,8 @@ class Home extends React.Component {
             declined: PropTypes.bool,
             rejected: PropTypes.bool,
         }),
+        setAppRedirectToFalse: PropTypes.func,
+        updatedFieldsSuccessfully: PropTypes.bool,
     };
 
     constructor(props) {
@@ -78,6 +83,7 @@ class Home extends React.Component {
             verificationLinkRequest,
             verificationLinkSent,
             verificationLinkError,
+            updatedFieldsSuccessfully,
         } = this.props;
 
         const { unsubscribeFromProfile } = this.state;
@@ -93,6 +99,12 @@ class Home extends React.Component {
             declined,
             rejected,
         } = profile;
+
+        if (updatedFieldsSuccessfully && !completedProfile) {
+            return <CircularProgress />;
+        } else if (updatedFieldsSuccessfully) {
+            this.props.setAppRedirectToFalse();
+        }
 
         const renderStatusBox = () => {
             if (emailVerified) {
@@ -216,6 +228,7 @@ function mapStateToProps(state) {
         user: state.auth.user,
         gettingProfile: state.auth.gettingProfile,
         profile: state.auth.profile,
+        updatedFieldsSuccessfully: state.app.updatedFieldsSuccessfully,
     };
 }
 
@@ -232,6 +245,9 @@ function mapDispatchToProps(dispatch) {
         },
         subscribeToUserProfile: (user, setUnsubscribe) => {
             dispatch(subscribeToUserProfile(user, setUnsubscribe));
+        },
+        setAppRedirectToFalse: () => {
+            dispatch(setAppRedirectToFalse());
         },
     };
 }

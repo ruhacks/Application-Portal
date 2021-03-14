@@ -39,7 +39,7 @@ class Application extends Component {
 
     componentWillUnmount() {
         //disable updatedFieldsSuccessfully
-        this.props.setAppRedirectToFalse();
+        //this.props.setAppRedirectToFalse();
     }
 
     render() {
