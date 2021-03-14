@@ -19,6 +19,7 @@ import { Login } from "./Login"; //Import our login page
 import Home from "./Home"; // Import our Home Page initiation
 import { Register } from "./Login/Register"; //Import our Register page
 import Application from "./Applications";
+import { Confirmation } from "./Confirmation";
 
 class App extends React.Component {
     // This is where we dsecribe our prop variables that we import from the mapStateToProps
@@ -46,6 +47,14 @@ class App extends React.Component {
                     exact
                     path="/application"
                     component={Application}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
+                    emailVerified={emailVerified}
+                />
+                <ProtectedRouteEmailVerified
+                    exact
+                    path="/confirmation"
+                    component={Confirmation}
                     isAuthenticated={isAuthenticated}
                     isVerifying={isVerifying}
                     emailVerified={emailVerified}

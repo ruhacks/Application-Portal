@@ -211,7 +211,7 @@ export const sendForgotPassword = (email) => (dispatch) => {
 export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
     if (!user || Object.keys(user).length === 0) return;
     dispatch(requestProfile());
-    const { uid, email } = user;
+    const { uid } = user;
     const userRef = firestore.doc(`users/${uid}/status/fields`);
     const unsubscribe = userRef.onSnapshot((profile) => {
         if (profile.exists) {

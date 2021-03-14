@@ -30,6 +30,13 @@ const text = {
         rejected:
             "Unfortunately you have not been admitted to this year's hackathon. Please consider applying next year!",
     },
+
+    confirmation: {
+        whyDiscord:
+            "We will mainly be using Discord for communications reagrding workshops, judging times, twitch event times etc... and we need to be able to verify you once you join our server",
+        connectedDiscord:
+            "We got you! Now when you join our server we should be able to automatically verify you :)",
+    },
 };
 
 export default text;

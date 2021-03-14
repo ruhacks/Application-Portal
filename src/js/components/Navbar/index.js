@@ -1,10 +1,4 @@
-import {
-    AppBar,
-    Button,
-    IconButton,
-    Toolbar,
-    Typography,
-} from "@material-ui/core";
+import { AppBar, Button, Toolbar, Typography } from "@material-ui/core";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";

@@ -33,6 +33,10 @@ class Application extends Component {
         getUsersApplication(user);
     }
 
+    componentWillUnmount() {
+        //disable updatedFieldsSuccessfully
+    }
+
     render() {
         const {
             application,

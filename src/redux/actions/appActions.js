@@ -1,7 +1,4 @@
 import { auth, firestore } from "../../firebase";
-import orderBy from "lodash/orderBy";
-import toPairs from "lodash/toPairs";
-import fromPairs from "lodash/fromPairs";
 
 export const APPLICATION_REQUEST = "APPLICATION_REQUEST";
 export const APPLICATION_SUCCESS = "APPLICATION_SUCCESS";
@@ -104,28 +101,3 @@ export const setUsersApplication = (application) => (dispatch) => {
             });
     }
 };
-
-/* 
-export const getApplicationFields = () => (dispatch) => {
-    dispatch(appFieldsGet());
-    firestore
-        .doc("hackathon/fields")
-        .get()
-        .then((response) => {
-            dispatch(appFieldsSuccess(sortFieldsOnOrder(response.data())));
-        })
-        .catch((error) => {
-            dispatch(appFieldsError(error));
-        });
-};
-
-const sortFieldsOnOrder = (fields) => {
-    Object.keys(fields).forEach((field) => {
-        const fieldData = fields[field];
-
-        fieldData["keyRef"] = field;
-        fields[field] = fieldData;
-    });
-    return orderBy(fields, ["order"], ["asc"]);
-};
- */

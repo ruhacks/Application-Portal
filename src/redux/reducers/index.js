@@ -10,6 +10,7 @@ import { firestoreReducer } from "redux-firestore";
 import auth from "./auth";
 import register from "./register";
 import app from "./app";
+import confirmation from "./confirmation";
 
 export default combineReducers({
     firebase: firebaseReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
     auth,
     register,
     app,
+    confirmation,
 });

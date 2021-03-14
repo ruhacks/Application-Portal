@@ -61,7 +61,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const { subscribeToUserProfile, user, gettingProfile } = this.props;
+        const { subscribeToUserProfile, user } = this.props;
         subscribeToUserProfile(user, this.setUnsubscribe);
     }
 
