@@ -10,16 +10,19 @@ Description:    This is our Login page. This is where we'll handle rendering the
                      
 */
 
-import React from 'react';
+import React from "react";
 
-import classes from '../../config/classes'; //import class names for components
+import classes from "../../config/classes"; //import class names for components
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { Redirect, Link } from "react-router-dom";
 
-import { loginUser, sendForgotPassword } from '../../../redux/actions/authActions'; // import loginUser function from authentication actions
+import {
+    loginUser,
+    sendForgotPassword,
+} from "../../../redux/actions/authActions"; // import loginUser function from authentication actions
 
 import {
     Avatar,
@@ -31,10 +34,10 @@ import {
     Paper,
     TextField,
     Typography,
-} from '@material-ui/core';
-import { default as logo } from '../../../../assets/images/RU_RGB.svg';
+} from "@material-ui/core";
+import { default as logo } from "../../../../assets/images/RU_RGB.svg";
 
-import './style/login.css';
+import "./style/login.scss";
 
 class Login extends React.Component {
     //Declare prop variables types
@@ -53,12 +56,12 @@ class Login extends React.Component {
         super(props);
         //init state
         this.state = {
-            email: '',
-            password: '',
-            emailForgot: '',
+            email: "",
+            password: "",
+            emailForgot: "",
             forgotMode: false,
-            promptTitle: 'Sign in',
-            loginMsg: '',
+            promptTitle: "Sign in",
+            loginMsg: "",
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -90,14 +93,14 @@ class Login extends React.Component {
     };
 
     setCloseMode = () => {
-        this.setPromptTitle('Sign in');
+        this.setPromptTitle("Sign in");
         this.setState({
             forgotMode: false,
         });
     };
 
     setOpenMode = () => {
-        this.setPromptTitle('Forgot Password');
+        this.setPromptTitle("Forgot Password");
         this.setState({
             forgotMode: true,
         });
@@ -114,9 +117,15 @@ class Login extends React.Component {
     // };
 
     render() {
-        const { loginError, isAuthenticated, fpSent, fpRequest, fpFail, forgotErrorObject } = this.props; //gather prop variables given to us from our redux store via mapStateToProps()
+        const {
+            loginError,
+            isAuthenticated,
+            fpSent,
+            fpRequest,
+            fpFail,
+            forgotErrorObject,
+        } = this.props; //gather prop variables given to us from our redux store via mapStateToProps()
         const { forgotMode, promptTitle } = this.state;
-        console.log(forgotErrorObject.message);
         if (isAuthenticated) {
             return <Redirect to="/" />;
         } else {
@@ -129,7 +138,7 @@ class Login extends React.Component {
                         direction="row"
                         alignItems="center"
                         justify="center"
-                        style={{ minHeight: '100vh' }}
+                        style={{ minHeight: "100vh" }}
                     >
                         <Grid item xs={3}>
                             <Paper className={classes.paper}>
@@ -138,15 +147,23 @@ class Login extends React.Component {
                                     {promptTitle}
                                 </Typography>
                                 {fpFail && forgotMode && (
-                                    <Typography component="p" className={classes.errorText}>
-                                        {forgotErrorObject && forgotErrorObject.message
+                                    <Typography
+                                        component="p"
+                                        className={classes.errorText}
+                                    >
+                                        {forgotErrorObject &&
+                                        forgotErrorObject.message
                                             ? forgotErrorObject.message
-                                            : ''}
+                                            : ""}
                                     </Typography>
                                 )}
                                 {fpSent && (
-                                    <Typography component="p" className={classes.loginMsg}>
-                                        A link has been sent to your email to reset your password :)
+                                    <Typography
+                                        component="p"
+                                        className={classes.loginMsg}
+                                    >
+                                        A link has been sent to your email to
+                                        reset your password :)
                                     </Typography>
                                 )}
                                 {!forgotMode && (
@@ -214,7 +231,10 @@ class Login extends React.Component {
                                             id="emailForgot"
                                             label="Email Address"
                                             name="emailForgot"
-                                            onChange={this.handleForgotPasswordEmailChange}
+                                            onChange={
+                                                this
+                                                    .handleForgotPasswordEmailChange
+                                            }
                                         />
                                         {!fpRequest && (
                                             <Box m={0.5} p={0.5} width="100%">
@@ -223,7 +243,10 @@ class Login extends React.Component {
                                                     variant="contained"
                                                     color="primary"
                                                     className={classes.submit}
-                                                    onClick={this.handleForgotPasswordSubmit}
+                                                    onClick={
+                                                        this
+                                                            .handleForgotPasswordSubmit
+                                                    }
                                                 >
                                                     Send Forgot Password Link
                                                 </Button>

@@ -23,7 +23,9 @@ import {
     FORGOT_REQUEST,
     FORGOT_SUCCESS,
     FORGOT_FAILURE,
-} from '../actions/authActions';
+    REQUEST_PROFILE,
+    SET_PROFILE,
+} from "../actions/authActions";
 
 export default (
     state = {
@@ -43,8 +45,10 @@ export default (
         user: {},
         forgotErrorObject: {},
         loginErrorObject: {},
+        gettingProfile: false,
+        profile: {},
     },
-    action,
+    action
 ) => {
     switch (action.type) {
         case FORGOT_REQUEST:
@@ -140,6 +144,17 @@ export default (
                 verificationLinkError: true,
                 verificationLinkRequest: false,
                 verificationLinkSent: false,
+            };
+        case REQUEST_PROFILE:
+            return {
+                ...state,
+                gettingProfile: true,
+            };
+        case SET_PROFILE:
+            return {
+                ...state,
+                profile: action.profile,
+                gettingProfile: false,
             };
         default:
             return state;

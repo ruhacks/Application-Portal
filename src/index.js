@@ -10,24 +10,21 @@ Description:    The creation point for our application. This is kinda where ever
 
 //Starting off we import some important node modules as variables
 
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config(); //This is what imports the authentication vars and other env variables in the file /.env
 
-import ReactDOM from 'react-dom';
-import React from 'react';
+import ReactDOM from "react-dom";
+import React from "react";
 
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-import App from './js/components/App'; //Import our next main component to be rendered called App
+import App from "./js/components/App"; //Import our next main component to be rendered called App
 
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 
-import 'firebase/auth';
-import 'firebase/firestore';
+import { BrowserRouter } from "react-router-dom";
 
-import { BrowserRouter } from 'react-router-dom';
-
-import configureStore from './configureStore'; // Import our configure store function to configure our Redux Store
+import configureStore from "./configureStore"; // Import our configure store function to configure our Redux Store
 
 const initialState = {}; //This our initialized state. We may need to have some variables here at some point, but for now we can leave it empty...
 
@@ -38,24 +35,24 @@ const Root = () => {
     const theme = createMuiTheme({
         palette: {
             primary: {
-                light: '#3159a8',
-                dark: '#17193d',
-                main: '#264288',
+                light: "#3159a8",
+                dark: "#17193d",
+                main: "#264288",
             },
             secondary: {
-                dark: '#fbe006',
-                light: '#fbeebb',
-                main: '#f6e17e',
+                dark: "#fbe006",
+                light: "#fbeebb",
+                main: "#f6e17e",
             },
             neutral: {
-                dark: '#37527c',
-                light: '#7a90a1',
-                main: '#4ba3b7',
+                dark: "#37527c",
+                light: "#7a90a1",
+                main: "#4ba3b7",
             },
             success: {
-                main: '#4caf50',
-                light: '#81c784',
-                dark: '#388e3c',
+                main: "#4caf50",
+                light: "#81c784",
+                dark: "#388e3c",
             },
         },
     });
@@ -75,7 +72,7 @@ const Root = () => {
     );
 };
 
-ReactDOM.render(<Root />, document.getElementById('root')); //Calling our ReactDOM.render function to send our <Root> React element to the html <div id='root'> parent.
+ReactDOM.render(<Root />, document.getElementById("root")); //Calling our ReactDOM.render function to send our <Root> React element to the html <div id='root'> parent.
 
 /*
 From here you can go to:

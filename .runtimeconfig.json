@@ -1,0 +1,15 @@
+{
+    "region": {
+      "value": "us-central1",
+      "key": "region"
+    },
+    "gcp_project": {
+      "key": "project",
+      "value": "ru-hacks-app-page"
+    },
+    "func_region": {
+      "value": "us-central1",
+      "key": "FUNCTION REGION"
+    }
+  }
+  

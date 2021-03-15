@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable react/prop-types */
 
 /*                                  ProtectedRoute.js
@@ -8,21 +7,30 @@ Description:    This is kind of like an authentication checkpoint. We use this t
                     -   Otherwise redirect user to /login
                      
 */
-import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import React from "react";
+import { Route, Redirect } from "react-router-dom";
+import Navbar from "./Navbar";
 
-const ProtectedRoute = ({ component: Component, isAuthenticated, isVerifying, ...rest }) => (
+const ProtectedRoute = ({
+    component: Component,
+    isAuthenticated,
+    isVerifying,
+    ...rest
+}) => (
     <Route
         {...rest}
         render={(props) =>
             isVerifying ? (
                 <div />
             ) : isAuthenticated ? (
-                <Component {...props} />
+                <div>
+                    <Navbar />
+                    <Component {...props} />
+                </div>
             ) : (
                 <Redirect
                     to={{
-                        pathname: '/login',
+                        pathname: "/login",
                         state: { from: props.location },
                     }}
                 />
@@ -31,7 +39,39 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, isVerifying, ..
     />
 );
 
-export default ProtectedRoute;
+const ProtectedRouteEmailVerified = ({
+    component: Component,
+    isAuthenticated,
+    isVerifying,
+    emailVerified,
+    ...rest
+}) => (
+    <Route
+        {...rest}
+        render={(props) =>
+            isVerifying ? (
+                <div />
+            ) : isAuthenticated && emailVerified ? (
+                <div>
+                    <Navbar />
+                    <Component {...props} />
+                </div>
+            ) : (
+                <Redirect
+                    to={{
+                        pathname: "/",
+                        state: {
+                            from: props.location,
+                            cantAccesEmailNotVerified: true,
+                        },
+                    }}
+                />
+            )
+        }
+    />
+);
+
+export { ProtectedRoute, ProtectedRouteEmailVerified };
 
 /* 
 From here you can go to:

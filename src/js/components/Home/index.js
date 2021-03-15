@@ -1,59 +1,143 @@
-import React from 'react';
+import React from "react";
 
-import classes from '../../config/classes';
+import classes from "../../config/classes";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
-import { logoutUser, resendVerificationLink } from '../../../redux/actions/authActions';
+import {
+    resendVerificationLink,
+    subscribeToUserProfile,
+} from "../../../redux/actions/authActions";
 
-import { AppBar, Button, Box, Toolbar, IconButton, Typography, TextField } from '@material-ui/core';
+import {
+    AppBar,
+    Button,
+    Box,
+    Toolbar,
+    IconButton,
+    Typography,
+    CircularProgress,
+} from "@material-ui/core";
 
-import MenuIcon from '@material-ui/icons/Menu';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import "./style/home.scss";
+import text from "../../config/text";
+import {
+    getUsersApplication,
+    setAppRedirectToFalse,
+} from "../../../redux/actions/appActions";
 
-import './style/home.css';
-import text from '../../config/text';
 class Home extends React.Component {
     static propTypes = {
         user: PropTypes.object,
         logoutUser: PropTypes.func,
+        subscribeToUserProfile: PropTypes.func,
         verificationLinkRequest: PropTypes.bool,
         verificationLinkSent: PropTypes.bool,
         verificationLinkError: PropTypes.bool,
         resendVerificationLink: PropTypes.func,
+        gettingProfile: PropTypes.func,
+        profile: PropTypes.shape({
+            admitted: PropTypes.bool,
+            completedProfile: PropTypes.bool,
+            confirmed: PropTypes.bool,
+            declined: PropTypes.bool,
+            rejected: PropTypes.bool,
+        }),
+        setAppRedirectToFalse: PropTypes.func,
+        updatedFieldsSuccessfully: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
+        this.state = {
+            cantAccesEmailNotVerified: false,
+            unsubscribeFromProfile: null,
+        };
+        this.setUnsubscribe = this.setUnsubscribe.bind(this);
     }
 
-    handleLogOut = () => {
-        this.props.logoutUser();
-    };
+    setUnsubscribe(unsubVar) {
+        this.setState({
+            unsubscribeFromProfile: unsubVar,
+        });
+    }
 
-    handleResendVerification = () => {
-        this.props.resendVerificationLink();
-    };
+    componentDidMount() {
+        const { subscribeToUserProfile, user } = this.props;
+        subscribeToUserProfile(user, this.setUnsubscribe);
+    }
+
+    componentWillUnmount() {
+        if (this.state.unsubscribeFromProfile === null) return;
+        this.state.unsubscribeFromProfile();
+    }
 
     render() {
-        const { user, verificationLinkRequest, verificationLinkSent, verificationLinkError } = this.props;
+        const {
+            user,
+            profile,
+            gettingProfile,
+            verificationLinkRequest,
+            verificationLinkSent,
+            verificationLinkError,
+            updatedFieldsSuccessfully,
+        } = this.props;
+
+        const { unsubscribeFromProfile } = this.state;
+
+        if (!user || gettingProfile || !profile || !unsubscribeFromProfile)
+            return <CircularProgress />;
 
         const { emailVerified } = user;
+        const {
+            admitted,
+            completedProfile,
+            confirmed,
+            declined,
+            rejected,
+        } = profile;
+
+        if (updatedFieldsSuccessfully && !completedProfile) {
+            return <CircularProgress />;
+        } else if (updatedFieldsSuccessfully) {
+            this.props.setAppRedirectToFalse();
+        }
 
         const renderStatusBox = () => {
             if (emailVerified) {
+                let quickStatus = text.quickStatus.incompleteApplication;
+                let componentClass = classes.app.incompleteApplication;
+                if (confirmed) {
+                    quickStatus = text.quickStatus.confirmed;
+                    componentClass = classes.app.incompleteApplication;
+                } else if (admitted) {
+                    quickStatus = text.quickStatus.admitted;
+                    componentClass = classes.app.admitted;
+                } else if (declined) {
+                    quickStatus = text.quickStatus.declined;
+                    componentClass = classes.app.declined;
+                } else if (rejected) {
+                    quickStatus = text.quickStatus.rejected;
+                    componentClass = classes.app.rejected;
+                } else if (completedProfile) {
+                    quickStatus = text.quickStatus.completeApplication;
+                    componentClass = classes.app.completeApplication;
+                }
                 return (
-                    <Box className={classes.appIncompleteBox}>
-                        <Typography variant="h4">Application Incomplete</Typography>
+                    <Box className={componentClass}>
+                        <Typography variant="h4">{quickStatus}</Typography>
                     </Box>
                 );
             } else {
                 return (
                     <div>
                         <Box className={classes.unverifiedBox}>
-                            <Typography variant="h4">Please verify your email!</Typography>
+                            <Typography variant="h4">
+                                Please verify your email!
+                            </Typography>
                         </Box>
                         <Box m={0.5} width="100%">
                             <Button
@@ -66,11 +150,20 @@ class Home extends React.Component {
                             >
                                 Resend Verification
                             </Button>
-                            {verificationLinkRequest && <Typography variant="h5">Sending verification...</Typography>}
-                            {verificationLinkSent && <Typography variant="h5">Verification Link Sent!</Typography>}
+                            {verificationLinkRequest && (
+                                <Typography variant="h5">
+                                    Sending verification...
+                                </Typography>
+                            )}
+                            {verificationLinkSent && (
+                                <Typography variant="h5">
+                                    Verification Link Sent!
+                                </Typography>
+                            )}
                             {verificationLinkError && (
                                 <Typography variant="h5">
-                                    There seems to have been a problem with your verification, please try again!
+                                    There seems to have been a problem with your
+                                    verification, please try again!
                                 </Typography>
                             )}
                         </Box>
@@ -80,10 +173,30 @@ class Home extends React.Component {
         };
 
         const renderStatusText = () => {
+            const {
+                admitted,
+                completedProfile,
+                confirmed,
+                declined,
+                rejected,
+            } = profile;
+
             if (emailVerified) {
+                let statusText = text.statusDescription.incompleteApplication;
+                if (confirmed) {
+                    statusText = text.statusDescription.confirmed;
+                } else if (admitted) {
+                    statusText = text.statusDescription.admitted;
+                } else if (completedProfile) {
+                    statusText = text.statusDescription.completeApplication;
+                } else if (declined) {
+                    statusText = text.statusDescription.declined;
+                } else if (rejected) {
+                    statusText = text.statusDescription.rejected;
+                }
                 return (
                     <Box className={classes.descriptionText}>
-                        <Typography variant="h5">{text.incompleteApplication}</Typography>
+                        <Typography variant="h5">{statusText}</Typography>
                     </Box>
                 );
             }
@@ -91,25 +204,6 @@ class Home extends React.Component {
 
         return (
             <div className={classes.homeContainer}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <IconButton edge="start" className="menu" color="inherit" aria-label="menu">
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h5">RU Hacks</Typography>
-                        <div className={classes.toolbarButtons}>
-                            <IconButton
-                                className="logout"
-                                color="inherit"
-                                aria-label="menu"
-                                onClick={this.handleLogOut}
-                            >
-                                <ExitToAppIcon type="button" variant="contained" color="secondary"></ExitToAppIcon>
-                            </IconButton>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-
                 <div className="qa">
                     <Typography variant="h3">Your Status: </Typography>
                     <hr />
@@ -123,14 +217,18 @@ class Home extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state.auth);
     return {
+        application: state.app.app,
+        isRequestingApp: state.app.isRequestingApp,
         isLoggingOut: state.auth.isLoggingOut,
         logoutError: state.auth.logoutError,
         isAuthenticated: state.auth.isAuthenticated,
         verificationLinkRequest: state.auth.verificationLinkRequest,
         verificationLinkSent: state.auth.verificationLinkSent,
         user: state.auth.user,
+        gettingProfile: state.auth.gettingProfile,
+        profile: state.auth.profile,
+        updatedFieldsSuccessfully: state.app.updatedFieldsSuccessfully,
     };
 }
 
@@ -141,6 +239,15 @@ function mapDispatchToProps(dispatch) {
         },
         resendVerificationLink: () => {
             dispatch(resendVerificationLink());
+        },
+        getApplication: (user) => {
+            dispatch(getUsersApplication(user));
+        },
+        subscribeToUserProfile: (user, setUnsubscribe) => {
+            dispatch(subscribeToUserProfile(user, setUnsubscribe));
+        },
+        setAppRedirectToFalse: () => {
+            dispatch(setAppRedirectToFalse());
         },
     };
 }

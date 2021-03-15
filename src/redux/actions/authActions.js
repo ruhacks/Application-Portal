@@ -7,27 +7,32 @@ Description:    Initialize action strings, action functions that returns action 
 
                      
 */
-import { myFirebase } from '../../db/index';
+
+import { auth, firestore } from "../../firebase";
+import { profileUpdateObject } from "../../js/config/defaultState";
 
 // Action strings
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILURE = "LOGOUT_FAILURE";
 
-export const VERIFY_REQUEST = 'VERIFY_REQUEST';
-export const VERIFY_SUCCESS = 'VERIFY_SUCCESS';
+export const VERIFY_REQUEST = "VERIFY_REQUEST";
+export const VERIFY_SUCCESS = "VERIFY_SUCCESS";
 
-export const VERIFICATION_LINK_SENT = 'VERIFICATION_LINK_SENT';
-export const VERIFICATION_LINK_REQUEST = 'VERIFICATION_LINK_REQUEST';
-export const VERIFICATION_LINK_ERROR = 'VERIFICATION_LINK_ERROR';
+export const VERIFICATION_LINK_SENT = "VERIFICATION_LINK_SENT";
+export const VERIFICATION_LINK_REQUEST = "VERIFICATION_LINK_REQUEST";
+export const VERIFICATION_LINK_ERROR = "VERIFICATION_LINK_ERROR";
 
-export const FORGOT_REQUEST = 'FORGOT_REQUEST';
-export const FORGOT_SUCCESS = 'FORGOT_SUCCESS';
-export const FORGOT_FAILURE = 'FORGOT_FAILURE';
+export const FORGOT_REQUEST = "FORGOT_REQUEST";
+export const FORGOT_SUCCESS = "FORGOT_SUCCESS";
+export const FORGOT_FAILURE = "FORGOT_FAILURE";
+
+export const REQUEST_PROFILE = "REQUEST_PROFILE";
+export const SET_PROFILE = "SET_PROFILE";
 
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 
@@ -60,6 +65,19 @@ export const receiveLogin = (user) => {
     return {
         type: LOGIN_SUCCESS,
         user,
+    };
+};
+
+export const requestProfile = () => {
+    return {
+        type: REQUEST_PROFILE,
+    };
+};
+
+export const setProfile = (profile) => {
+    return {
+        type: SET_PROFILE,
+        profile,
     };
 };
 
@@ -131,12 +149,10 @@ export const verificationLinkError = (error = {}) => {
 //Attempts to login the user
 export const loginUser = (email, password) => (dispatch) => {
     dispatch(requestLogin()); //Dispatches the LOGIN_REQUEST event to the reducer to change redux store state variables
-    myFirebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((user) => {
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
             //Once we get a successful login, dispatch the action that acknowledges that we've received a valid user and dispatches LOGIN_SUCCESS action in the reducer
-            dispatch(receiveLogin(user));
+            dispatch(receiveLogin(userCredential.user));
         })
         .catch((error) => {
             // Received error and dispatch LOGIN_ERROR action in the reducer
@@ -147,9 +163,7 @@ export const loginUser = (email, password) => (dispatch) => {
 // Logs out the current user
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout()); //Dispatches the LOGOUT_REQUEST event to the reducer to change redux store state variables
-    myFirebase
-        .auth()
-        .signOut()
+    auth.signOut()
         .then(() => {
             // Once we get a successful logout, dispatch the action that acknowledges we've logged out a valid user and dispatches LOGOUT_SUCCESS event
             dispatch(receiveLogout());
@@ -163,7 +177,7 @@ export const logoutUser = () => (dispatch) => {
 // Verify if we have a user logged in already (used in protected Route and on inital app entry)
 export const verifyAuth = () => (dispatch) => {
     dispatch(requestVerify());
-    myFirebase.auth().onAuthStateChanged((user) => {
+    auth.onAuthStateChanged((user) => {
         if (user !== null) {
             dispatch(receiveLogin(user));
         }
@@ -174,21 +188,16 @@ export const verifyAuth = () => (dispatch) => {
 // Resends verification link for the current logged in user from the home page
 export const resendVerificationLink = () => (dispatch) => {
     dispatch(verificationRequest());
-    myFirebase
-        .auth()
-        .currentUser.sendEmailVerification()
-        .then(() => {
-            dispatch(verificationSend());
-        });
+    auth.currentUser.sendEmailVerification().then(() => {
+        dispatch(verificationSend());
+    });
 };
 
 // Sends Forgot Password link to user's email
 
 export const sendForgotPassword = (email) => (dispatch) => {
     dispatch(requestForgotPassword());
-    myFirebase
-        .auth()
-        .sendPasswordResetEmail(email)
+    auth.sendPasswordResetEmail(email)
         .then(() => {
             dispatch(receiveForgotPassword());
         })
@@ -197,6 +206,24 @@ export const sendForgotPassword = (email) => (dispatch) => {
         });
 };
 
+//******************************************************************************************** */
+
+export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
+    if (!user || Object.keys(user).length === 0) return;
+    dispatch(requestProfile());
+    const { uid } = user;
+    const userRef = firestore.doc(`users/${uid}/status/fields`);
+    const unsubscribe = userRef.onSnapshot((profile) => {
+        if (profile.exists) {
+            dispatch(setProfile(profile.data()));
+        } else {
+            const currentTime = new Date();
+            const newProfile = profileUpdateObject(currentTime);
+            dispatch(setProfile(newProfile)); //if profile doesn't exist it's probably because we're provisioning it!
+        }
+    });
+    setUnsubscribe(unsubscribe);
+};
 /* 
 From here you can go to:
     -   auth.js in src/redux/reducers/auth.js to see the reducer and how it works if you haven't seen it

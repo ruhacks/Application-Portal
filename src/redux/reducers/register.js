@@ -14,7 +14,7 @@ import {
     REGISTER_ERROR,
     VERIFICATION_REQUEST,
     VERIFICATION_SUCCESSFULLY_SENT,
-} from '../actions/registerActions';
+} from "../actions/registerActions";
 
 export default (
     state = {
@@ -27,7 +27,7 @@ export default (
         registrationProcessComplete: false,
         user: {},
     },
-    action,
+    action
 ) => {
     switch (action.type) {
         case REGISTER_REQUEST:

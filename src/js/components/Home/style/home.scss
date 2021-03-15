@@ -15,9 +15,31 @@
 	z-index: 1000;
 }
 
-.appIncompleteBox{
-    background-color: gray;
+.app{
+	&-incomplete{
+		background-color: red;
+	}
+	&-complete {
+		background-color: skyblue;
+	}
+
+	&-confirmed {
+		background-color: thistle;
+	}
+
+	&-admitted {
+		background-color: green;
+	}
+
+	&-declined {
+		background-color: indianred;
+	}
+
+	&-rejected {
+		background-color: hotpink;
+	}
 }
+
 .unverifiedBox{
     background-color: red;
 }
