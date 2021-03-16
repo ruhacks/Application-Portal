@@ -9,7 +9,7 @@ Description:    This is kind of like an authentication checkpoint. We use this t
 */
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar";
 
 const ProtectedRoute = ({
     component: Component,

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 /*                                  authActions.js
 Description:    Initialize action strings, action functions that returns action objects to the reducer (redux/reducers/auth.js) and action functions that actually does the work needed.
                 Notable things that happen here:

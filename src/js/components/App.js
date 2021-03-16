@@ -14,12 +14,17 @@ import { connect } from "react-redux";
 
 import PropTypes from "prop-types";
 
-import { ProtectedRoute, ProtectedRouteEmailVerified } from "./ProtectedRoute";
+import {
+    ProtectedRoute,
+    ProtectedRouteEmailVerified,
+} from "./Routes/ProtectedRoute";
 import { Login } from "./Login"; //Import our login page
 import Home from "./Home"; // Import our Home Page initiation
 import { Register } from "./Login/Register"; //Import our Register page
 import Application from "./Applications";
 import { Confirmation } from "./Confirmation";
+import Admin from "./Admin";
+import AdminProtectedRoute from "./Routes/AdminProtectedRoute";
 
 class App extends React.Component {
     // This is where we dsecribe our prop variables that we import from the mapStateToProps
@@ -58,6 +63,13 @@ class App extends React.Component {
                     isAuthenticated={isAuthenticated}
                     isVerifying={isVerifying}
                     emailVerified={emailVerified}
+                />
+                <AdminProtectedRoute
+                    exact
+                    path="/admin"
+                    component={Admin}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
                 />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
