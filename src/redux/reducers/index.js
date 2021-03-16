@@ -11,6 +11,7 @@ import auth from "./auth";
 import register from "./register";
 import app from "./app";
 import confirmation from "./confirmation";
+import admin from "./admin";
 
 export default combineReducers({
     firebase: firebaseReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
     register,
     app,
     confirmation,
+    admin,
 });

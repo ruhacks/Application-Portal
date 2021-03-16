@@ -5,15 +5,17 @@ import {
     UPDATE_CONF_REQUEST,
     UPDATE_CONF_SUCCESS,
     UPDATE_CONF_ERROR,
-    DISCORD_ID_REQUEST,
-    DISCORD_ID_SUCCESS,
-    DISCORD_ID_FAILURE,
+    DISCORD_URL_REQUEST,
+    DISCORD_URL_SUCCESS,
+    DISCORD_URL_FAILURE,
 } from "../actions/confirmationActions";
 
 export default (
     state = {
         isRequestingConfirmation: false,
+        isRequestingDiscordURL: false,
         discordData: {},
+        url: "",
     },
     action
 ) => {
@@ -35,6 +37,23 @@ export default (
                 ...state,
                 isRequestingConfirmation: false,
                 error: action.error,
+            };
+
+        case DISCORD_URL_REQUEST:
+            return {
+                ...state,
+                isRequestingDiscordURL: true,
+            };
+        case DISCORD_URL_SUCCESS:
+            return {
+                ...state,
+                isRequestingDiscordURL: false,
+                url: action.url,
+            };
+        case DISCORD_URL_FAILURE:
+            return {
+                ...state,
+                err: action.err,
             };
         default:
             return state;
