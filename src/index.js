@@ -12,7 +12,6 @@ Description:    The creation point for our application. This is kinda where ever
 
 import dotenv from "dotenv";
 dotenv.config(); //This is what imports the authentication vars and other env variables in the file /.env
-
 import ReactDOM from "react-dom";
 import React from "react";
 
@@ -25,6 +24,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 import configureStore from "./configureStore"; // Import our configure store function to configure our Redux Store
+
+import "./css/defaultTheme.scss";
 
 const initialState = {}; //This our initialized state. We may need to have some variables here at some point, but for now we can leave it empty...
 
@@ -58,17 +59,15 @@ const Root = () => {
     });
     //We are now returning an html element with React as a component and rendering it in our html file (src/index.html) in the element that has the id: 'root' which is a <div> in this case
     return (
-        <div className="App">
-            <React.StrictMode>
-                <Provider store={store}>
-                    <BrowserRouter>
-                        <MuiThemeProvider theme={theme}>
-                            <App />
-                        </MuiThemeProvider>
-                    </BrowserRouter>
-                </Provider>
-            </React.StrictMode>
-        </div>
+        <React.StrictMode>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <MuiThemeProvider theme={theme}>
+                        <App />
+                    </MuiThemeProvider>
+                </BrowserRouter>
+            </Provider>
+        </React.StrictMode>
     );
 };
 

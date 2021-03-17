@@ -7,8 +7,10 @@ Description:    This is kind of like an authentication checkpoint. We use this t
                     -   Otherwise redirect user to /login
                      
 */
+
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import DashboardWrapper from "../DashboardWrapper";
 import Navbar from "../Navbar";
 
 const ProtectedRoute = ({
@@ -23,10 +25,9 @@ const ProtectedRoute = ({
             isVerifying ? (
                 <div />
             ) : isAuthenticated ? (
-                <div>
-                    <Navbar />
+                <DashboardWrapper>
                     <Component {...props} />
-                </div>
+                </DashboardWrapper>
             ) : (
                 <Redirect
                     to={{

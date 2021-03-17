@@ -1,0 +1,45 @@
+.toolbarButtons {
+    margin-left: auto;
+}
+
+.qa {
+    margin: 0 auto;
+    margin-top: 20%;
+    width: 25%;
+    text-align: center;
+    color: white;
+    background-color: #264288;
+    border-radius: 5px;
+    padding: 20px 20px 20px 20px;
+    box-shadow: 16px 13px #f6e17e;
+    z-index: 1000;
+}
+
+.app {
+    &-incomplete {
+        background-color: red;
+    }
+    &-complete {
+        background-color: skyblue;
+    }
+
+    &-confirmed {
+        background-color: thistle;
+    }
+
+    &-admitted {
+        background-color: green;
+    }
+
+    &-declined {
+        background-color: indianred;
+    }
+
+    &-rejected {
+        background-color: hotpink;
+    }
+}
+
+.unverifiedBox {
+    background-color: red;
+}

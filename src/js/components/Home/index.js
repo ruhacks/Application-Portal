@@ -22,7 +22,6 @@ import {
     CircularProgress,
 } from "@material-ui/core";
 
-import "./style/home.scss";
 import text from "../../config/text";
 import {
     getUsersApplication,
