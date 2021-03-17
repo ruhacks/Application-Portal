@@ -7,7 +7,6 @@ import Navbar from "../Navbar";
 import PropTypes from "prop-types";
 class ProtectedRouteAdmin extends Component {
     static propTypes = {
-        component: Component,
         isAuthenticated: PropTypes.bool,
         verifyingAdmin: PropTypes.bool,
         admin: PropTypes.bool,
@@ -32,12 +31,13 @@ class ProtectedRouteAdmin extends Component {
             adminErr,
         } = this.props;
 
+        console.log(isVerifying);
+        console.log(this.props);
+
         return (
             <Route
                 render={(props) =>
-                    verifyingAdmin ||
-                    isVerifying ||
-                    (!verifyingAdmin && !adminErr) ? (
+                    verifyingAdmin || isVerifying ? (
                         <CircularProgress />
                     ) : isAuthenticated && admin ? (
                         <div>
