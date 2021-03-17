@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import EggwardImage from "../../../media/eggwardcomputer.png";
 import { Facebook, Instagram, Twitter } from "@material-ui/icons";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { logoutUser } from "../../../redux/actions/authActions";
 import NavbarLinks from "./NavbarLinks";
 class DashboardWrapper extends Component {
@@ -22,9 +23,10 @@ class DashboardWrapper extends Component {
         navbarOpen: true,
     };
     renderNavHeader() {
+        let { admin } = this.props;
         return (
             <div className="db-sidebar__header ">
-                <div className="dbsbh">
+                <div className={`dbsbh ${admin && "admin"}`}>
                     <img className="dbsbh-img" src={EggwardImage} />
                     <div className="dbsbh-content">
                         <div className="dbsbh-content__ruhacks">RU Hacks</div>
@@ -60,11 +62,10 @@ class DashboardWrapper extends Component {
         return socials.map(({ icon, link }) => <a href={link}>{icon}</a>);
     }
     render() {
-        const { user, logoutUser, profile } = this.props;
+        const { user, logoutUser, profile, admin } = this.props;
         const { emailVerified } = user;
         const displayConf = profile && profile.admitted;
         const { navbarOpen } = this.state;
-
         return (
             <div className="db-con">
                 <div className={`db-sidebar ${!navbarOpen && "closed"}`}>
@@ -79,14 +80,23 @@ class DashboardWrapper extends Component {
                         <i class="fas fa-times"></i>
                     </div>
                     {this.renderNavHeader()}
-                    <div className="dbsbh-h1">Hacker Dashboard</div>
+                    <div className={`dbsbh-h1 ${admin && "admin"}`}>
+                        {admin ? (
+                            <Link to="/">Admin</Link>
+                        ) : (
+                            <span>
+                                Ha<Link to="/admin">c</Link>ker
+                            </span>
+                        )}{" "}
+                        Dashboard
+                    </div>
 
                     <div className="dblinks">
-                        <NavbarLinks></NavbarLinks>
+                        <NavbarLinks admin={admin} />
                     </div>
                     <div className="dbfooter">{this.renderNavbarFooter()}</div>
                 </div>
-                <div className="db-content">
+                <div className={`db-content ${admin && "admin"}`}>
                     <div className="db-navbar">
                         <div
                             className={`db-navbar__side ${
@@ -102,13 +112,15 @@ class DashboardWrapper extends Component {
                         </div>
                         <div class={`db-navbar__name`}>Hi Johnny 🐢,</div>
                         <div
-                            className={"db-navbar__logout"}
+                            className={`db-navbar__logout ${admin && "admin"}`}
                             onClick={logoutUser}
                         >
                             Logout
                         </div>
                     </div>
-                    <div className="db-body">{this.props.children}</div>
+                    <div className={`db-body ${admin && "admin"}`}>
+                        {this.props.children}
+                    </div>
                 </div>
             </div>
         );
