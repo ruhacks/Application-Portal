@@ -58,17 +58,15 @@ const Root = () => {
     });
     //We are now returning an html element with React as a component and rendering it in our html file (src/index.html) in the element that has the id: 'root' which is a <div> in this case
     return (
-        <div className="App">
-            <React.StrictMode>
-                <Provider store={store}>
-                    <BrowserRouter>
-                        <MuiThemeProvider theme={theme}>
-                            <App />
-                        </MuiThemeProvider>
-                    </BrowserRouter>
-                </Provider>
-            </React.StrictMode>
-        </div>
+        <React.StrictMode>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <MuiThemeProvider theme={theme}>
+                        <App />
+                    </MuiThemeProvider>
+                </BrowserRouter>
+            </Provider>
+        </React.StrictMode>
     );
 };
 
