@@ -62,8 +62,7 @@ export const registerUser = (email, password) => (dispatch) => {
             dispatch(requestSendVerification()); //Disaptches VERIFICATION_REQUEST event to the reducer to change redux store state variables
             user.user
                 .sendEmailVerification({
-                    url:
-                        "https://ru-hacks-app-page.firebaseapp.com/__/auth/action?mode=action&oobCode=code&continueUrl=http://localhost:8080/",
+                    url: "http://localhost:8080/",
                     handleCodeInApp: false,
                 })
                 .then(() => {

@@ -17,6 +17,7 @@ class Navbar extends Component {
             confirmed: PropTypes.bool,
             declined: PropTypes.bool,
             rejected: PropTypes.bool,
+            isAdmin: PropTypes.bool,
         }),
     };
     render() {
@@ -40,6 +41,11 @@ class Navbar extends Component {
                         {displayConf && (
                             <Link to="/confirmation">
                                 <Button color="secondary">Confirmation</Button>
+                            </Link>
+                        )}
+                        {profile.isAdmin && (
+                            <Link to="/admin">
+                                <Button color="secondary">Admin</Button>
                             </Link>
                         )}
                         <Button color="secondary" onClick={logoutUser}>

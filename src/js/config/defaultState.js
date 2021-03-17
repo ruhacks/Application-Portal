@@ -117,3 +117,8 @@ export const fieldKeys = fields.map((field) => field.keyRef);
 export const profileUpdateObject = (updatedAt) => ({
     updatedAt,
 });
+
+export const verifyAdminURL =
+    process.env.NODE_ENV === "development"
+        ? "http://localhost:5001/ru-hacks-app-page/us-central1/admin/verify"
+        : "https://us-central1-ru-hacks-app-page.cloudfunctions.net/admin";
