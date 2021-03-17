@@ -2,8 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EggwardImage from "../../../media/eggwardcomputer.png";
 import { Facebook, Instagram, Twitter } from "@material-ui/icons";
+import PropTypes from "prop-types";
+import { logoutUser } from "../../../redux/actions/authActions";
 import NavbarLinks from "./NavbarLinks";
 class DashboardWrapper extends Component {
+    static propTypes = {
+        user: PropTypes.object,
+        logoutUser: PropTypes.func,
+        emailVerified: PropTypes.bool,
+        profile: PropTypes.shape({
+            admitted: PropTypes.bool,
+            completedProfile: PropTypes.bool,
+            confirmed: PropTypes.bool,
+            declined: PropTypes.bool,
+            rejected: PropTypes.bool,
+        }),
+    };
     state = {
         navbarOpen: true,
     };
@@ -46,6 +60,9 @@ class DashboardWrapper extends Component {
         return socials.map(({ icon, link }) => <a href={link}>{icon}</a>);
     }
     render() {
+        const { user, logoutUser, profile } = this.props;
+        const { emailVerified } = user;
+        const displayConf = profile && profile.admitted;
         const { navbarOpen } = this.state;
 
         return (
@@ -84,7 +101,12 @@ class DashboardWrapper extends Component {
                             <i class="fas fa-chevron-circle-left"></i>
                         </div>
                         <div class={`db-navbar__name`}>Hi Johnny 🐢,</div>
-                        <div className={"db-navbar__logout"}>Logout</div>
+                        <div
+                            className={"db-navbar__logout"}
+                            onClick={logoutUser}
+                        >
+                            Logout
+                        </div>
                     </div>
                     <div className="db-body">{this.props.children}</div>
                 </div>
@@ -92,5 +114,18 @@ class DashboardWrapper extends Component {
         );
     }
 }
+function mapStateToProps(state) {
+    return {
+        profile: state.auth.profile,
+        user: state.auth.user,
+    };
+}
 
-export default connect(null, null)(DashboardWrapper);
+function mapDispatchToProps(dispatch) {
+    return {
+        logoutUser: () => {
+            dispatch(logoutUser());
+        },
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardWrapper);
