@@ -23,8 +23,11 @@ class Stats extends Component {
     render() {
         const { gettingStatistics, getErr, stats } = this.props;
         // const data = JSON.parse(stats)
-        if (gettingStatistics || isEmpty(stats)) {
-            return <CircularProgress />;
+        if (gettingStatistics || isEmpty(stats) || !getErr) {
+            if (gettingStatistics){
+                return <CircularProgress />;
+            }
+            return <div><p> There is currently an error reaching the database. Please wait a few seconds, and then refresh and try again. </p></div>;
         }
         console.log(stats)
         return ( 
