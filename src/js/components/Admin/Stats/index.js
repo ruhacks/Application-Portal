@@ -56,19 +56,19 @@ class Stats extends Component {
                             <TableRow>
                                 <TableCell >❌ Applications Incomplete</TableCell>
                                 <TableCell >{ stats.userStats.count - stats.userStats.countCompleted }</TableCell>
-                                <TableCell >{ (stats.userStats.count - stats.userStats.countCompleted)/stats.userStats.count} </TableCell>
+                                <TableCell >{ ((stats.userStats.count - stats.userStats.countCompleted)/stats.userStats.count)*100 + '%'} </TableCell>
                                 <TableCell >Applications have not been submitted.</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell >✅ Applications Complete</TableCell>
                                 <TableCell >{ stats.userStats.countCompleted }</TableCell>
-                                <TableCell >{ stats.userStats.countCompleted/stats.userStats.count} </TableCell>
+                                <TableCell >{ (stats.userStats.countCompleted/stats.userStats.count)*100 + '%'} </TableCell>
                                 <TableCell >Applications have been submitted for review</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell >💡 Applications Reviewed</TableCell>
                                 <TableCell >{ stats.userStats.countAdmitted + stats.userStats.countDeclined }</TableCell>
-                                <TableCell >{ (stats.userStats.countAdmitted + stats.userStats.countDeclined) / stats.userStats.count} </TableCell>
+                                <TableCell >{ ((stats.userStats.countAdmitted + stats.userStats.countDeclined) / stats.userStats.count)*100 + '%'} </TableCell>
                                 <TableCell >Applicant either approved or denied</TableCell>
                             </TableRow>
                         </TableBody>
@@ -93,22 +93,22 @@ class Stats extends Component {
                             <TableRow>
                                 <TableCell >😍 Admitted</TableCell>
                                 <TableCell >{ stats.userStats.countAdmitted }</TableCell>
-                                <TableCell >{ stats.userStats.countAdmitted/stats.userStats.countCompleted} </TableCell>
+                                <TableCell >{ (stats.userStats.countAdmitted/stats.userStats.countCompleted)*100 + '%'} </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell >😭 Denied</TableCell>
                                 <TableCell >{ stats.userStats.countDeclined }</TableCell>
-                                <TableCell >{ stats.userStats.countDeclined/stats.userStats.countCompleted} </TableCell>
+                                <TableCell >{ (stats.userStats.countDeclined/stats.userStats.countCompleted)*100 + '%'} </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell >😑 Waiting Approval</TableCell>
                                 <TableCell >{ stats.userStats.countCompleted -stats.userStats.countAdmitted - stats.userStats.countDeclined }</TableCell>
-                                <TableCell >{ (stats.userStats.countCompleted -stats.userStats.countAdmitted - stats.userStats.countDeclined)/stats.userStats.countCompleted} </TableCell>
+                                <TableCell >{ ((stats.userStats.countCompleted -stats.userStats.countAdmitted - stats.userStats.countDeclined)/stats.userStats.countCompleted)*100 + '%'} </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell >🎉 Confirmed Admission</TableCell>
                                 <TableCell >{ stats.userStats.countConfirmed }</TableCell>
-                                <TableCell >{ stats.userStats.countConfirmed / stats.userStats.countAdmitted} </TableCell>
+                                <TableCell >{ (stats.userStats.countConfirmed / stats.userStats.countAdmitted)*100 + '%'} </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -134,13 +134,13 @@ class Stats extends Component {
                             <TableRow>
                                 <TableCell >🗺 Discord Accounts Confirmed</TableCell>
                                 <TableCell >{ stats.confStats.count }</TableCell>
-                                <TableCell >{ stats.confStats.count/stats.userStats.countCompleted} </TableCell>
+                                <TableCell >{ (stats.confStats.count/stats.userStats.countCompleted)*100 + '%'} </TableCell>
                                 <TableCell >--</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell >🍾 Confirmed Users in Server</TableCell>
                                 <TableCell >{ stats.userStats.countCheckedIn }</TableCell>
-                                <TableCell >{ stats.userStats.countCheckedIn/stats.userStats.countCompleted} </TableCell>
+                                <TableCell >{ (stats.userStats.countCheckedIn/stats.userStats.countCompleted)*100 + '%'} </TableCell>
                                 <TableCell >--</TableCell>
                             </TableRow>
                         </TableBody>
