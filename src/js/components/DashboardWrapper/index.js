@@ -46,23 +46,49 @@ class DashboardWrapper extends Component {
     renderNavHeader() {
         const { profile, hackathon } = this.props;
         const admin = profile.isAdmin ? profile.isAdmin : false;
-
-        let daysLeft;
-        if (hackathon && hackathon.Hackathon) {
+        let daysLeft, dateText;
+        const currentDate = new Date();
+        if (currentDate.getDay() === 30 && currentDate.getMonth() === 4) {
+            daysLeft = "Day One";
+        } else if (currentDate.getDay() === 1 && currentDate.getMonth() === 5) {
+            daysLeft = "Day Two";
+        } else if (currentDate.getDay() === 2 && currentDate.getMonth() === 5) {
+            daysLeft = "Final Day!";
+        } else if (hackathon && hackathon.Hackathon) {
             const hackTime = hackathon.Hackathon.toDate();
-            const currentDate = new Date();
-
             daysLeft = parseInt((hackTime - currentDate) / (24 * 3600 * 1000));
         }
+
+        const days = [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday",
+        ];
+        const months = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+        ];
+        dateText = `${days[currentDate.getDay()]}, ${
+            months[currentDate.getMonth()]
+        } ${currentDate.getUTCDate()}`;
         return (
             <div className="db-sidebar__header ">
                 <div className={`dbsbh ${admin && "admin"}`}>
                     <img className="dbsbh-img" src={EggwardImage} />
                     <div className="dbsbh-content">
                         <div className="dbsbh-content__ruhacks">RU Hacks</div>
-                        <div className="dbsbh-content__date">
-                            {String(new Date()).slice(0, 15)}
-                        </div>
+                        <div className="dbsbh-content__date">{dateText}</div>
                         <div className="dbsbh-content__days">
                             {daysLeft ? (
                                 `${daysLeft} days till the Hackathon`
@@ -131,14 +157,7 @@ class DashboardWrapper extends Component {
                     </div>
                     {this.renderNavHeader()}
                     <div className={`dbsbh-h1 ${admin && "admin"}`}>
-                        {admin ? (
-                            <Link to="/">Admin</Link>
-                        ) : (
-                            <span>
-                                Ha<Link to="/admin">c</Link>ker
-                            </span>
-                        )}{" "}
-                        Dashboard
+                        {admin ? "Admin" : "Hacker"} Dashboard
                     </div>
 
                     <div className="dblinks">
