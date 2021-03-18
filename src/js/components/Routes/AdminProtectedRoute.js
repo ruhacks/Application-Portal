@@ -48,7 +48,6 @@ class ProtectedRouteAdmin extends Component {
             adminErr,
             ...rest
         } = this.props;
-
         return (
             <Route
                 {...rest}
