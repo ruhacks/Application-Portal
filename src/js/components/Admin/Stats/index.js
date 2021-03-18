@@ -6,7 +6,10 @@ import { CircularProgress } from "@material-ui/core";
 
 class Stats extends Component {
     static propTypes = {
-        gettingCountData: PropTypes.func,
+        gatherCountStats: PropTypes.func,
+        gettingStatistics: PropTypes.bool,
+        getErr: PropTypes.object,
+        stats: PropTypes.object,
     };
     constructor(props) {
         super(props);

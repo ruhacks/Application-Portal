@@ -2,8 +2,8 @@ import axios from "axios";
 
 const { firestore, auth } = require("../../firebase");
 
-export const ADMIN_VERIFYING = "VERIFYING_ADMIN";
-export const ADMIN_VERIFIED = "VERIFIED_ADMIN";
+export const ADMIN_VERIFYING = "ADMIN_VERIFYING";
+export const ADMIN_VERIFIED = "ADMIN_VERIFIED";
 export const ADMIN_VERIFICATION_ERROR = "ADMIN_VERIFICATION_ERROR";
 
 export const ADMIN_GET_COUNT = "ADMIN_GET_COUNT";
@@ -18,9 +18,10 @@ export const adminVerificationError = (err) => {
     };
 };
 
-export const adminVerified = () => {
+export const adminVerified = (admin) => {
     return {
         type: ADMIN_VERIFIED,
+        admin,
     };
 };
 
@@ -53,34 +54,26 @@ export const getError = (err) => {
 export const verifyAdminWithDB = () => (dispatch) => {
     dispatch(adminVerifying());
     const user = auth.currentUser;
-
-    if (!user.uid) {
+    if (!user) {
         return dispatch(adminVerificationError({ message: "No user found!" }));
     }
     const { uid } = user;
 
-    user.getIdToken().then((userToke) => {
-        axios
-            .get(
-                `http://localhost:5001/ru-hacks-app-page/us-central1/admin/verify`,
-                {
-                    headers: {
-                        Authorization: "Bearer " + userToke,
-                    },
-                }
-            )
-            .then((response) => {
-                if (response.data.admin && response.data.uid === uid) {
-                    dispatch(adminVerified());
-                } else {
-                    dispatch(
-                        adminVerificationError({
-                            message: "Invalid response",
-                        })
-                    );
-                }
-            });
-    });
+    const adminRef = firestore.doc(`admins/${uid}`);
+    adminRef
+        .get()
+        .then((adminDoc) => {
+            if (adminDoc.exists) {
+                dispatch(adminVerified(Object.assign({}, adminDoc.data())));
+            } else {
+                dispatch(adminVerificationError({ message: "No admin found" }));
+            }
+        })
+        .catch((err) => {
+            dispatch(
+                adminVerificationError({ message: "Unknown Error!", err })
+            );
+        });
 };
 
 export const gatherCountStats = () => (dispatch) => {
