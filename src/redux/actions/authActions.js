@@ -154,7 +154,7 @@ export const loginUser = (email, password) => (dispatch) => {
         })
         .catch((error) => {
             // Received error and dispatch LOGIN_ERROR action in the reducer
-            dispatch(loginError());
+            dispatch(loginError(error));
         });
 };
 

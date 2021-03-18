@@ -21,7 +21,6 @@ class ProtectedRouteAdmin extends Component {
             this.props.verifyAdminWithDB();
         }
     }
-    PropTypes;
 
     render() {
         const {

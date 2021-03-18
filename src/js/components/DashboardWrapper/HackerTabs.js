@@ -2,46 +2,17 @@ export default [
     {
         title: "General",
         links: [
-            { title: "Home", link: "" },
+            { title: "Home", link: "/" },
             { title: "Schedule", link: "" },
             { title: "Guide", link: "" },
             { title: "Rules", link: "" },
         ],
     },
     {
-        title: "General",
+        title: "Forms",
         links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-        ],
-    },
-    {
-        title: "General",
-        links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-        ],
-    },
-    {
-        title: "General",
-        links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-        ],
-    },
-    {
-        title: "General",
-        links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
+            { title: "Application", link: "/application" },
+            { title: "Confirmation", link: "/confirmation" },
         ],
     },
 ];

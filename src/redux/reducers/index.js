@@ -12,6 +12,7 @@ import register from "./register";
 import app from "./app";
 import confirmation from "./confirmation";
 import admin from "./admin";
+import hackathon from "./hackathon";
 
 export default combineReducers({
     firebase: firebaseReducer,
@@ -21,4 +22,5 @@ export default combineReducers({
     app,
     confirmation,
     admin,
+    hackathon,
 });

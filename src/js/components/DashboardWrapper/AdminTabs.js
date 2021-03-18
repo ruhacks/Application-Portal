@@ -1,47 +1,27 @@
 export default [
     {
-        title: "General (Admin stuff)",
+        title: "General",
         links: [
-            { title: "Home", link: "" },
+            { title: "Home", link: "/" },
             { title: "Schedule", link: "" },
             { title: "Guide", link: "" },
             { title: "Rules", link: "" },
         ],
     },
     {
-        title: "General",
+        title: "Forms",
         links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
+            { title: "Application", link: "/application" },
+            { title: "Confirmation", link: "/confirmation" },
         ],
     },
     {
-        title: "General",
+        title: "Administration",
         links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-        ],
-    },
-    {
-        title: "General",
-        links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-        ],
-    },
-    {
-        title: "General",
-        links: [
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
-            { title: "General Information", link: "" },
+            { title: "Statistics", link: "/admin" },
+            { title: "Users", link: "/admin" },
+            { title: "Hackathon Settings", link: "/admin" },
+            { title: "Events", link: "/admin" },
         ],
     },
 ];
