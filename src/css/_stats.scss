@@ -1,9 +1,12 @@
 .stats{
+    &-container{
+        margin: 0px 0px 100px 0px;
+    }
     &-table{
         &-header{
             padding: 20px 0px 20px 0px;
         }
-        &-main{
+        &-bold{
             font-weight: bold;
         }
     }
