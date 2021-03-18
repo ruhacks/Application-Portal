@@ -13,6 +13,7 @@ export default (
         gettingStatistics: false,
         admin: false,
         adminErr: false,
+        adminProfile: {},
         stats: {},
         getErr: {},
     },
@@ -30,6 +31,7 @@ export default (
                 ...state,
                 verifyingAdmin: false,
                 admin: true,
+                adminProfile: action.admin,
             };
         case ADMIN_VERIFICATION_ERROR:
             return {

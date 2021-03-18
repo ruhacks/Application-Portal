@@ -18,10 +18,10 @@ export default [
     {
         title: "Administration",
         links: [
-            { title: "Statistics", link: "/admin" },
-            { title: "Users", link: "/admin" },
-            { title: "Hackathon Settings", link: "/admin" },
-            { title: "Events", link: "/admin" },
+            { title: "Statistics", link: "/admin/stats" },
+            { title: "Users", link: "/admin/users" },
+            { title: "Hackathon Settings", link: "/admin/settings" },
+            { title: "Events", link: "/admin/events" },
         ],
     },
 ];

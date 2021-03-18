@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 /*                                  register.js
 Description:    Initializes state variables regarding registration. Then whenever an action is dispatched like REGISTER_REQUEST it adjusts the state variables accordingly.
                 This reducer function will be called everytime an action is dispatched from ../actions/registerActions.js

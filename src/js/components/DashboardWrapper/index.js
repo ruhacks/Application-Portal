@@ -26,6 +26,7 @@ class DashboardWrapper extends Component {
         hackathon: PropTypes.shape({
             Hackathon: PropTypes.object,
         }),
+        children: PropTypes.array,
     };
 
     constructor(props) {
@@ -101,7 +102,8 @@ class DashboardWrapper extends Component {
     }
 
     componentDidMount() {
-        this.props.subscribeToHackathonTime(this.setUnsubscribe);
+        if (this.state.unsubHackSettings === null)
+            this.props.subscribeToHackathonTime(this.setUnsubscribe);
     }
 
     componentWillUnmount() {

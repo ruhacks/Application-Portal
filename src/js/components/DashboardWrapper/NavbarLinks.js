@@ -3,14 +3,23 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import AdminTabs from "./AdminTabs";
 import HackerTabs from "./HackerTabs";
+import PropTypes from "prop-types";
 export class NavbarLinks extends Component {
+    static propTypes = {
+        admin: PropTypes.bool,
+    };
     render() {
         const { admin } = this.props;
         let categories = admin ? AdminTabs : HackerTabs;
         return (
             <div className={`dbnl ${admin && "admin"}`}>
                 {categories.map(({ title, links }) => (
-                    <Category admin={admin} title={title} links={links} />
+                    <Category
+                        key={title}
+                        admin={admin}
+                        title={title}
+                        links={links}
+                    />
                 ))}
             </div>
         );
@@ -24,6 +33,12 @@ const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarLinks);
 
 class Category extends Component {
+    static propTypes = {
+        admin: PropTypes.bool,
+        title: PropTypes.String,
+        links: PropTypes.array,
+    };
+
     state = { collapsed: false };
     render() {
         const { admin } = this.props;

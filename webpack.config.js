@@ -76,7 +76,9 @@ module.exports = () => {
         },
         devServer: {
             contentBase: "./dist",
-            historyApiFallback: true,
+            historyApiFallback: {
+                index: "index.html",
+            },
         },
     };
 };
