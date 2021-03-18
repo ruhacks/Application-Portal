@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 /*                                  auth.js
 Description:    Initializes state variables regarding authentication. Then whenever an action is dispatched like LOGIN_REQUEST it adjusts the state variables accordingly.
                 This reducer function will be called everytime an action is dispatched from ../actions/authActions

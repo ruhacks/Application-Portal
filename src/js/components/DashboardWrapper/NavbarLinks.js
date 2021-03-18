@@ -37,7 +37,7 @@ class Category extends Component {
                 >
                     {this.props.title}
                     <i
-                        class={`fas fa-chevron-down ${
+                        className={`fas fa-chevron-down ${
                             this.state.collapsed ? "collapsed" : ""
                         }`}
                     ></i>
