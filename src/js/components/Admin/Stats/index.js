@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { gatherCountStats } from "../../../../redux/actions";
 import PropTypes from "prop-types";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 
 class Stats extends Component {
     static propTypes = {
@@ -21,11 +21,75 @@ class Stats extends Component {
 
     render() {
         const { gettingStatistics, getErr, stats } = this.props;
+        // const data = JSON.parse(stats)
         if (gettingStatistics || !stats) {
             return <CircularProgress />;
         }
 
-        return <div>{JSON.stringify(stats)}</div>;
+        return ( 
+            <div>
+                <div class="stats-table-header">
+                    <h3>Application Statistics</h3>
+                </div>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableCell>Description</TableCell>
+                            <TableCell>Amount</TableCell>
+                            <TableCell>Percentage of Total</TableCell>
+                            <TableCell>Additional Info</TableCell>
+                        </TableHead>
+                        <TableBody class="">
+                            <TableRow>
+                                <TableCell>Total users</TableCell>
+                                <TableCell>{ 'value' }</TableCell>
+                                <TableCell>{ 'percentage'} </TableCell>
+                                <TableCell>Total users registered in system</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <div class="stats-table-header">
+                    <h3>Admission Statistics</h3>
+                </div>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableCell>Description</TableCell>
+                            <TableCell>Amount</TableCell>
+                            <TableCell>Percentage of Total</TableCell>
+                            <TableCell>Additional Info</TableCell>
+                        </TableHead>
+                        <TableBody>
+                            <TableCell>Description</TableCell>
+                            <TableCell>Amount</TableCell>
+                            <TableCell>Percentage of Total</TableCell>
+                            <TableCell>Additional Info</TableCell>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <div class="stats-table-header">
+                    <h3>Discord Statistics</h3>
+                </div>
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableCell>Description</TableCell>
+                            <TableCell>Amount</TableCell>
+                            <TableCell>Percentage of Total</TableCell>
+                            <TableCell>Additional Info</TableCell>
+                        </TableHead>
+                        <TableBody>
+                            <TableCell>Description</TableCell>
+                            <TableCell>Amount</TableCell>
+                            <TableCell>Percentage of Total</TableCell>
+                            <TableCell>Additional Info</TableCell>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </div>
+            //     {JSON.stringify(stats)}
+        );
     }
 }
 
