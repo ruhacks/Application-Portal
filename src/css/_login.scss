@@ -1,9 +1,10 @@
 .loginContainer {
     height: 100vh;
-    background: url("../../assets/images/login_back.jpg");
+    background: url("../../assets/images/banner.png");
     background-repeat: no-repeat;
     background-size: cover;
     overflow: hidden;
+    background-position: center;
 }
 
 .paper {
@@ -20,4 +21,9 @@
 
 .error {
     color: red;
+}
+.login {
+    &-con {
+        min-width: 300px;
+    }
 }

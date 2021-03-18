@@ -138,7 +138,7 @@ class Login extends React.Component {
                         justify="center"
                         style={{ minHeight: "100vh" }}
                     >
-                        <Grid item xs={3}>
+                        <Grid item xs={3} className="login-con">
                             <Paper className={classes.paper}>
                                 <Avatar className={classes.avatar} src={logo} />
                                 <Typography component="h1" variant="h5">

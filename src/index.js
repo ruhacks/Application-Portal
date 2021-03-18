@@ -36,14 +36,14 @@ const Root = () => {
     const theme = createMuiTheme({
         palette: {
             primary: {
-                light: "#3159a8",
-                dark: "#17193d",
-                main: "#264288",
+                light: "#4481c2",
+                dark: "#0f447d",
+                main: "#1561b3",
             },
             secondary: {
-                dark: "#fbe006",
-                light: "#fbeebb",
-                main: "#f6e17e",
+                dark: "#e2ca05",
+                light: "#fef9cd",
+                main: "#fbe006",
             },
             neutral: {
                 dark: "#37527c",
