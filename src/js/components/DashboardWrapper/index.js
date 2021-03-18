@@ -3,8 +3,11 @@ import { connect } from "react-redux";
 import EggwardImage from "../../../media/eggwardcomputer.png";
 import { Facebook, Instagram, Twitter } from "@material-ui/icons";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import { logoutUser } from "../../../redux/actions/authActions";
 import NavbarLinks from "./NavbarLinks";
+import { subscribeToHackathonTime } from "../../../redux/actions";
+import { CircularProgress } from "@material-ui/core";
 class DashboardWrapper extends Component {
     static propTypes = {
         user: PropTypes.object,
@@ -16,15 +19,44 @@ class DashboardWrapper extends Component {
             confirmed: PropTypes.bool,
             declined: PropTypes.bool,
             rejected: PropTypes.bool,
+            isAdmin: PropTypes.bool,
+            name: PropTypes.String,
+        }),
+        subscribeToHackathonTime: PropTypes.func,
+        hackathon: PropTypes.shape({
+            Hackathon: PropTypes.object,
         }),
     };
-    state = {
-        navbarOpen: true,
-    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            navbarOpen: true,
+            unsubHackSettings: null,
+        };
+
+        this.setUnsubscribe = this.setUnsubscribe.bind(this);
+    }
+
+    setUnsubscribe(unsubVar) {
+        this.setState({
+            unsubHackSettings: unsubVar,
+        });
+    }
     renderNavHeader() {
+        const { profile, hackathon } = this.props;
+        const admin = profile.isAdmin ? profile.isAdmin : false;
+
+        let daysLeft;
+        if (hackathon && hackathon.Hackathon) {
+            const hackTime = hackathon.Hackathon.toDate();
+            const currentDate = new Date();
+
+            daysLeft = parseInt((hackTime - currentDate) / (24 * 3600 * 1000));
+        }
         return (
             <div className="db-sidebar__header ">
-                <div className="dbsbh">
+                <div className={`dbsbh ${admin && "admin"}`}>
                     <img className="dbsbh-img" src={EggwardImage} />
                     <div className="dbsbh-content">
                         <div className="dbsbh-content__ruhacks">RU Hacks</div>
@@ -32,7 +64,11 @@ class DashboardWrapper extends Component {
                             {String(new Date()).slice(0, 15)}
                         </div>
                         <div className="dbsbh-content__days">
-                            7 Days till the Hackathon
+                            {daysLeft ? (
+                                `${daysLeft} days till the Hackathon`
+                            ) : (
+                                <CircularProgress size={20} />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -43,25 +79,40 @@ class DashboardWrapper extends Component {
         let socials = [
             {
                 name: "tw",
-                icon: <i class="fab fa-twitter"></i>,
+                icon: <i className="fab fa-twitter"></i>,
                 link: "https://www.facebook.com/ryersonuhacks",
             },
             {
                 name: "fb",
-                icon: <i class="fab fa-instagram"></i>,
+                icon: <i className="fab fa-instagram"></i>,
                 link: "https://twitter.com/ryersonuhacks",
             },
             {
                 name: "in",
-                icon: <i class="fab fa-facebook"></i>,
+                icon: <i className="fab fa-facebook"></i>,
                 link: "https://www.instagram.com/ruhacks/?hl=en",
             },
         ];
-        return socials.map(({ icon, link }) => <a href={link}>{icon}</a>);
+        return socials.map(({ icon, link, name }) => (
+            <a key={name} href={link}>
+                {icon}
+            </a>
+        ));
     }
+
+    componentDidMount() {
+        this.props.subscribeToHackathonTime(this.setUnsubscribe);
+    }
+
+    componentWillUnmount() {
+        if (this.state.unsubHackSettings === null) return;
+        this.state.unsubHackSettings();
+    }
+
     render() {
         const { user, logoutUser, profile } = this.props;
         const { emailVerified } = user;
+        const admin = profile.isAdmin ? profile.isAdmin : false;
         const displayConf = profile && profile.admitted;
         const { navbarOpen } = this.state;
 
@@ -76,17 +127,26 @@ class DashboardWrapper extends Component {
                             });
                         }}
                     >
-                        <i class="fas fa-times"></i>
+                        <i className="fas fa-times"></i>
                     </div>
                     {this.renderNavHeader()}
-                    <div className="dbsbh-h1">Hacker Dashboard</div>
+                    <div className={`dbsbh-h1 ${admin && "admin"}`}>
+                        {admin ? (
+                            <Link to="/">Admin</Link>
+                        ) : (
+                            <span>
+                                Ha<Link to="/admin">c</Link>ker
+                            </span>
+                        )}{" "}
+                        Dashboard
+                    </div>
 
                     <div className="dblinks">
-                        <NavbarLinks></NavbarLinks>
+                        {emailVerified && <NavbarLinks admin={admin} />}
                     </div>
                     <div className="dbfooter">{this.renderNavbarFooter()}</div>
                 </div>
-                <div className="db-content">
+                <div className={`db-content ${admin && "admin"}`}>
                     <div className="db-navbar">
                         <div
                             className={`db-navbar__side ${
@@ -98,26 +158,40 @@ class DashboardWrapper extends Component {
                                 });
                             }}
                         >
-                            <i class="fas fa-chevron-circle-left"></i>
+                            <i className="fas fa-chevron-circle-left"></i>
                         </div>
-                        <div class={`db-navbar__name`}>Hi Johnny 🐢,</div>
+                        {profile.name ? (
+                            <div className={`db-navbar__name`}>
+                                Hi {profile.name}
+                            </div>
+                        ) : (
+                            <div className={`db-navbar__name`}>
+                                Hi 👋, fill out an application so we can get to
+                                know you better
+                            </div>
+                        )}
+
                         <div
-                            className={"db-navbar__logout"}
+                            className={`db-navbar__logout ${admin && "admin"}`}
                             onClick={logoutUser}
                         >
                             Logout
                         </div>
                     </div>
-                    <div className="db-body">{this.props.children}</div>
+                    <div className={`db-body ${admin && "admin"}`}>
+                        {this.props.children}
+                    </div>
                 </div>
             </div>
         );
     }
 }
+
 function mapStateToProps(state) {
     return {
         profile: state.auth.profile,
         user: state.auth.user,
+        hackathon: state.hackathon.hackInfo,
     };
 }
 
@@ -125,6 +199,9 @@ function mapDispatchToProps(dispatch) {
     return {
         logoutUser: () => {
             dispatch(logoutUser());
+        },
+        subscribeToHackathonTime: (setUnsubscribe) => {
+            dispatch(subscribeToHackathonTime(setUnsubscribe));
         },
     };
 }

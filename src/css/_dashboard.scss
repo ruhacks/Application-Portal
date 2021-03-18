@@ -1,3 +1,6 @@
+$admin-bold: #e40017;
+$admin-light: #fffbfb;
+$admin-super-light: #fff1f1;
 .db {
     &-con {
         width: 100vw;
@@ -41,9 +44,15 @@
             color: $ryeblue;
             transition: color 0.3s, background-color 0.3s;
 
+            &.admin {
+                color: $admin-bold;
+            }
             &:hover {
                 background-color: $ryeblue;
                 color: white;
+                &.admin {
+                    background-color: $admin-bold;
+                }
             }
             border-radius: 5px;
         }
@@ -61,6 +70,9 @@
         padding: 25px;
         background-color: #f9fcfe;
         flex: 1;
+        &.admin {
+            background-color: $admin-super-light;
+        }
     }
     &-sidebar {
         border-right: 1px solid rgba(136, 136, 136, 0.2);
@@ -107,6 +119,9 @@
         padding: 15px;
         display: flex;
         background-color: $ryeblue;
+        &.admin {
+            background-color: #e40017;
+        }
         &-img {
             height: auto;
             user-select: none;
@@ -119,6 +134,10 @@
             text-align: center;
             color: $ryeblue;
             background-color: #e8eff7;
+            &.admin {
+                background-color: #ffdada;
+                color: $admin-bold;
+            }
             font-weight: 600;
             padding: 10px 15px;
         }
@@ -131,9 +150,6 @@
                 font-family: "Poppins";
             }
             &__date {
-            }
-            &__title {
-                color: red;
             }
         }
     }
@@ -167,7 +183,12 @@
             &:hover {
                 background-color: $ryeblue;
                 color: white;
+
+                &.admin {
+                    background-color: $admin-bold;
+                }
             }
+
             background-color: $ryeblue;
             color: white;
             border-top: 0.5px solid #b9d0e8;
@@ -178,6 +199,11 @@
             justify-content: space-between;
             cursor: pointer;
             font-size: 20px;
+
+            &.admin {
+                background-color: $admin-bold;
+                border-top: 0.5px solid $admin-light;
+            }
             & > i {
                 position: relative;
                 margin: 0;
@@ -216,6 +242,12 @@
                 font-weight: 600;
                 background-color: #e8eff7;
                 letter-spacing: 0.5px;
+                &.admin {
+                    background-color: #cccccc;
+                }
+            }
+            &.admin {
+                border-top: 0.2px solid #cccccc;
             }
         }
     }
