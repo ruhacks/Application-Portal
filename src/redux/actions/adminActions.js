@@ -9,7 +9,11 @@ export const ADMIN_VERIFICATION_ERROR = "ADMIN_VERIFICATION_ERROR";
 export const ADMIN_GET_COUNT = "ADMIN_GET_COUNT";
 export const ADMIN_GOT_COUNT = "ADMIN_GOT_COUNT";
 
+export const ADMIN_GET_USERS = "ADMIN_GET_USERS";
+export const ADMIN_GOT_USERS = "ADMIN_GOT_USERS";
+
 export const ADMIN_GET_ERROR = "ADMIN_GET_ERROR";
+export const ADMIN_USERS_ERROR = "ADMIN_USERS_ERROR";
 
 export const adminVerificationError = (err) => {
     return {
@@ -51,6 +55,26 @@ export const getError = (err) => {
     };
 };
 
+export const gettingUsers = () => {
+    return {
+        type: ADMIN_GET_USERS,
+    };
+};
+
+export const gotUsers = (data) => {
+    return {
+        type: ADMIN_GOT_USERS,
+        data,
+    };
+};
+
+export const userError = (err) => {
+    return {
+        type: ADMIN_USERS_ERROR,
+        err,
+    };
+};
+
 export const verifyAdminWithDB = () => (dispatch) => {
     dispatch(adminVerifying());
     const user = auth.currentUser;
@@ -74,6 +98,58 @@ export const verifyAdminWithDB = () => (dispatch) => {
                 adminVerificationError({ message: "Unknown Error!", err })
             );
         });
+};
+
+export const gatherUsers = (sortBy, order, lastUserSnapshot) => async (
+    dispatch
+) => {
+    dispatch(gettingUsers());
+    const profileColl = firestore.collection("users");
+    const getAppRef = (uid) => firestore.doc(`users/${uid}/application/fields`);
+    const getStatusRef = (uid) => firestore.doc(`users/${uid}/status/fields`);
+
+    if (!sortBy) sortBy = "email";
+    if (!order) order = "desc";
+
+    try {
+        const profiles = await profileColl
+            .orderBy(sortBy, order)
+            .limit(25)
+            .get();
+
+        const profileData = {
+            users: {},
+            last: profiles.docs[profiles.docs.length - 1],
+            first: profiles.docs[0],
+        };
+
+        profiles.forEach((profile) => {
+            profileData.users[profile.id] = profile.data();
+        });
+
+        const gettingData = Object.keys(profileData.users).map(
+            async (key, idx) => {
+                const appRef = getAppRef(key);
+                const statusRef = getStatusRef(key);
+
+                const app = await appRef.get();
+                const status = await statusRef.get();
+
+                if (app.exists) {
+                    profileData.users[key].application = app.data();
+                }
+                if (status.exists) {
+                    profileData.users[key].status = status.data();
+                }
+
+                return { app, status };
+            }
+        );
+        await Promise.all(gettingData);
+        return dispatch(gotUsers(profileData));
+    } catch (error) {
+        dispatch(userError(error));
+    }
 };
 
 export const gatherCountStats = () => (dispatch) => {
