@@ -17,6 +17,8 @@ export const REGISTER_ERROR = "REGISTER_ERROR";
 export const VERIFICATION_REQUEST = "VERIFIACTION_REQUEST";
 export const VERIFICATION_SUCCESSFULLY_SENT = "VERIFICATION_SUCCESSFULLY_SENT";
 
+export const REGISTRATION_PROCESS_RESET = "REGISTRATION_PROCESS_RESET";
+
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 export const requestRegister = () => {
     return {
@@ -48,6 +50,12 @@ export const verificationSent = (user) => {
     return {
         type: VERIFICATION_SUCCESSFULLY_SENT,
         user,
+    };
+};
+
+export const registrationProcessReset = () => {
+    return {
+        type: REGISTRATION_PROCESS_RESET,
     };
 };
 

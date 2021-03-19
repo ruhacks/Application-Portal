@@ -109,6 +109,7 @@ class Register extends React.Component {
         const { registrationProcessComplete } = this.props;
 
         if (registrationProcessComplete) {
+            this.props.regProcReset();
             return <Redirect to="/login" />; //if user is registered redirect to login
         } else {
             //Render Registration page elements

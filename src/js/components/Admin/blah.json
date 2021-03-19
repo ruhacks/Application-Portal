@@ -1,0 +1,17 @@
+{
+    "userStats": {
+        "count": 0,
+        "countCompleted": 0,
+        "countAdmitted": 0,
+        "countRejected": 0,
+        "countCheckedIn": 0,
+        "countConfirmed": 0,
+        "countDeclined": 0
+    },
+    "confStats": {
+        "count": 5
+    },
+    "appStats": {
+        "count": 0
+    }
+}
