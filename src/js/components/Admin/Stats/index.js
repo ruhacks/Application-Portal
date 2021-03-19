@@ -3,7 +3,8 @@ import isEmpty from "lodash/isEmpty";
 import { connect } from "react-redux";
 import { gatherCountStats } from "../../../../redux/actions";
 import PropTypes from "prop-types";
-import { Box, CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import { Box, CircularProgress, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 class Stats extends Component {
     static propTypes = {
@@ -22,16 +23,17 @@ class Stats extends Component {
 
     render() {
         const { gettingStatistics, getErr, stats } = this.props;
-        // const data = JSON.parse(stats)
         if (gettingStatistics || isEmpty(stats) || !getErr) {
             if (gettingStatistics){
                 return <CircularProgress />;
             }
             return <div><p> There is currently an error reaching the database. Please wait a few seconds, and then refresh and try again. </p></div>;
         }
-        console.log(stats)
         return ( 
             <Box className="stats-container">
+                <Button className="stats-button-refresh" startIcon = {<RefreshIcon />} onClick={this.props.gatherCountStats}>
+                    Update Stats
+                </Button>
                 <div class="stats-table-header">
                     <h3>Application Statistics</h3>
                 </div>
