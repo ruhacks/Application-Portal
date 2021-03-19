@@ -124,7 +124,6 @@ export const gatherUsers = (sortBy, order, lastUserSnapshot) => async (
         };
 
         profiles.forEach((profile) => {
-            console.log(profile.metadata);
             profileData.users[profile.id] = profile.data();
         });
 

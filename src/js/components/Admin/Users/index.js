@@ -11,6 +11,7 @@ import { Button, CircularProgress } from "@material-ui/core";
 import { gatherUsers } from "../../../../redux/actions";
 import isEmpty from "lodash/isEmpty";
 import { DataGrid } from "@material-ui/data-grid";
+import PropTypes from "prop-types";
 
 /*
 <DataGrid
@@ -25,6 +26,11 @@ import { DataGrid } from "@material-ui/data-grid";
             />
 */
 class Event extends Component {
+    static propTypes = {
+        gatherUsers: PropTypes.func,
+        userData: PropTypes.object,
+    };
+
     constructor(props) {
         super(props);
 
