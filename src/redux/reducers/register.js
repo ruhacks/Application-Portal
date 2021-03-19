@@ -12,6 +12,7 @@ import {
     REGISTER_ERROR,
     VERIFICATION_REQUEST,
     VERIFICATION_SUCCESSFULLY_SENT,
+    REGISTRATION_PROCESS_RESET,
 } from "../actions/registerActions";
 
 export default (
@@ -59,6 +60,11 @@ export default (
                 verificationSent: true,
                 registrationProcessComplete: true,
                 registrationComplete: false,
+            };
+        case REGISTRATION_PROCESS_RESET:
+            return {
+                ...state,
+                registrationProcessComplete: false,
             };
         default:
             return state;

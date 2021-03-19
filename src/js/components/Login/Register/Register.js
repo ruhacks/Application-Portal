@@ -29,8 +29,10 @@ import {
 } from "@material-ui/core";
 
 import { default as logo } from "../../../../../assets/images/RU_RGB.svg";
-import { registerUser } from "../../../../redux/actions"; //import registerUser() from registration actions in src/redux/actions/registerActions.js
-
+import {
+    registerUser,
+    registrationProcessReset,
+} from "../../../../redux/actions"; //import registerUser() from registration actions in src/redux/actions/registerActions.js
 class Register extends React.Component {
     //Declare prop variables types
     static propTypes = {
@@ -38,6 +40,7 @@ class Register extends React.Component {
         errorText: PropTypes.string,
         registrationProcessComplete: PropTypes.bool,
         registerUser: PropTypes.func,
+        regProcReset: PropTypes.func,
     };
     constructor(props) {
         super(props);
@@ -97,6 +100,10 @@ class Register extends React.Component {
     handlePasswordConfirmChange = ({ target }) => {
         this.setState({ password_confirm: target.value });
     };
+
+    componentWillUnmount() {
+        this.props.regProcReset();
+    }
 
     render() {
         const { registrationProcessComplete } = this.props;
@@ -215,6 +222,9 @@ function mapDispatchToProps(dispatch) {
     return {
         registerUser: (email, password) => {
             dispatch(registerUser(email, password));
+        },
+        regProcReset: () => {
+            dispatch(registrationProcessReset());
         },
     };
 }
