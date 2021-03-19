@@ -20,7 +20,11 @@ module.exports = {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         "no-console": 2,
-        "prettier/prettier": ["error",{
-          "endOfLine": "auto"}
+        "prettier/prettier": [
+            "error",
+            {
+                endOfLine: "auto",
+            },
+        ],
     },
 };

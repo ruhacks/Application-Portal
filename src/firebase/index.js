@@ -23,6 +23,7 @@ firebase.initializeApp(firebaseConfig);
 // If emulating local firebase/firestore
 firebase.firestore().useEmulator("localhost", "4000");
 firebase.functions().useEmulator("localhost", "5001");
+firebase.auth().useEmulator("http://localhost:9099");
 
 const rrfConfig = {
     userProfile: "users",
