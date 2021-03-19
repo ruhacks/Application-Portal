@@ -66,18 +66,18 @@ export default (
             return {
                 ...state,
                 gettingUsers: true,
-            }
+            };
         case ADMIN_GOT_USERS:
             return {
                 ...state,
                 gettingUsers: false,
                 userData: action.data,
-            }
+            };
         case ADMIN_USERS_ERROR:
             return {
                 ...state,
                 userErr: action.err,
-            }
+            };
         default:
             return state;
     }
