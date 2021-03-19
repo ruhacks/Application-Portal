@@ -5,17 +5,23 @@ import {
     ADMIN_GET_COUNT,
     ADMIN_GOT_COUNT,
     ADMIN_GET_ERROR,
+    ADMIN_GET_USERS,
+    ADMIN_GOT_USERS,
+    ADMIN_USERS_ERROR,
 } from "../actions/adminActions";
 
 export default (
     state = {
         verifyingAdmin: false,
         gettingStatistics: false,
+        gettingUsers: false,
         admin: false,
         adminErr: false,
         adminProfile: {},
         stats: {},
         getErr: {},
+        userData: {},
+        userErr: {},
     },
     action
 ) => {
@@ -56,6 +62,22 @@ export default (
                 err: action.err,
                 gettingStatistics: false,
             };
+        case ADMIN_GET_USERS:
+            return {
+                ...state,
+                gettingUsers: true,
+            }
+        case ADMIN_GOT_USERS:
+            return {
+                ...state,
+                gettingUsers: false,
+                userData: action.data,
+            }
+        case ADMIN_USERS_ERROR:
+            return {
+                ...state,
+                userErr: action.err,
+            }
         default:
             return state;
     }

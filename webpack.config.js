@@ -12,7 +12,11 @@ module.exports = () => {
     }, {});
 
     return {
-        entry: "./src/index.js",
+        //entry: "./src/index.js",
+        entry: {
+            js: ['babel-polyfill', './src/index.js'],
+            vendor: ['react']
+        },
         module: {
             rules: [
                 {
@@ -72,7 +76,7 @@ module.exports = () => {
         output: {
             path: __dirname + "/dist",
             publicPath: "/",
-            filename: "bundle.js",
+            filename: "[name].js",
         },
         devServer: {
             contentBase: "./dist",
