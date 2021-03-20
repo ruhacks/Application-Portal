@@ -8,6 +8,11 @@ import {
     ADMIN_GET_USERS,
     ADMIN_GOT_USERS,
     ADMIN_USERS_ERROR,
+    ADMIN_SET_USER_REQUEST,
+    ADMIN_SET_USER_SUCCESS,
+    ADMIN_SET_USER_ERROR,
+    ADMIN_SET_USERS_REQUEST,
+    ADMIN_SET_USERS_SUCCESS,
 } from "../actions/adminActions";
 
 export default (
@@ -22,6 +27,11 @@ export default (
         getErr: {},
         userData: {},
         userErr: {},
+        settingUser: false,
+        updatedUID: "",
+        updatedUIDs: [],
+        typeOfUpdate: "",
+        updateErr: {},
     },
     action
 ) => {
@@ -77,6 +87,42 @@ export default (
             return {
                 ...state,
                 userErr: action.err,
+            };
+        case ADMIN_SET_USER_REQUEST:
+            return {
+                ...state,
+                settingUser: true,
+                updatedUID: "",
+                typeOfUpdate: "",
+                updatedUIDs: [],
+            };
+        case ADMIN_SET_USER_SUCCESS:
+            return {
+                ...state,
+                settingUser: false,
+                updatedUID: action.updatedUID,
+                typeOfUpdate: action.typeOfUpdate,
+            };
+        case ADMIN_SET_USER_ERROR:
+            return {
+                ...state,
+                settingUser: false,
+                updateErr: action.error,
+            };
+        case ADMIN_SET_USERS_REQUEST:
+            return {
+                ...state,
+                settingUser: true,
+                updatedUIDs: [],
+                updatedUID: "",
+                typeOfUpdate: "",
+            };
+        case ADMIN_SET_USERS_SUCCESS:
+            return {
+                ...state,
+                settingUser: false,
+                updatedUIDs: action.updatedUIDs,
+                typeOfUpdate: action.typeOfUpdate,
             };
         default:
             return state;

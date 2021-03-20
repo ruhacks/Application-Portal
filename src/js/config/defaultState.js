@@ -56,11 +56,22 @@ export const fields = [
         type: "String",
         titleLabel: "Describe yourself",
         keyRef: "description",
+        initialSize: 10,
+        maxSize: 10,
         charLimit: 1000,
     },
     {
-        titleLabel: "Etnhicity",
-        type: "String",
+        titleLabel: "What is your race/ethnicity?",
+        options: [
+            "American Indian or Alaskan Native",
+            "Asian/pacific Islander",
+            "Black or African American",
+            "Hispanic",
+            "White / Caucasian",
+            "Multiple ethnicity / Other (Please specify)",
+            "Prefer not to answer",
+        ],
+        type: "dropdown",
         order: 9,
         required: true,
         keyRef: "ethnicity",
@@ -68,21 +79,44 @@ export const fields = [
     {
         order: 10,
         type: "String",
+        required: false,
+        titleLabel:
+            "If selected other or Multiple ethnicity please specify here",
+        keyRef: "ethnicityOther",
+    },
+    {
+        order: 11,
+        type: "String",
         required: true,
         titleLabel: "What is your experience with programming?",
         keyRef: "exp",
+        initialSize: 3,
+        maxSize: 10,
     },
     {
         titleLabel: "Gender",
-        options: ["Male", "Female", "Non-binary", "Prefer not to answer"],
+        options: [
+            "Male",
+            "Female",
+            "Non-binary",
+            "Prefer not to answer",
+            "Other (Please specify)",
+        ],
         required: true,
         type: "dropdown",
-        order: 11,
+        order: 12,
         keyRef: "gender",
     },
     {
+        order: 10,
+        type: "String",
+        required: false,
+        titleLabel: "If selected other please specify here",
+        keyRef: "otherGender",
+    },
+    {
         titleLabel: "When will you graduate?",
-        order: 12,
+        order: 13,
         required: true,
         type: "Integer",
         keyRef: "gradYear",
@@ -92,23 +126,26 @@ export const fields = [
         titleLabel: "How many hackathons have you attended",
         type: "Integer",
         required: true,
-        order: 13,
+        order: 14,
         keyRef: "hackNum",
         limit: [1, 10000],
     },
     {
-        order: 14,
+        order: 15,
         type: "String",
         titleLabel: "How did you hear about us?",
         required: true,
         keyRef: "hearAbout",
+        initialSize: 3,
+        maxSize: 10,
     },
     {
-        titleLabel: "Do you agree to MLH terms?",
+        titleLabel: "Do you agree to the MLH Code of Conduct?",
         type: "Boolean",
-        order: 15,
+        order: 16,
         required: true,
         keyRef: "mlhAuth",
+        link: "https://static.mlh.io/docs/mlh-code-of-conduct.pdf",
     },
 ];
 
@@ -117,8 +154,3 @@ export const fieldKeys = fields.map((field) => field.keyRef);
 export const profileUpdateObject = (updatedAt) => ({
     updatedAt,
 });
-
-export const verifyAdminURL =
-    process.env.NODE_ENV === "development"
-        ? "http://localhost:5001/ru-hacks-app-page/us-central1/admin/verify"
-        : "https://us-central1-ru-hacks-app-page.cloudfunctions.net/admin";

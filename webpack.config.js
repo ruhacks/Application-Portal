@@ -14,8 +14,8 @@ module.exports = () => {
     return {
         //entry: "./src/index.js",
         entry: {
-            js: ['babel-polyfill', './src/index.js'],
-            vendor: ['react']
+            js: ["babel-polyfill", "./src/index.js"],
+            vendor: ["react"],
         },
         module: {
             rules: [

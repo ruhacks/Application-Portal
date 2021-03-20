@@ -15,6 +15,13 @@ export const ADMIN_GOT_USERS = "ADMIN_GOT_USERS";
 export const ADMIN_GET_ERROR = "ADMIN_GET_ERROR";
 export const ADMIN_USERS_ERROR = "ADMIN_USERS_ERROR";
 
+export const ADMIN_SET_USER_REQUEST = "ADMIN_SET_USER_REQUEST";
+export const ADMIN_SET_USER_SUCCESS = "ADMIN_SET_USER_SUCCESS";
+export const ADMIN_SET_USER_ERROR = "ADMIN_SET_USER_ERROR";
+
+export const ADMIN_SET_USERS_REQUEST = "ADMIN_SET_USERS_REQUEST";
+export const ADMIN_SET_USERS_SUCCESS = "ADMIN_SET_USERS_SUCCESS";
+
 export const adminVerificationError = (err) => {
     return {
         type: ADMIN_VERIFICATION_ERROR,
@@ -68,6 +75,41 @@ export const gotUsers = (data) => {
     };
 };
 
+export const setUserRequest = () => {
+    return {
+        type: ADMIN_SET_USER_REQUEST,
+    };
+};
+
+export const setUsersRequest = () => {
+    return {
+        type: ADMIN_SET_USERS_REQUEST,
+    };
+};
+
+export const setUserSuccess = (user, typeOfUpdate) => {
+    return {
+        type: ADMIN_SET_USER_SUCCESS,
+        updatedUID: user,
+        typeOfUpdate,
+    };
+};
+
+export const setUsersSuccess = (updatedUIDs, typeOfUpdate) => {
+    return {
+        type: ADMIN_SET_USERS_SUCCESS,
+        updatedUIDs,
+        typeOfUpdate,
+    };
+};
+
+export const setUserError = (error) => {
+    return {
+        type: ADMIN_SET_USER_ERROR,
+        error,
+    };
+};
+
 export const userError = (err) => {
     return {
         type: ADMIN_USERS_ERROR,
@@ -112,10 +154,7 @@ export const gatherUsers = (sortBy, order, lastUserSnapshot) => async (
     if (!order) order = "desc";
 
     try {
-        const profiles = await profileColl
-            .orderBy(sortBy, order)
-            .limit(25)
-            .get();
+        const profiles = await profileColl.orderBy(sortBy, order).get();
 
         const profileData = {
             users: {},
@@ -228,4 +267,38 @@ export const gatherCountStats = () => (dispatch) => {
                 })
             );
         });
+};
+
+export const setUserToNewStatus = (uid, action) => async (dispatch) => {
+    dispatch(setUserRequest());
+
+    const userRef = firestore.doc(`users/${uid}/status/fields`);
+    const updateObj =
+        action === "admit" ? { admitted: true } : { rejected: true };
+
+    try {
+        await userRef.update(updateObj);
+        dispatch(setUserSuccess(uid, action));
+    } catch (error) {
+        dispatch(setUserError(error));
+    }
+};
+
+export const setUsersToNewStatus = (uids, action) => async (dispatch) => {
+    dispatch(setUsersRequest());
+    const updateObj =
+        action === "admit" ? { admitted: true } : { rejected: true };
+
+    const batchUpdate = firestore.batch();
+
+    uids.forEach((uid) => {
+        const userRef = firestore.doc(`users/${uid}/status/fields`);
+        batchUpdate.update(userRef, updateObj);
+    });
+    try {
+        await batchUpdate.commit();
+        dispatch(setUsersSuccess(uids, action));
+    } catch (error) {
+        dispatch(setUserError(error));
+    }
 };

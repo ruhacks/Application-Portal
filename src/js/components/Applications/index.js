@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
     getUsersApplication,
     setAppRedirectToFalse,
+    setUsersApplication,
 } from "../../../redux/actions";
 import {
     Button,
@@ -30,6 +31,7 @@ class Application extends Component {
         appError: PropTypes.string,
         updatedFieldsSuccessfully: PropTypes.bool,
         setAppRedirectToFalse: PropTypes.func,
+        setUsersApplication: PropTypes.func,
     };
 
     componentDidMount() {
@@ -63,7 +65,13 @@ class Application extends Component {
             return <Redirect to="/" />;
         }
 
-        return <AppForm application={application} fields={fields} />;
+        return (
+            <AppForm
+                application={application}
+                fields={fields}
+                setUsersApplication={this.props.setUsersApplication}
+            />
+        );
     }
 }
 
@@ -88,6 +96,9 @@ function mapDispatchToProps(dispatch) {
         },
         setAppRedirectToFalse: () => {
             dispatch(setAppRedirectToFalse());
+        },
+        setUsersApplication: (applicationData) => {
+            dispatch(setUsersApplication(applicationData));
         },
     };
 }

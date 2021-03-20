@@ -185,19 +185,19 @@ class Login extends React.Component {
                                             id="password"
                                             onChange={this.handlePasswordChange}
                                         />
-                                        <Box m={0.5} p={0.5} width="100%">
+                                        <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="submit"
-                                                fullWidth
                                                 variant="contained"
                                                 color="primary"
+                                                fullWidth
                                                 className={classes.submit}
                                                 onClick={this.handleSubmit}
                                             >
                                                 Sign In
                                             </Button>
                                         </Box>
-                                        <Box m={0.5} p={0.5} width="100%">
+                                        <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="button"
                                                 to="/register/"
