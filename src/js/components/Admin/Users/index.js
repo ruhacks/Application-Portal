@@ -56,6 +56,7 @@ class Event extends Component {
             openModal: false,
             tableLoad: false,
             multipleSelected: [],
+            multipleSelectedIDs: [],
         };
 
         this.prepareDataForTable = this.prepareDataForTable.bind(this);
@@ -67,6 +68,9 @@ class Event extends Component {
             this
         );
         this.handleSelectingCheckbox = this.handleSelectingCheckbox.bind(this);
+        this.handleSelectionModelChange = this.handleSelectionModelChange.bind(
+            this
+        );
     }
 
     componentDidUpdate(prevProps) {
@@ -278,6 +282,7 @@ class Event extends Component {
             openModal: false,
             userSelected: {},
             multipleSelected: [],
+            multipleSelectedIDs: [],
         });
     }
 
@@ -289,6 +294,12 @@ class Event extends Component {
             selection.splice(selection.indexOf(action.data.uid), 1);
         }
         this.setState({ multipleSelected: selection });
+    }
+
+    handleSelectionModelChange(selected) {
+        this.setState({
+            multipleSelectedIDs: selected.selectionModel,
+        });
     }
 
     render() {
@@ -336,6 +347,10 @@ class Event extends Component {
                             onRowClick={this.handleRowClicked}
                             loading={tableLoad}
                             onRowSelected={this.handleSelectingCheckbox}
+                            selectionModel={this.state.multipleSelectedIDs}
+                            onSelectionModelChange={
+                                this.handleSelectionModelChange
+                            }
                         />
                     </div>
                 </div>
