@@ -80,7 +80,7 @@ export const cancelAppRedirect = () => {
     };
 };
 
-export const getUsersApplication = (user) => (dispatch) => {
+export const getUsersApplication = () => (dispatch) => {
     dispatch(requestApplication());
     const user = auth.currentUser;
 

@@ -54,8 +54,9 @@ const ProtectedRouteEmailVerified = ({
                 <div />
             ) : isAuthenticated && emailVerified ? (
                 <div>
-                    <Navbar />
-                    <Component {...props} />
+                    <DashboardWrapper>
+                        <Component {...props} />
+                    </DashboardWrapper>
                 </div>
             ) : (
                 <Redirect
