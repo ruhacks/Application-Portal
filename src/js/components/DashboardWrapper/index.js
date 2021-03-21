@@ -96,17 +96,17 @@ class DashboardWrapper extends Component {
             {
                 name: "tw",
                 icon: <i className="fab fa-twitter"></i>,
-                link: "https://www.facebook.com/ryersonuhacks",
+                link: "https://twitter.com/ryersonuhacks",
             },
             {
                 name: "fb",
                 icon: <i className="fab fa-instagram"></i>,
-                link: "https://twitter.com/ryersonuhacks",
+                link: "https://www.instagram.com/ruhacks/?hl=en",
             },
             {
                 name: "in",
                 icon: <i className="fab fa-facebook"></i>,
-                link: "https://www.instagram.com/ruhacks/?hl=en",
+                link: "https://www.facebook.com/ryersonuhacks",
             },
         ];
         return socials.map(({ icon, link, name }) => (
