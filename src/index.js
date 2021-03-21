@@ -52,7 +52,7 @@ const Root = () => {
             },
         },
         typography: {
-            fontFamily: ["Poppins", "Open Sans"].join(","),
+            fontFamily: ["Open Sans", "Poppins"].join(","),
         },
     });
     //We are now returning an html element with React as a component and rendering it in our html file (src/index.html) in the element that has the id: 'root' which is a <div> in this case

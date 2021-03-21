@@ -20,7 +20,10 @@ import {
     IconButton,
     Typography,
     CircularProgress,
+    Icon,
 } from "@material-ui/core";
+
+import Brightness1Icon from "@material-ui/icons/Brightness1";
 
 import text from "../../config/text";
 import {
@@ -99,6 +102,21 @@ class Home extends React.Component {
             rejected,
         } = profile;
 
+        const relevantStatus = [
+            emailVerified,
+            completedProfile,
+            admitted,
+            rejected,
+            confirmed,
+            declined,
+        ];
+        const progressBarWidth = (i = 0) => {
+            let counter = 0;
+            relevantStatus.map((stat) => {
+                if (stat) counter++;
+            });
+            return (counter / relevantStatus.length) * 100;
+        };
         if (updatedFieldsSuccessfully && !completedProfile) {
             return <CircularProgress />;
         } else if (updatedFieldsSuccessfully) {
@@ -126,8 +144,14 @@ class Home extends React.Component {
                     componentClass = classes.app.completeApplication;
                 }
                 return (
-                    <Box className={componentClass}>
+                    <Box className="app-container">
+                        <Brightness1Icon
+                            className={componentClass}
+                        ></Brightness1Icon>
                         <Typography variant="h4">{quickStatus}</Typography>
+                        <Brightness1Icon
+                            className={componentClass}
+                        ></Brightness1Icon>
                     </Box>
                 );
             } else {
@@ -139,16 +163,6 @@ class Home extends React.Component {
                             </Typography>
                         </Box>
                         <Box m={0.5} width="100%">
-                            <Button
-                                type="button"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.resendVerification}
-                                onClick={this.handleResendVerification}
-                            >
-                                Resend Verification
-                            </Button>
                             {verificationLinkRequest && (
                                 <Typography variant="h5">
                                     Sending verification...
@@ -201,14 +215,56 @@ class Home extends React.Component {
             }
         };
 
+        let colorClass = "progress-filler unverified";
+        if (confirmed) {
+            colorClass += "incomplete";
+        } else if (admitted) {
+            colorClass += "admitted";
+        } else if (declined) {
+            colorClass += "declined";
+        } else if (rejected) {
+            colorClass += "rejected";
+        } else if (completedProfile) {
+            colorClass += "complete";
+        }
+
         return (
             <div className={classes.homeContainer}>
                 <div className="qa">
-                    <Typography variant="h3">Your Status: </Typography>
-                    <hr />
+                    {/* <Typography variant="h3">Your Status: </Typography> */}
+                    {/* <hr /> */}
                     {renderStatusBox()}
-                    <hr />
+                    {/* <hr /> */}
+                    <div className="progress-bar">
+                        <div className="progress-container">
+                            <div
+                                className={colorClass}
+                                style={{ width: `${progressBarWidth()}%` }}
+                            ></div>
+                        </div>
+                        <div className="progress-undertext">
+                            <ul>
+                                <li>Account Created</li>
+                                <li>Email Verified</li>
+                                <li>Application Completed</li>
+                                <li>Complete Confirmation</li>
+                                <li>Join Our Discord!!!</li>
+                            </ul>
+                        </div>
+                    </div>
                     {renderStatusText()}
+                    {!emailVerified && (
+                        <Button
+                            type="button"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.resendVerification}
+                            onClick={this.handleResendVerification}
+                        >
+                            Resend Verification
+                        </Button>
+                    )}
                 </div>
             </div>
         );

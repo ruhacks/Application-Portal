@@ -8,6 +8,7 @@ const classes = {
         admitted: "app-admitted",
         declined: "app-declined",
         rejected: "app-rejected",
+        unverified: "app-unverified",
     },
     avatar: "avatar",
     descriptionText: "descriptionText",
