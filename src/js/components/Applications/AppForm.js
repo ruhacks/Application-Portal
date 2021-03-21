@@ -234,6 +234,7 @@ class AppForm extends Component {
                     link,
                     maxSize,
                     initialSize,
+                    staticLinkText,
                 } = fieldObj;
 
                 let value = false;
@@ -261,6 +262,9 @@ class AppForm extends Component {
                             link={link ? link : false}
                             initialSize={initialSize ? initialSize : 1}
                             maxSize={maxSize ? maxSize : 3}
+                            staticLinkText={
+                                staticLinkText ? staticLinkText : ""
+                            }
                         />
                     </Grid>
                 );

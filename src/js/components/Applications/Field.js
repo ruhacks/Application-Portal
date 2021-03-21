@@ -8,6 +8,7 @@ import {
     MenuItem,
     Select,
     TextField,
+    Typography,
 } from "@material-ui/core";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -26,6 +27,7 @@ class Field extends Component {
         link: PropTypes.string,
         initialSize: PropTypes.string,
         maxSize: PropTypes.string,
+        staticLinkText: PropTypes.string,
     };
 
     render() {
@@ -41,6 +43,7 @@ class Field extends Component {
             link,
             initialSize,
             maxSize,
+            staticLinkText,
         } = this.props;
 
         if (type === "String" || type === "Integer") {
@@ -71,16 +74,22 @@ class Field extends Component {
                     <FormControlLabel
                         label={
                             link ? (
-                                <Link
-                                    href={link}
-                                    target="_blank"
-                                    style={{
-                                        position: "relative",
-                                        zIndex: 1000,
-                                    }}
-                                >
-                                    {titleLabel}
-                                </Link>
+                                <span>
+                                    <Typography variant="body1">
+                                        {titleLabel}
+
+                                        <Link
+                                            href={link}
+                                            target="_blank"
+                                            style={{
+                                                position: "relative",
+                                                zIndex: 1000,
+                                            }}
+                                        >
+                                            {staticLinkText}
+                                        </Link>
+                                    </Typography>
+                                </span>
                             ) : (
                                 titleLabel
                             )

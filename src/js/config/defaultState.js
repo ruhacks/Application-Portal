@@ -8,7 +8,8 @@ export const fields = [
     },
     {
         titleLabel: "Are you currently in high-school?",
-        type: "Boolean",
+        type: "dropdown",
+        options: ["Yes", "No"],
         required: false,
         order: 2,
         keyRef: "highschoolHacker",
@@ -159,7 +160,9 @@ export const fields = [
         keyRef: "yogurt",
     },
     {
-        titleLabel: "Do you agree to the MLH Code of Conduct?",
+        titleLabel: "Do you agree to the ",
+        staticLinkText: "MLH Code of Conduct?",
+        link: "https://static.mlh.io/docs/mlh-code-of-conduct.pdf",
         type: "Boolean",
         order: 19,
         required: true,
