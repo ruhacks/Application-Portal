@@ -108,7 +108,6 @@ class Home extends React.Component {
             admitted,
             rejected,
             confirmed,
-            declined,
         ];
         const progressBarWidth = (i = 0) => {
             let counter = 1;
@@ -217,7 +216,7 @@ class Home extends React.Component {
 
         let colorClass = "progress-filler ";
         if (confirmed) {
-            colorClass += "incomplete";
+            colorClass += "confirmed";
         } else if (admitted) {
             colorClass += "admitted";
         } else if (declined) {
@@ -226,7 +225,9 @@ class Home extends React.Component {
             colorClass += "rejected";
         } else if (completedProfile) {
             colorClass += "complete";
-        } else if (unverified) {
+        } else if (emailVerified) {
+            colorClass += "incomplete";
+        } else if (!emailVerified) {
             colorClass += "unverified";
         }
 

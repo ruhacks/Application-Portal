@@ -2,15 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import AdminTabs from "./AdminTabs";
-import HackerTabs from "./HackerTabs";
+import { generateTabs } from "./HackerTabs";
 import PropTypes from "prop-types";
 export class NavbarLinks extends Component {
     static propTypes = {
         admin: PropTypes.bool,
+        profile: PropTypes.object,
+        emailVerified: PropTypes.bool,
     };
     render() {
-        const { admin } = this.props;
-        let categories = admin ? AdminTabs : HackerTabs;
+        const { admin, profile, emailVerified } = this.props;
+        let categories = admin
+            ? AdminTabs
+            : generateTabs(profile, emailVerified);
         return (
             <div className={`dbnl ${admin && "admin"}`}>
                 {categories.map(({ title, links }) => (

@@ -115,7 +115,6 @@ class DashboardWrapper extends Component {
         const { user, logoutUser, profile } = this.props;
         const { emailVerified } = user;
         const admin = profile.isAdmin ? profile.isAdmin : false;
-        const displayConf = profile && profile.admitted;
         const { navbarOpen } = this.state;
 
         return (
@@ -144,7 +143,13 @@ class DashboardWrapper extends Component {
                     </div>
 
                     <div className="dblinks">
-                        {emailVerified && <NavbarLinks admin={admin} />}
+                        {emailVerified && (
+                            <NavbarLinks
+                                admin={admin}
+                                profile={profile}
+                                emailVerified={emailVerified}
+                            />
+                        )}
                     </div>
                     <div className="dbfooter">{this.renderNavbarFooter()}</div>
                 </div>
