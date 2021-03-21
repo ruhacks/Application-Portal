@@ -49,6 +49,7 @@ class Login extends React.Component {
         isAuthenticated: PropTypes.bool,
         sendForgotPassword: PropTypes.func,
         forgotErrorObject: PropTypes.func,
+        verificationLinkError: PropTypes.bool,
     };
     constructor(props) {
         super(props);
@@ -121,7 +122,7 @@ class Login extends React.Component {
             fpSent,
             fpRequest,
             fpFail,
-            forgotErrorObject,
+            verificationLinkError,
         } = this.props; //gather prop variables given to us from our redux store via mapStateToProps()
         const { forgotMode, promptTitle } = this.state;
         if (isAuthenticated) {
@@ -149,10 +150,7 @@ class Login extends React.Component {
                                         component="p"
                                         className={classes.errorText}
                                     >
-                                        {forgotErrorObject &&
-                                        forgotErrorObject.message
-                                            ? forgotErrorObject.message
-                                            : ""}
+                                        {"Invalid email!"}
                                     </Typography>
                                 )}
                                 {fpSent && (
@@ -173,6 +171,7 @@ class Login extends React.Component {
                                             id="email"
                                             label="Email Address"
                                             name="email"
+                                            required
                                             onChange={this.handleEmailChange}
                                         />
                                         <TextField
@@ -183,8 +182,19 @@ class Login extends React.Component {
                                             label="Password"
                                             type="password"
                                             id="password"
+                                            required
                                             onChange={this.handlePasswordChange}
                                         />
+                                        {loginError && (
+                                            <Typography
+                                                component="p"
+                                                className={classes.errorText}
+                                            >
+                                                {
+                                                    "Invalid username or password!"
+                                                }
+                                            </Typography>
+                                        )}
                                         <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="submit"
@@ -286,6 +296,16 @@ class Login extends React.Component {
                                             this.handleForgotPasswordEmailChange
                                         }
                                     />
+                                    {verificationLinkError && (
+                                        <Typography
+                                            component="p"
+                                            className={classes.errorText}
+                                        >
+                                            {
+                                                "Error sending verification link, please try again later"
+                                            }
+                                        </Typography>
+                                    )}
                                     <Box m={0.5} p={0.5} width="100%">
                                         <Button
                                             fullWidth
@@ -319,6 +339,7 @@ function mapStateToProps(state) {
         fpRequest: state.auth.fpRequest,
         fpFail: state.auth.fpFail,
         forgotErrorObject: state.auth.forgotErrorObject,
+        verificationLinkError: state.auth.verificationLinkError,
     };
 }
 

@@ -31,7 +31,7 @@ export const subscribeToHackathonTime = (setUnsubscribe) => (dispatch) => {
         if (settings.exists) {
             dispatch(setHackDate(settings.data()));
         } else {
-            dispatch(errorHackDate({ MESSAGE: "NOT FOUND" }));
+            dispatch(errorHackDate({ message: "NOT FOUND" }));
         }
     });
     setUnsubscribe(unsubscribe);

@@ -220,7 +220,7 @@ export const gatherCountStats = () => (dispatch) => {
                                     } else {
                                         dispatch(
                                             getError({
-                                                MESSAGE:
+                                                message:
                                                     "APPLICATION STATISTICS ERROR",
                                             })
                                         );
@@ -229,7 +229,7 @@ export const gatherCountStats = () => (dispatch) => {
                                 .catch((appErr) => {
                                     dispatch(
                                         getError({
-                                            MESSAGE:
+                                            message:
                                                 "APPLICATION STATISTICS ERROR",
                                             appErr,
                                         })
@@ -238,7 +238,7 @@ export const gatherCountStats = () => (dispatch) => {
                         } else {
                             dispatch(
                                 getError({
-                                    MESSAGE: "CONFIRMATION STATISTICS ERROR",
+                                    message: "CONFIRMATION STATISTICS ERROR",
                                 })
                             );
                         }
@@ -246,7 +246,7 @@ export const gatherCountStats = () => (dispatch) => {
                     .catch((confError) => {
                         dispatch(
                             getError({
-                                MESSAGE: "CONFIRMATION STATISTICS ERROR",
+                                message: "CONFIRMATION STATISTICS ERROR",
                                 confError,
                             })
                         );
@@ -254,7 +254,7 @@ export const gatherCountStats = () => (dispatch) => {
             } else {
                 dispatch(
                     getError({
-                        MESSAGE: "USER STATISTICS ERROR",
+                        message: "USER STATISTICS ERROR",
                     })
                 );
             }
@@ -262,7 +262,7 @@ export const gatherCountStats = () => (dispatch) => {
         .catch((usersErr) => {
             dispatch(
                 getError({
-                    MESSAGE: "USER STATISTICS ERROR",
+                    message: "USER STATISTICS ERROR",
                     usersErr,
                 })
             );

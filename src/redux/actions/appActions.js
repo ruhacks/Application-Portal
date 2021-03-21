@@ -84,7 +84,7 @@ export const getUsersApplication = () => (dispatch) => {
     dispatch(requestApplication());
     const user = auth.currentUser;
 
-    if (!user) dispatch(applicationError({ MESSAGE: "ERROR NO USER!" }));
+    if (!user) dispatch(applicationError({ message: "ERROR NO USER!" }));
 
     const { uid } = user;
 
