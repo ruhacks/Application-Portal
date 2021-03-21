@@ -136,8 +136,8 @@ export const getDiscordURL = () => (dispatch) => {
     dispatch(discordURLRequest());
     const user = auth.currentUser;
     if (!user) return dispatch(updateConfError({ error: "No user found!" }));
-    //const DISCORD_API_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/getURL`;
-    const DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
+    const DISCORD_API_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/getURL`;
+    //const DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
 
     if (user) {
         user.getIdToken().then((token) => {

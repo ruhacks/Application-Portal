@@ -70,7 +70,7 @@ export const registerUser = (email, password) => (dispatch) => {
             dispatch(requestSendVerification()); //Disaptches VERIFICATION_REQUEST event to the reducer to change redux store state variables
             user.user
                 .sendEmailVerification({
-                    url: "http://localhost:8080/",
+                    url: "https://app.ruhacks.com/",
                     handleCodeInApp: false,
                 })
                 .then(() => {
