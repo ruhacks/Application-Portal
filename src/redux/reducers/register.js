@@ -44,7 +44,7 @@ export default (
         case REGISTER_ERROR:
             return {
                 ...state,
-                registerError: true,
+                registerError: action.error,
                 isRegistering: false,
                 verificationRequest: false,
             };

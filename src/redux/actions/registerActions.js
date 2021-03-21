@@ -77,7 +77,7 @@ export const registerUser = (email, password) => (dispatch) => {
                     dispatch(verificationSent(user)); //Dispatches VERIFICATION_SUCCESSFULLY_SENT event to the reducer to change redux store state variables
                 })
                 .catch((error) => {
-                    dispatch(registerError);
+                    dispatch(registerError(error));
                 });
         })
         .catch((error) => {
