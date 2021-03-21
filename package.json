@@ -59,6 +59,7 @@
     "prettier-eslint-cli": "^5.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-places-autocomplete": "^7.3.0",
     "react-redux": "^7.2.2",
     "react-redux-firebase": "^3.8.1",
     "react-router-dom": "^5.2.0",

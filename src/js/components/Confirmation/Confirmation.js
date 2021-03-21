@@ -15,7 +15,9 @@ import { CheckCircle } from "@material-ui/icons";
 import {
     getUsersConfirmation,
     getDiscordURL,
+    updateUsersAddress,
 } from "../../../redux/actions/confirmationActions";
+import LocationSearchInput from "./LocationSearchInput";
 
 class Confirmation extends Component {
     static propTypes = {
@@ -26,24 +28,58 @@ class Confirmation extends Component {
         }),
         isRequestingDiscordURL: PropTypes.bool,
         url: PropTypes.string,
-
+        updateUsersAddress: PropTypes.func,
         getDiscordURL: PropTypes.func,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            name: "",
+            street_address: "",
+            city: "",
+            state: "",
+            zip_code: "",
+            secondStep: false,
+            mapIsReady: false,
+        };
+        this.firstStepComplete = this.firstStepComplete.bind(this);
+    }
+
     componentDidMount() {
+        const ApiKey = "AIzaSyAJREtfwTwXf8G94n6tc4nvhlLIFE2nNlg";
+        const script = document.createElement("script");
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${ApiKey}&libraries=places`;
+        script.async = true;
+        script.defer = true;
+        script.addEventListener("load", () => {
+            this.setState({ mapIsReady: true });
+        });
+        document.body.appendChild(script);
         this.props.getUsersConfirmation();
+    }
+
+    firstStepComplete(address) {
+        if (address) {
+            this.props.updateUsersAddress(address);
+        }
         this.props.getDiscordURL();
+        this.setState({
+            secondStep: true,
+        });
     }
 
     render() {
         const { user, confirmation, url, isRequestingDiscordURL } = this.props;
-
+        const { secondStep, mapIsReady } = this.state;
         if (
             !user ||
             !user.uid ||
             !confirmation ||
             isEmpty(confirmation) ||
-            !url
+            (!url && secondStep) ||
+            (!mapIsReady && !secondStep)
         )
             return <CircularProgress />;
 
@@ -58,54 +94,68 @@ class Confirmation extends Component {
                     <Typography variant="h2">Confirmation</Typography>
                 </Grid>
                 <Paper style={{ padding: 16 }}>
-                    {confirmation && !confirmation.discord && (
+                    <LocationSearchInput
+                        callbackFcn={this.firstStepComplete}
+                    ></LocationSearchInput>
+                    {secondStep && (
                         <div>
-                            <Typography variant="body1">
-                                {text.confirmation.whyDiscord}
-                            </Typography>
-                            {isRequestingDiscordURL && (
-                                <Button
-                                    fullWidth
-                                    color="primary"
-                                    variant="outlined"
-                                >
-                                    Please wait, generating link...
-                                    <CircularProgress />
-                                </Button>
+                            {confirmation && !confirmation.discord && (
+                                <div>
+                                    <Typography variant="body1">
+                                        {text.confirmation.whyDiscord}
+                                    </Typography>
+                                    {isRequestingDiscordURL && (
+                                        <Button
+                                            fullWidth
+                                            color="primary"
+                                            variant="outlined"
+                                        >
+                                            Please wait, generating link...
+                                            <CircularProgress />
+                                        </Button>
+                                    )}
+                                    {url && (
+                                        <Link
+                                            rel="noopener"
+                                            href={url}
+                                            target="_blank"
+                                        >
+                                            <Button
+                                                fullWidth
+                                                color="primary"
+                                                variant="outlined"
+                                            >
+                                                Connect with Discord
+                                            </Button>
+                                        </Link>
+                                    )}
+                                    {!url && !isRequestingDiscordURL && (
+                                        <Typography
+                                            variant="body1"
+                                            color="error"
+                                        >
+                                            Error generating link, please try
+                                            refreshing the page :)
+                                        </Typography>
+                                    )}
+                                </div>
                             )}
-                            {url && (
-                                <Link rel="noopener" href={url} target="_blank">
+                            {confirmation && confirmation.discord && (
+                                <div>
+                                    <Typography variant="body1">
+                                        {text.confirmation.connectedDiscord}
+                                    </Typography>
                                     <Button
                                         fullWidth
                                         color="primary"
                                         variant="outlined"
+                                        disabled
                                     >
-                                        Connect with Discord
+                                        <CheckCircle />
+                                        Discord Connected
                                     </Button>
-                                </Link>
+                                </div>
                             )}
-                            {!url && !isRequestingDiscordURL && (
-                                <Typography variant="body1" color="error">
-                                    Error generating link, please try refreshing
-                                    the page :)
-                                </Typography>
-                            )}
-                        </div>
-                    )}
-                    {confirmation && confirmation.discord && (
-                        <div>
-                            <Typography variant="body1">
-                                {text.confirmation.connectedDiscord}
-                            </Typography>
-                            <Button
-                                fullWidth
-                                color="primary"
-                                variant="outlined"
-                                disabled
-                            >
-                                <CheckCircle />
-                                Discord Connected
-                            </Button>
                         </div>
                     )}
                 </Paper>
@@ -130,6 +180,9 @@ function mapDispatchToProps(dispatch) {
         },
         getDiscordURL: () => {
             dispatch(getDiscordURL());
+        },
+        updateUsersAddress: (address) => {
+            dispatch(updateUsersAddress(address));
         },
     };
 }

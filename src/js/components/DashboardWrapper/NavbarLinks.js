@@ -4,6 +4,11 @@ import { Link } from "react-router-dom";
 import AdminTabs from "./AdminTabs";
 import { generateTabs } from "./HackerTabs";
 import PropTypes from "prop-types";
+import {
+    KeyboardArrowDown,
+    KeyboardArrowLeft,
+    KeyboardArrowUp,
+} from "@material-ui/icons";
 export class NavbarLinks extends Component {
     static propTypes = {
         admin: PropTypes.bool,
@@ -55,11 +60,8 @@ class Category extends Component {
                     }
                 >
                     {this.props.title}
-                    <i
-                        className={`fas fa-chevron-down ${
-                            this.state.collapsed ? "collapsed" : ""
-                        }`}
-                    ></i>
+                    {this.state.collapsed && <KeyboardArrowUp />}
+                    {!this.state.collapsed && <KeyboardArrowDown />}
                 </div>
                 <div
                     className={`dbnl-links ${

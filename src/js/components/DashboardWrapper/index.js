@@ -2,7 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import EggwardImage from "../../../media/eggwardcomputer.png";
 import EggwardGif from "../../../media/eggward_bongo.gif";
-import { Facebook, Instagram, Twitter } from "@material-ui/icons";
+import {
+    ChevronLeft,
+    Clear,
+    Facebook,
+    Instagram,
+    Twitter,
+} from "@material-ui/icons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../../redux/actions/authActions";
@@ -122,17 +128,17 @@ class DashboardWrapper extends Component {
         let socials = [
             {
                 name: "tw",
-                icon: <i className="fab fa-twitter"></i>,
+                icon: <Twitter />,
                 link: "https://twitter.com/ryersonuhacks",
             },
             {
                 name: "fb",
-                icon: <i className="fab fa-instagram"></i>,
+                icon: <Facebook />,
                 link: "https://www.instagram.com/ruhacks/?hl=en",
             },
             {
                 name: "in",
-                icon: <i className="fab fa-facebook"></i>,
+                icon: <Instagram />,
                 link: "https://www.facebook.com/ryersonuhacks",
             },
         ];
@@ -170,7 +176,7 @@ class DashboardWrapper extends Component {
                             });
                         }}
                     >
-                        <i className="fas fa-times"></i>
+                        <Clear />
                     </div>
                     {this.renderNavHeader()}
                     <div className={`dbsbh-h1 ${admin && "admin"}`}>
@@ -200,7 +206,7 @@ class DashboardWrapper extends Component {
                                 });
                             }}
                         >
-                            <i className="fas fa-chevron-circle-left"></i>
+                            <ChevronLeft />
                         </div>
                         {profile.name ? (
                             <div className={`db-navbar__name`}>
