@@ -13,6 +13,12 @@ import {
     ADMIN_SET_USER_ERROR,
     ADMIN_SET_USERS_REQUEST,
     ADMIN_SET_USERS_SUCCESS,
+    ADMIN_GET_SETTINGS_REQUEST,
+    ADMIN_GET_SETTINGS_SUCCESS,
+    ADMIN_GET_SETTINGS_ERROR,
+    ADMIN_SET_SETTINGS_REQUEST,
+    ADMIN_SET_SETTINGS_SUCCESS,
+    ADMIN_SET_SETTINGS_ERROR,
 } from "../actions/adminActions";
 
 export default (
@@ -32,6 +38,12 @@ export default (
         updatedUIDs: [],
         typeOfUpdate: "",
         updateErr: {},
+        hackathonSettings: {},
+        gettingSettings: false,
+        gettingSettingsError: {},
+        settingSettings: false,
+        settingSettingsError: {},
+        setSetting: "",
     },
     action
 ) => {
@@ -123,6 +135,40 @@ export default (
                 settingUser: false,
                 updatedUIDs: action.updatedUIDs,
                 typeOfUpdate: action.typeOfUpdate,
+            };
+        case ADMIN_GET_SETTINGS_REQUEST:
+            return {
+                ...state,
+                gettingSettings: true,
+            };
+        case ADMIN_GET_SETTINGS_SUCCESS:
+            return {
+                ...state,
+                gettingSettings: false,
+                hackathonSettings: action.settings,
+            };
+        case ADMIN_GET_SETTINGS_ERROR:
+            return {
+                ...state,
+                gettingSettings: false,
+                gettingSettingsError: action.error,
+            };
+        case ADMIN_SET_SETTINGS_REQUEST:
+            return {
+                ...state,
+                settingSettings: true,
+            };
+        case ADMIN_SET_SETTINGS_SUCCESS:
+            return {
+                ...state,
+                settingSettings: false,
+                setSetting: action.settings,
+            };
+        case ADMIN_SET_SETTINGS_ERROR:
+            return {
+                ...state,
+                settingSettings: false,
+                settingSettingsError: action.error,
             };
         default:
             return state;
