@@ -77,7 +77,7 @@ class Settings extends Component {
     }
     allowMinorsChange(newState) {
         this.setState({
-            allowMinors: newState,
+            allowMinors: newState.event.checked,
         });
     }
     setOption(option, value) {
