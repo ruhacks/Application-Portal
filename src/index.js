@@ -50,11 +50,9 @@ const Root = () => {
                 light: "#7a90a1",
                 main: "#4ba3b7",
             },
-            success: {
-                main: "#4caf50",
-                light: "#81c784",
-                dark: "#388e3c",
-            },
+        },
+        typography: {
+            fontFamily: ["Poppins", "Open Sans"].join(","),
         },
     });
     //We are now returning an html element with React as a component and rendering it in our html file (src/index.html) in the element that has the id: 'root' which is a <div> in this case
