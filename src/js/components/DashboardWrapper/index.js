@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import EggwardImage from "../../../media/eggwardcomputer.png";
+import EggwardGif from "../../../media/eggward_bongo.gif";
 import { Facebook, Instagram, Twitter } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -34,14 +35,22 @@ class DashboardWrapper extends Component {
         this.state = {
             navbarOpen: true,
             unsubHackSettings: null,
+            gif: false,
         };
 
         this.setUnsubscribe = this.setUnsubscribe.bind(this);
+        this.changeIcon = this.changeIcon.bind(this);
     }
 
     setUnsubscribe(unsubVar) {
         this.setState({
             unsubHackSettings: unsubVar,
+        });
+    }
+
+    changeIcon() {
+        this.setState({
+            gif: !this.state.gif,
         });
     }
     renderNavHeader() {
@@ -55,10 +64,16 @@ class DashboardWrapper extends Component {
 
             daysLeft = parseInt((hackTime - currentDate) / (24 * 3600 * 1000));
         }
+        const imageSource = this.state.gif ? EggwardImage : EggwardGif;
         return (
             <div className="db-sidebar__header ">
                 <div className={`dbsbh ${admin && "admin"}`}>
-                    <img className="dbsbh-img" src={EggwardImage} />
+                    <img
+                        className="dbsbh-img"
+                        src={this.state.gif ? EggwardGif : EggwardImage}
+                        onMouseEnter={this.changeIcon}
+                        onMouseLeave={this.changeIcon}
+                    />
                     <div className="dbsbh-content">
                         <div className="dbsbh-content__ruhacks">RU Hacks</div>
                         <div className="dbsbh-content__date">
@@ -81,17 +96,17 @@ class DashboardWrapper extends Component {
             {
                 name: "tw",
                 icon: <i className="fab fa-twitter"></i>,
-                link: "https://www.facebook.com/ryersonuhacks",
+                link: "https://twitter.com/ryersonuhacks",
             },
             {
                 name: "fb",
                 icon: <i className="fab fa-instagram"></i>,
-                link: "https://twitter.com/ryersonuhacks",
+                link: "https://www.instagram.com/ruhacks/?hl=en",
             },
             {
                 name: "in",
                 icon: <i className="fab fa-facebook"></i>,
-                link: "https://www.instagram.com/ruhacks/?hl=en",
+                link: "https://www.facebook.com/ryersonuhacks",
             },
         ];
         return socials.map(({ icon, link, name }) => (
@@ -115,7 +130,6 @@ class DashboardWrapper extends Component {
         const { user, logoutUser, profile } = this.props;
         const { emailVerified } = user;
         const admin = profile.isAdmin ? profile.isAdmin : false;
-        const displayConf = profile && profile.admitted;
         const { navbarOpen } = this.state;
 
         return (
@@ -144,7 +158,13 @@ class DashboardWrapper extends Component {
                     </div>
 
                     <div className="dblinks">
-                        {emailVerified && <NavbarLinks admin={admin} />}
+                        {emailVerified && (
+                            <NavbarLinks
+                                admin={admin}
+                                profile={profile}
+                                emailVerified={emailVerified}
+                            />
+                        )}
                     </div>
                     <div className="dbfooter">{this.renderNavbarFooter()}</div>
                 </div>
