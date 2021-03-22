@@ -93,9 +93,11 @@ class Stats extends Component {
                                         stats.userStats.countCompleted}
                                 </TableCell>
                                 <TableCell>
-                                    {((stats.userStats.count -
-                                        stats.userStats.countCompleted) /
-                                        stats.userStats.count) *
+                                    {(
+                                        (stats.userStats.count -
+                                            stats.userStats.countCompleted) /
+                                        stats.userStats.count
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -109,8 +111,10 @@ class Stats extends Component {
                                     {stats.userStats.countCompleted}
                                 </TableCell>
                                 <TableCell>
-                                    {(stats.userStats.countCompleted /
-                                        stats.userStats.count) *
+                                    {(
+                                        stats.userStats.countCompleted /
+                                        stats.userStats.count
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -125,9 +129,11 @@ class Stats extends Component {
                                         stats.userStats.countDeclined}
                                 </TableCell>
                                 <TableCell>
-                                    {((stats.userStats.countAdmitted +
-                                        stats.userStats.countDeclined) /
-                                        stats.userStats.count) *
+                                    {(
+                                        (stats.userStats.countAdmitted +
+                                            stats.userStats.countDeclined) /
+                                        stats.userStats.count
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -160,8 +166,10 @@ class Stats extends Component {
                                     {stats.userStats.countAdmitted}
                                 </TableCell>
                                 <TableCell>
-                                    {(stats.userStats.countAdmitted /
-                                        stats.userStats.countCompleted) *
+                                    {(
+                                        stats.userStats.countAdmitted /
+                                        stats.userStats.countCompleted
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -172,8 +180,10 @@ class Stats extends Component {
                                     {stats.userStats.countDeclined}
                                 </TableCell>
                                 <TableCell>
-                                    {(stats.userStats.countDeclined /
-                                        stats.userStats.countCompleted) *
+                                    {(
+                                        stats.userStats.countDeclined /
+                                        stats.userStats.countCompleted
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -186,10 +196,12 @@ class Stats extends Component {
                                         stats.userStats.countDeclined}
                                 </TableCell>
                                 <TableCell>
-                                    {((stats.userStats.countCompleted -
-                                        stats.userStats.countAdmitted -
-                                        stats.userStats.countDeclined) /
-                                        stats.userStats.countCompleted) *
+                                    {(
+                                        (stats.userStats.countCompleted -
+                                            stats.userStats.countAdmitted -
+                                            stats.userStats.countDeclined) /
+                                        stats.userStats.countCompleted
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -200,8 +212,10 @@ class Stats extends Component {
                                     {stats.userStats.countConfirmed}
                                 </TableCell>
                                 <TableCell>
-                                    {(stats.userStats.countConfirmed /
-                                        stats.userStats.countAdmitted) *
+                                    {(
+                                        stats.userStats.countConfirmed /
+                                        stats.userStats.countAdmitted
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -233,8 +247,10 @@ class Stats extends Component {
                                 </TableCell>
                                 <TableCell>{stats.confStats.count}</TableCell>
                                 <TableCell>
-                                    {(stats.confStats.count /
-                                        stats.userStats.countCompleted) *
+                                    {(
+                                        stats.confStats.count /
+                                        stats.userStats.countCompleted
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
@@ -248,8 +264,10 @@ class Stats extends Component {
                                     {stats.userStats.countCheckedIn}
                                 </TableCell>
                                 <TableCell>
-                                    {(stats.userStats.countCheckedIn /
-                                        stats.userStats.countCompleted) *
+                                    {(
+                                        stats.userStats.countCheckedIn /
+                                        stats.userStats.countCompleted
+                                    ).toFixed(2) *
                                         100 +
                                         "%"}{" "}
                                 </TableCell>
