@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const dotenv = require("dotenv");
 const webpack = require("webpack");
 
@@ -65,8 +66,14 @@ module.exports = () => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: "./src/index.html",
-                filename: "./index.html",
+                template: `./src/index.html`,
+                filename: `./index.html`,
+            }),
+            new CopyWebpackPlugin({
+                patterns: [
+                    // relative path is from src
+                    { from: "./src/media/favicon.ico" }, // <- your path to favicon
+                ],
             }),
             new webpack.DefinePlugin(envKeys),
         ],

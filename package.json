@@ -38,6 +38,7 @@
     "babel-loader": "^8.1.0",
     "babel-polyfill": "^6.26.0",
     "cookie-parser": "^1.4.5",
+    "copy-webpack-plugin": "^6.2.1",
     "css-loader": "^5.0.1",
     "date-fns": "^2.19.0",
     "discord-oauth2": "^2.6.0",
