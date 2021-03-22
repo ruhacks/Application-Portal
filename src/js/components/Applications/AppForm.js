@@ -283,12 +283,15 @@ class AppForm extends Component {
                 </Grid>
                 <hr></hr>
                 <Paper style={{ padding: 16, margin: "2rem" }}>
-                    <Typography component="p" className={classes.errorText}>
-                        {errorText}
-                    </Typography>
                     <form id="mainForm" onSubmit={this.handleSubmitForm}>
                         <Grid container alignItems="flex-start" spacing={3}>
                             {renderFields()}
+                            <Typography
+                                component="p"
+                                className={classes.errorText}
+                            >
+                                {errorText}
+                            </Typography>
                             {this.props.setUsersApplication && (
                                 <Button
                                     color="primary"

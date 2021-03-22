@@ -123,7 +123,7 @@ class Register extends React.Component {
     render() {
         const { registrationProcessComplete } = this.props;
         if (registrationProcessComplete) {
-            return <Redirect to="/login" />; //if user is registered redirect to login
+            return <Redirect to="/" />; //if user is registered redirect to login
         } else {
             //Render Registration page elements
             return (

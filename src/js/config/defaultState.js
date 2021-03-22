@@ -7,12 +7,12 @@ export const fields = [
         keyRef: "name",
     },
     {
-        titleLabel: "Are you currently in high-school?",
+        titleLabel: "What level of education are you currently in?",
         type: "dropdown",
-        options: ["Yes", "No"],
-        required: false,
+        options: ["High School", "Undergraduate", "Graduate"],
+        required: true,
         order: 2,
-        keyRef: "highschoolHacker",
+        keyRef: "levelOfEducation",
     },
     {
         type: "String",
@@ -32,7 +32,7 @@ export const fields = [
     {
         order: 4,
         required: true,
-        titleLabel: "What is your year of study? Ex. 3rd Year",
+        titleLabel: "What is your year of study? Ex. 3 for 3rd Year",
         type: "Integer",
         keyRef: "studyLevel",
         limit: [1, 100],
@@ -50,7 +50,7 @@ export const fields = [
         order: 6,
         type: "String",
         titleLabel:
-            "What country will you be in during RU Hacks 2021 (May 2nd - April 1st)?",
+            "What country will you be in during RU Hacks 2021 (April 30th - May 2nd)?",
         keyRef: "country",
     },
     {
@@ -64,7 +64,7 @@ export const fields = [
         titleLabel: "What is your race/ethnicity?",
         options: [
             "American Indian or Alaskan Native",
-            "Asian/pacific Islander",
+            "Asian / Pacific Islander",
             "Black or African American",
             "Hispanic",
             "White / Caucasian",
@@ -81,16 +81,18 @@ export const fields = [
         type: "String",
         required: false,
         titleLabel:
-            "If selected other or Multiple ethnicity please specify here",
+            "If you selected Multiple ethnicity / Other please specify it here",
         keyRef: "ethnicityOther",
     },
     {
         order: 10,
-        requred: true,
+        required: true,
         type: "String",
         titleLabel: "What is a project you are proud to have worked on?",
         keyRef: "description",
         charLimit: 1000,
+        initialSize: 5,
+        maxSize: 7,
     },
     {
         order: 11,
@@ -99,6 +101,8 @@ export const fields = [
         titleLabel:
             "What is your experience with programming? What languages/frameworks are you familiar with, if any?",
         keyRef: "exp",
+        initialSize: 3,
+        maxSize: 5,
     },
     {
         titleLabel: "Personal Pronouns",
@@ -135,15 +139,21 @@ export const fields = [
         required: true,
         order: 15,
         keyRef: "hackNum",
-        limit: [1, 10000],
+        limit: [0, 10000],
     },
     {
-        titleLabel:
-            "Would you potentially be interested in participating in a Hardware-based category hack?",
-        type: "Boolean",
+        order: 13,
+        type: "String",
         required: false,
-        order: 16,
-        keyRef: "hardwareHack",
+        titleLabel: "Do you have a personal website OR online resume?",
+        keyRef: "persWebOnRes",
+    },
+    {
+        order: 13,
+        type: "String",
+        required: false,
+        titleLabel: "Do you have a LinkedIn account?",
+        keyRef: "linkedIn",
     },
     {
         order: 17,
@@ -158,6 +168,14 @@ export const fields = [
         titleLabel: "What is your favorite flavour of yogurt?",
         required: false,
         keyRef: "yogurt",
+    },
+    {
+        titleLabel:
+            "Would you potentially be interested in participating in a Hardware-based category hack?",
+        type: "Boolean",
+        required: false,
+        order: 16,
+        keyRef: "hardwareHack",
     },
     {
         titleLabel: "Do you agree to the ",

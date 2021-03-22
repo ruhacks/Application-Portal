@@ -8,14 +8,14 @@ import "firebase/functions";
 dotenv.config({ silent: true });
 
 var firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    databaseURL: process.env.DATABASE_URL,
-    projectId: process.env.PROJECT_ID,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderId: process.env.MESSAGING_SENDER_ID,
-    appId: process.env.APP_ID,
-    measurementId: process.env.MEASUREMENT_ID,
+    apiKey: "AIzaSyDTWIlRWCDwIQrhqK22HWhyNDFElUJ6mGs",
+    authDomain: "ru-hacks-app-page.firebaseapp.com",
+    databaseURL: "https://ru-hacks-app-page.firebaseio.com",
+    projectId: "ru-hacks-app-page",
+    storageBucket: "ru-hacks-app-page.appspot.com",
+    messagingSenderId: "747202725161",
+    appId: "1:747202725161:web:a07256c311f9451ad1e338",
+    measurementId: "G-EQZRS2EGEE",
 };
 
 firebase.initializeApp(firebaseConfig);

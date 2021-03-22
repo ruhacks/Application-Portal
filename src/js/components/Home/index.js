@@ -50,6 +50,7 @@ class Home extends React.Component {
         }),
         setAppRedirectToFalse: PropTypes.func,
         updatedFieldsSuccessfully: PropTypes.bool,
+        resendVerificationLink: PropTypes.func,
     };
 
     constructor(props) {
@@ -183,7 +184,6 @@ class Home extends React.Component {
                 );
             }
         };
-
         const renderStatusText = () => {
             const {
                 admitted,
@@ -263,7 +263,7 @@ class Home extends React.Component {
                             variant="contained"
                             color="primary"
                             className={classes.resendVerification}
-                            onClick={this.handleResendVerification}
+                            onClick={this.props.resendVerificationLink}
                         >
                             Resend Verification
                         </Button>
