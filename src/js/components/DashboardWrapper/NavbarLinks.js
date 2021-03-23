@@ -12,11 +12,12 @@ import {
 export class NavbarLinks extends Component {
     static propTypes = {
         admin: PropTypes.bool,
+        closeMobile: PropTypes.func,
         profile: PropTypes.object,
         emailVerified: PropTypes.bool,
     };
     render() {
-        const { admin, profile, emailVerified } = this.props;
+        const { admin, profile, emailVerified, closeMobile } = this.props;
         let categories = admin
             ? AdminTabs
             : generateTabs(profile, emailVerified);
@@ -28,6 +29,7 @@ export class NavbarLinks extends Component {
                         admin={admin}
                         title={title}
                         links={links}
+                        closeMobile={closeMobile}
                     />
                 ))}
             </div>
@@ -45,12 +47,13 @@ class Category extends Component {
     static propTypes = {
         admin: PropTypes.bool,
         title: PropTypes.String,
+        closeMobile: PropTypes.func,
         links: PropTypes.array,
     };
 
     state = { collapsed: false };
     render() {
-        const { admin } = this.props;
+        const { admin, closeMobile } = this.props;
         return (
             <div className="dbnl-section">
                 <div
@@ -71,6 +74,9 @@ class Category extends Component {
                         height: !this.state.collapsed
                             ? this.props.links.length * 54
                             : 0,
+                    }}
+                    onClick={() => {
+                        if (window.innerWidth < 800) this.props.closeMobile();
                     }}
                 >
                     {this.props.links.map(({ title, link, external }) =>

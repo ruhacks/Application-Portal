@@ -25,6 +25,7 @@ $admin-super-light: #fff1f1;
             font-size: 20px;
             width: fit-content;
             margin-right: 30px;
+            user-select: none;
             color: #0004;
             &:hover {
                 color: $black;
