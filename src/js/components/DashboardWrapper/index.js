@@ -189,6 +189,9 @@ class DashboardWrapper extends Component {
                                 admin={admin}
                                 profile={profile}
                                 emailVerified={emailVerified}
+                                closeMobile={() => {
+                                    this.setState({ navbarOpen: false });
+                                }}
                             />
                         )}
                     </div>
@@ -198,8 +201,9 @@ class DashboardWrapper extends Component {
                     <div className="db-navbar">
                         <div
                             className={`db-navbar__side ${
-                                !this.state.navbarOpen && "collapsed"
-                            }`}
+                                !navbarOpen && "collapsed"
+                            }
+                            `}
                             onClick={() => {
                                 this.setState({
                                     navbarOpen: !navbarOpen,
