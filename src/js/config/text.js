@@ -24,7 +24,7 @@ const text = {
         confirmed:
             "We've recieved your confirmation, see our Discord for more details!",
         admitted:
-            "Congratulations! You've been admitted. Please complete your confirmation by clicking below or in the navigation",
+            "Congratulations! You've been admitted. Please complete your confirmation by clicking on confirmation in the navigation",
         declined:
             "We're sad to hear that you could not participate this year. Please reconsider applying next year!",
         rejected:

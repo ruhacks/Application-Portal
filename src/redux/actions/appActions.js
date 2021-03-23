@@ -14,10 +14,9 @@ export const APP_FIELDS_ERROR = "APP_FIELDS_ERROR";
 
 export const DISABLE_APP_REDIRECT = "DISABLE_APP_REDIRECT";
 
-export const requestApplication = (uid) => {
+export const requestApplication = () => {
     return {
         type: APPLICATION_REQUEST,
-        uid,
     };
 };
 
@@ -81,9 +80,15 @@ export const cancelAppRedirect = () => {
     };
 };
 
-export const getUsersApplication = (user) => (dispatch) => {
-    dispatch(requestApplication(user.uid));
-    const userAppDoc = firestore.doc(`applications/${user.uid}`);
+export const getUsersApplication = () => (dispatch) => {
+    dispatch(requestApplication());
+    const user = auth.currentUser;
+
+    if (!user) dispatch(applicationError({ message: "ERROR NO USER!" }));
+
+    const { uid } = user;
+
+    const userAppDoc = firestore.doc(`users/${uid}/application/fields`);
     userAppDoc
         .get()
         .then((response) => {
@@ -96,10 +101,14 @@ export const getUsersApplication = (user) => (dispatch) => {
 
 export const setUsersApplication = (application) => (dispatch) => {
     const user = auth.currentUser;
+
+    if (user.email) {
+        application.email = user.email;
+    }
     if (user && user.uid) {
         dispatch(updateAppRequest(application));
         firestore
-            .doc(`applications/${user.uid}`)
+            .doc(`users/${user.uid}/application/fields`)
             .set(application)
             .then(() => {
                 dispatch(updateAppSuccess());

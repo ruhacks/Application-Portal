@@ -5,8 +5,6 @@ import PropTypes from "prop-types";
 import isEmpty from "lodash/isEmpty";
 import { fieldKeys } from "../../config/defaultState";
 import classes from "../../config/classes";
-import { setUsersApplication } from "../../../redux/actions";
-import { connect } from "react-redux";
 
 class AppForm extends Component {
     static propTypes = {
@@ -43,6 +41,8 @@ class AppForm extends Component {
                     vars[keyRef].value = value !== null ? value : false;
                 } else if (type === "Integer") {
                     vars[keyRef].value = value !== null ? value : 0;
+                } else if (type === "dropdown") {
+                    vars[keyRef].value = value !== null ? value : "";
                 } else {
                     vars[keyRef].value = value !== null ? value : "";
                 }
@@ -226,7 +226,16 @@ class AppForm extends Component {
         const renderFields = () => {
             const { fields } = this.props;
             return fields.map((fieldObj) => {
-                const { keyRef, required, titleLabel, type } = fieldObj;
+                const {
+                    keyRef,
+                    required,
+                    titleLabel,
+                    type,
+                    link,
+                    maxSize,
+                    initialSize,
+                    staticLinkText,
+                } = fieldObj;
 
                 let value = false;
                 //Apply value if it exists in the user's application
@@ -250,6 +259,12 @@ class AppForm extends Component {
                             errorText={
                                 this.state.applicationData[keyRef].errorText
                             } //For displaying error text
+                            link={link ? link : false}
+                            initialSize={initialSize ? initialSize : 1}
+                            maxSize={maxSize ? maxSize : 3}
+                            staticLinkText={
+                                staticLinkText ? staticLinkText : ""
+                            }
                         />
                     </Grid>
                 );
@@ -257,7 +272,7 @@ class AppForm extends Component {
         };
 
         return (
-            <div style={{ padding: 16, margin: "auto", maxWidth: 600 }}>
+            <div style={{ padding: 16, margin: "auto", maxWidth: 1200 }}>
                 <Grid
                     container
                     alignItems="center"
@@ -266,23 +281,28 @@ class AppForm extends Component {
                 >
                     <Typography variant="h2">Application</Typography>
                 </Grid>
-
-                <Paper style={{ padding: 16 }}>
-                    <Typography component="p" className={classes.errorText}>
-                        {errorText}
-                    </Typography>
+                <hr></hr>
+                <Paper style={{ padding: 16, margin: "2rem" }}>
                     <form id="mainForm" onSubmit={this.handleSubmitForm}>
-                        <Grid container alignItems="flex-start" spacing={2}>
+                        <Grid container alignItems="flex-start" spacing={3}>
                             {renderFields()}
-                            <Button
-                                color="primary"
-                                size="medium"
-                                type="submit"
-                                variant="contained"
-                                fullWidth
+                            <Typography
+                                component="p"
+                                className={classes.errorText}
                             >
-                                Submit Application
-                            </Button>
+                                {errorText}
+                            </Typography>
+                            {this.props.setUsersApplication && (
+                                <Button
+                                    color="primary"
+                                    size="medium"
+                                    type="submit"
+                                    variant="contained"
+                                    fullWidth
+                                >
+                                    Submit Application
+                                </Button>
+                            )}
                         </Grid>
                     </form>
                 </Paper>
@@ -291,12 +311,4 @@ class AppForm extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        setUsersApplication: (applicationData) => {
-            dispatch(setUsersApplication(applicationData));
-        },
-    };
-}
-
-export default connect(null, mapDispatchToProps)(AppForm);
+export default AppForm;

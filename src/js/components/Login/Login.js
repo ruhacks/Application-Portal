@@ -49,6 +49,7 @@ class Login extends React.Component {
         isAuthenticated: PropTypes.bool,
         sendForgotPassword: PropTypes.func,
         forgotErrorObject: PropTypes.func,
+        verificationLinkError: PropTypes.bool,
     };
     constructor(props) {
         super(props);
@@ -121,7 +122,7 @@ class Login extends React.Component {
             fpSent,
             fpRequest,
             fpFail,
-            forgotErrorObject,
+            verificationLinkError,
         } = this.props; //gather prop variables given to us from our redux store via mapStateToProps()
         const { forgotMode, promptTitle } = this.state;
         if (isAuthenticated) {
@@ -149,10 +150,7 @@ class Login extends React.Component {
                                         component="p"
                                         className={classes.errorText}
                                     >
-                                        {forgotErrorObject &&
-                                        forgotErrorObject.message
-                                            ? forgotErrorObject.message
-                                            : ""}
+                                        {"Invalid email!"}
                                     </Typography>
                                 )}
                                 {fpSent && (
@@ -173,6 +171,7 @@ class Login extends React.Component {
                                             id="email"
                                             label="Email Address"
                                             name="email"
+                                            required
                                             onChange={this.handleEmailChange}
                                         />
                                         <TextField
@@ -183,21 +182,32 @@ class Login extends React.Component {
                                             label="Password"
                                             type="password"
                                             id="password"
+                                            required
                                             onChange={this.handlePasswordChange}
                                         />
-                                        <Box m={0.5} p={0.5} width="100%">
+                                        {loginError && (
+                                            <Typography
+                                                component="p"
+                                                className={classes.errorText}
+                                            >
+                                                {
+                                                    "Invalid username or password!"
+                                                }
+                                            </Typography>
+                                        )}
+                                        <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="submit"
-                                                fullWidth
                                                 variant="contained"
                                                 color="primary"
+                                                fullWidth
                                                 className={classes.submit}
                                                 onClick={this.handleSubmit}
                                             >
                                                 Sign In
                                             </Button>
                                         </Box>
-                                        <Box m={0.5} p={0.5} width="100%">
+                                        <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="button"
                                                 to="/register/"
@@ -266,38 +276,53 @@ class Login extends React.Component {
                             </Paper>
                         </Grid>
                     </Grid>
-                    {/* <Modal
-                        open={this.state.forgotMode}
-                        onClose={this.setCloseMode}
-                        aria-labelledby="Forgot Password"
-                        aria-describedby="A pop up form for users that forgot their passwords"
-                    >
-                        <div className={classes.modalContainer}>
-                            <Paper className={classes.paper}>
-
-                                <TextField
-                                    variant="outlined"
-                                    margin="normal"
-                                    fullWidth
-                                    id="emailForgot"
-                                    label="Email Address"
-                                    name="emailForgot"
-                                    onChange={this.handleForgotPasswordEmailChange}
-                                />
-                                <Box m={0.5} p={0.5} width="100%">
-                                    <Button
+                    {
+                        <Modal
+                            open={this.state.forgotMode}
+                            onClose={this.setCloseMode}
+                            aria-labelledby="Forgot Password"
+                            aria-describedby="A pop up form for users that forgot their passwords"
+                        >
+                            <div className={classes.modalContainer}>
+                                <Paper className={classes.paper}>
+                                    <TextField
+                                        variant="outlined"
+                                        margin="normal"
                                         fullWidth
-                                        variant="contained"
-                                        color="primary"
-                                        className={classes.submit}
-                                        onClick={this.handleForgotPasswordSubmit}
-                                    >
-                                        Send Forgot Password Link
-                                    </Button>
-                                </Box>
-                            </Paper>
-                        </div>
-                    </Modal> */}
+                                        id="emailForgot"
+                                        label="Email Address"
+                                        name="emailForgot"
+                                        onChange={
+                                            this.handleForgotPasswordEmailChange
+                                        }
+                                    />
+                                    {verificationLinkError && (
+                                        <Typography
+                                            component="p"
+                                            className={classes.errorText}
+                                        >
+                                            {
+                                                "Error sending verification link, please try again later"
+                                            }
+                                        </Typography>
+                                    )}
+                                    <Box m={0.5} p={0.5} width="100%">
+                                        <Button
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}
+                                            onClick={
+                                                this.handleForgotPasswordSubmit
+                                            }
+                                        >
+                                            Send Forgot Password Link
+                                        </Button>
+                                    </Box>
+                                </Paper>
+                            </div>
+                        </Modal>
+                    }
                 </div>
             );
         }
@@ -314,6 +339,7 @@ function mapStateToProps(state) {
         fpRequest: state.auth.fpRequest,
         fpFail: state.auth.fpFail,
         forgotErrorObject: state.auth.forgotErrorObject,
+        verificationLinkError: state.auth.verificationLinkError,
     };
 }
 

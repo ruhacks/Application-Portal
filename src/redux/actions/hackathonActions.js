@@ -28,11 +28,10 @@ export const subscribeToHackathonTime = (setUnsubscribe) => (dispatch) => {
     dispatch(gettingHackDate());
     const settingsRef = firestore.doc("hackathon/info");
     const unsubscribe = settingsRef.onSnapshot((settings) => {
-        console.log({ settings });
         if (settings.exists) {
             dispatch(setHackDate(settings.data()));
         } else {
-            dispatch(errorHackDate({ MESSAGE: "NOT FOUND" }));
+            dispatch(errorHackDate({ message: "NOT FOUND" }));
         }
     });
     setUnsubscribe(unsubscribe);

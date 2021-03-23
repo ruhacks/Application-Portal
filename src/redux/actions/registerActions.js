@@ -17,6 +17,8 @@ export const REGISTER_ERROR = "REGISTER_ERROR";
 export const VERIFICATION_REQUEST = "VERIFIACTION_REQUEST";
 export const VERIFICATION_SUCCESSFULLY_SENT = "VERIFICATION_SUCCESSFULLY_SENT";
 
+export const REGISTRATION_PROCESS_RESET = "REGISTRATION_PROCESS_RESET";
+
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 export const requestRegister = () => {
     return {
@@ -51,6 +53,12 @@ export const verificationSent = (user) => {
     };
 };
 
+export const registrationProcessReset = () => {
+    return {
+        type: REGISTRATION_PROCESS_RESET,
+    };
+};
+
 // The functions that do the work when called upon and the ones that dispatches actions to the reducer at various stages
 
 //Attempts to register and send verification to user
@@ -62,15 +70,14 @@ export const registerUser = (email, password) => (dispatch) => {
             dispatch(requestSendVerification()); //Disaptches VERIFICATION_REQUEST event to the reducer to change redux store state variables
             user.user
                 .sendEmailVerification({
-                    url:
-                        "https://ru-hacks-app-page.firebaseapp.com/__/auth/action?mode=action&oobCode=code&continueUrl=http://localhost:8080/",
+                    url: "https://app.ruhacks.com/",
                     handleCodeInApp: false,
                 })
                 .then(() => {
                     dispatch(verificationSent(user)); //Dispatches VERIFICATION_SUCCESSFULLY_SENT event to the reducer to change redux store state variables
                 })
                 .catch((error) => {
-                    dispatch(registerError);
+                    dispatch(registerError(error));
                 });
         })
         .catch((error) => {

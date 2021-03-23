@@ -2,9 +2,9 @@ import {
     CONFIRMATION_REQUEST,
     CONFIRMATION_SUCCESS,
     CONFIRMATION_ERROR,
-    UPDATE_CONF_REQUEST,
-    UPDATE_CONF_SUCCESS,
-    UPDATE_CONF_ERROR,
+    UPDATE_ADDR_REQUEST,
+    UPDATE_ADDR_SUCCESS,
+    UPDATE_ADDR_ERROR,
     DISCORD_URL_REQUEST,
     DISCORD_URL_SUCCESS,
     DISCORD_URL_FAILURE,
@@ -14,12 +14,32 @@ export default (
     state = {
         isRequestingConfirmation: false,
         isRequestingDiscordURL: false,
+        isUpdatingAddress: false,
+        addressUpdated: false,
+        addressError: {},
         discordData: {},
         url: "",
     },
     action
 ) => {
     switch (action.type) {
+        case UPDATE_ADDR_REQUEST:
+            return {
+                ...state,
+                isUpdatingAddress: true,
+            };
+        case UPDATE_ADDR_SUCCESS:
+            return {
+                ...state,
+                isUpdatingAddress: false,
+                addressUpdated: true,
+            };
+        case UPDATE_ADDR_ERROR:
+            return {
+                ...state,
+                isUpdatingAddress: false,
+                addressError: action.err,
+            };
         case CONFIRMATION_REQUEST:
             return {
                 ...state,

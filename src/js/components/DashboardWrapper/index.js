@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import EggwardImage from "../../../media/eggwardcomputer.png";
-import { Facebook, Instagram, Twitter } from "@material-ui/icons";
+import EggwardGif from "../../../media/eggward_bongo.gif";
+import {
+    ChevronLeft,
+    Clear,
+    Facebook,
+    Instagram,
+    Twitter,
+} from "@material-ui/icons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../../../redux/actions/authActions";
@@ -26,6 +33,7 @@ class DashboardWrapper extends Component {
         hackathon: PropTypes.shape({
             Hackathon: PropTypes.object,
         }),
+        children: PropTypes.array,
     };
 
     constructor(props) {
@@ -33,14 +41,22 @@ class DashboardWrapper extends Component {
         this.state = {
             navbarOpen: true,
             unsubHackSettings: null,
+            gif: false,
         };
 
         this.setUnsubscribe = this.setUnsubscribe.bind(this);
+        this.changeIcon = this.changeIcon.bind(this);
     }
 
     setUnsubscribe(unsubVar) {
         this.setState({
             unsubHackSettings: unsubVar,
+        });
+    }
+
+    changeIcon() {
+        this.setState({
+            gif: !this.state.gif,
         });
     }
     renderNavHeader() {
@@ -59,6 +75,7 @@ class DashboardWrapper extends Component {
             daysLeft = parseInt((hackTime - currentDate) / (24 * 3600 * 1000));
         }
 
+        const imageSource = this.state.gif ? EggwardImage : EggwardGif;
         const days = [
             "Monday",
             "Tuesday",
@@ -82,10 +99,16 @@ class DashboardWrapper extends Component {
         dateText = `${days[currentDate.getDay()]}, ${
             months[currentDate.getMonth()]
         } ${currentDate.getUTCDate()}`;
+
         return (
             <div className="db-sidebar__header ">
                 <div className={`dbsbh ${admin && "admin"}`}>
-                    <img className="dbsbh-img" src={EggwardImage} />
+                    <img
+                        className="dbsbh-img"
+                        src={this.state.gif ? EggwardGif : EggwardImage}
+                        onMouseEnter={this.changeIcon}
+                        onMouseLeave={this.changeIcon}
+                    />
                     <div className="dbsbh-content">
                         <div className="dbsbh-content__ruhacks">RU Hacks</div>
                         <div className="dbsbh-content__date">{dateText}</div>
@@ -105,18 +128,18 @@ class DashboardWrapper extends Component {
         let socials = [
             {
                 name: "tw",
-                icon: <i className="fab fa-twitter"></i>,
-                link: "https://www.facebook.com/ryersonuhacks",
-            },
-            {
-                name: "fb",
-                icon: <i className="fab fa-instagram"></i>,
+                icon: <Twitter />,
                 link: "https://twitter.com/ryersonuhacks",
             },
             {
-                name: "in",
-                icon: <i className="fab fa-facebook"></i>,
+                name: "fb",
+                icon: <Facebook />,
                 link: "https://www.instagram.com/ruhacks/?hl=en",
+            },
+            {
+                name: "in",
+                icon: <Instagram />,
+                link: "https://www.facebook.com/ryersonuhacks",
             },
         ];
         return socials.map(({ icon, link, name }) => (
@@ -127,7 +150,8 @@ class DashboardWrapper extends Component {
     }
 
     componentDidMount() {
-        this.props.subscribeToHackathonTime(this.setUnsubscribe);
+        if (this.state.unsubHackSettings === null)
+            this.props.subscribeToHackathonTime(this.setUnsubscribe);
     }
 
     componentWillUnmount() {
@@ -139,7 +163,6 @@ class DashboardWrapper extends Component {
         const { user, logoutUser, profile } = this.props;
         const { emailVerified } = user;
         const admin = profile.isAdmin ? profile.isAdmin : false;
-        const displayConf = profile && profile.admitted;
         const { navbarOpen } = this.state;
 
         return (
@@ -153,7 +176,7 @@ class DashboardWrapper extends Component {
                             });
                         }}
                     >
-                        <i className="fas fa-times"></i>
+                        <Clear />
                     </div>
                     {this.renderNavHeader()}
                     <div className={`dbsbh-h1 ${admin && "admin"}`}>
@@ -161,7 +184,16 @@ class DashboardWrapper extends Component {
                     </div>
 
                     <div className="dblinks">
-                        {emailVerified && <NavbarLinks admin={admin} />}
+                        {emailVerified && (
+                            <NavbarLinks
+                                admin={admin}
+                                profile={profile}
+                                emailVerified={emailVerified}
+                                closeMobile={() => {
+                                    this.setState({ navbarOpen: false });
+                                }}
+                            />
+                        )}
                     </div>
                     <div className="dbfooter">{this.renderNavbarFooter()}</div>
                 </div>
@@ -169,15 +201,16 @@ class DashboardWrapper extends Component {
                     <div className="db-navbar">
                         <div
                             className={`db-navbar__side ${
-                                !this.state.navbarOpen && "collapsed"
-                            }`}
+                                !navbarOpen && "collapsed"
+                            }
+                            `}
                             onClick={() => {
                                 this.setState({
                                     navbarOpen: !navbarOpen,
                                 });
                             }}
                         >
-                            <i className="fas fa-chevron-circle-left"></i>
+                            <ChevronLeft />
                         </div>
                         {profile.name ? (
                             <div className={`db-navbar__name`}>

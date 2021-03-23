@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 /*                                  register.js
 Description:    Initializes state variables regarding registration. Then whenever an action is dispatched like REGISTER_REQUEST it adjusts the state variables accordingly.
                 This reducer function will be called everytime an action is dispatched from ../actions/registerActions.js
@@ -14,6 +12,7 @@ import {
     REGISTER_ERROR,
     VERIFICATION_REQUEST,
     VERIFICATION_SUCCESSFULLY_SENT,
+    REGISTRATION_PROCESS_RESET,
 } from "../actions/registerActions";
 
 export default (
@@ -45,7 +44,7 @@ export default (
         case REGISTER_ERROR:
             return {
                 ...state,
-                registerError: true,
+                registerError: action.error,
                 isRegistering: false,
                 verificationRequest: false,
             };
@@ -61,6 +60,11 @@ export default (
                 verificationSent: true,
                 registrationProcessComplete: true,
                 registrationComplete: false,
+            };
+        case REGISTRATION_PROCESS_RESET:
+            return {
+                ...state,
+                registrationProcessComplete: false,
             };
         default:
             return state;

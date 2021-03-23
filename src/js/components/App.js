@@ -25,6 +25,7 @@ import Application from "./Applications";
 import { Confirmation } from "./Confirmation";
 import Admin from "./Admin";
 import AdminProtectedRoute from "./Routes/AdminProtectedRoute";
+import Stats from "./Admin/Stats";
 
 class App extends React.Component {
     // This is where we dsecribe our prop variables that we import from the mapStateToProps
@@ -65,7 +66,6 @@ class App extends React.Component {
                     emailVerified={emailVerified}
                 />
                 <AdminProtectedRoute
-                    exact
                     path="/admin"
                     component={Admin}
                     isAuthenticated={isAuthenticated}

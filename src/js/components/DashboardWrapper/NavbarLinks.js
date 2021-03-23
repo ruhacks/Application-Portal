@@ -2,15 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import AdminTabs from "./AdminTabs";
-import HackerTabs from "./HackerTabs";
+import { generateTabs } from "./HackerTabs";
+import PropTypes from "prop-types";
+import {
+    KeyboardArrowDown,
+    KeyboardArrowLeft,
+    KeyboardArrowUp,
+} from "@material-ui/icons";
 export class NavbarLinks extends Component {
+    static propTypes = {
+        admin: PropTypes.bool,
+        closeMobile: PropTypes.func,
+        profile: PropTypes.object,
+        emailVerified: PropTypes.bool,
+    };
     render() {
-        const { admin } = this.props;
-        let categories = admin ? AdminTabs : HackerTabs;
+        const { admin, profile, emailVerified, closeMobile } = this.props;
+        let categories = admin
+            ? AdminTabs
+            : generateTabs(profile, emailVerified);
         return (
             <div className={`dbnl ${admin && "admin"}`}>
                 {categories.map(({ title, links }) => (
-                    <Category admin={admin} title={title} links={links} />
+                    <Category
+                        key={title}
+                        admin={admin}
+                        title={title}
+                        links={links}
+                        closeMobile={closeMobile}
+                    />
                 ))}
             </div>
         );
@@ -24,9 +44,16 @@ const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarLinks);
 
 class Category extends Component {
+    static propTypes = {
+        admin: PropTypes.bool,
+        title: PropTypes.String,
+        closeMobile: PropTypes.func,
+        links: PropTypes.array,
+    };
+
     state = { collapsed: false };
     render() {
-        const { admin } = this.props;
+        const { admin, closeMobile } = this.props;
         return (
             <div className="dbnl-section">
                 <div
@@ -36,11 +63,8 @@ class Category extends Component {
                     }
                 >
                     {this.props.title}
-                    <i
-                        className={`fas fa-chevron-down ${
-                            this.state.collapsed ? "collapsed" : ""
-                        }`}
-                    ></i>
+                    {this.state.collapsed && <KeyboardArrowUp />}
+                    {!this.state.collapsed && <KeyboardArrowDown />}
                 </div>
                 <div
                     className={`dbnl-links ${
@@ -50,6 +74,9 @@ class Category extends Component {
                         height: !this.state.collapsed
                             ? this.props.links.length * 54
                             : 0,
+                    }}
+                    onClick={() => {
+                        if (window.innerWidth < 800) this.props.closeMobile();
                     }}
                 >
                     {this.props.links.map(({ title, link, external }) =>

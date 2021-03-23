@@ -29,8 +29,10 @@ import {
 } from "@material-ui/core";
 
 import { default as logo } from "../../../../../assets/images/RU_RGB.svg";
-import { registerUser } from "../../../../redux/actions"; //import registerUser() from registration actions in src/redux/actions/registerActions.js
-
+import {
+    registerUser,
+    registrationProcessReset,
+} from "../../../../redux/actions"; //import registerUser() from registration actions in src/redux/actions/registerActions.js
 class Register extends React.Component {
     //Declare prop variables types
     static propTypes = {
@@ -38,6 +40,8 @@ class Register extends React.Component {
         errorText: PropTypes.string,
         registrationProcessComplete: PropTypes.bool,
         registerUser: PropTypes.func,
+        regProcReset: PropTypes.func,
+        registerError: PropTypes.any,
     };
     constructor(props) {
         super(props);
@@ -50,6 +54,20 @@ class Register extends React.Component {
             displayErrorText: false,
             submittedRegistration: false,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (
+            this.props.registerError &&
+            this.state.submittedRegistration &&
+            this.props.registerError.message
+        ) {
+            this.setState({
+                submittedRegistration: false,
+                displayErrorText: true,
+                errorText: this.props.registerError.message,
+            });
+        }
     }
 
     // Handles form submission
@@ -98,11 +116,14 @@ class Register extends React.Component {
         this.setState({ password_confirm: target.value });
     };
 
+    componentWillUnmount() {
+        this.props.regProcReset();
+    }
+
     render() {
         const { registrationProcessComplete } = this.props;
-
         if (registrationProcessComplete) {
-            return <Redirect to="/login" />; //if user is registered redirect to login
+            return <Redirect to="/" />; //if user is registered redirect to login
         } else {
             //Render Registration page elements
             return (
@@ -115,7 +136,7 @@ class Register extends React.Component {
                         justify="center"
                         style={{ minHeight: "100vh" }}
                     >
-                        <Grid item xs={3}>
+                        <Grid item xs={3} className="login-con">
                             <Paper className={classes.paper}>
                                 <Avatar className={classes.avatar} src={logo} />
                                 {!this.state.submittedRegistration && (
@@ -126,20 +147,21 @@ class Register extends React.Component {
                                         <TextField
                                             variant="outlined"
                                             margin="normal"
-                                            fullWidth
                                             id="email"
                                             label="Email Address"
                                             name="email"
+                                            fullWidth
+                                            type="email"
                                             onChange={this.handleEmailChange}
                                         />
                                         <TextField
                                             variant="outlined"
                                             margin="normal"
-                                            fullWidth
                                             name="password"
                                             label="Password"
                                             type="password"
                                             id="password"
+                                            fullWidth
                                             onChange={this.handlePasswordChange}
                                         />
                                         <TextField
@@ -167,7 +189,7 @@ class Register extends React.Component {
                                 )}
                                 {!this.state.submittedRegistration && (
                                     <div>
-                                        <Box m={0.5} width="100%">
+                                        <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="button"
                                                 fullWidth
@@ -179,7 +201,7 @@ class Register extends React.Component {
                                                 Register
                                             </Button>
                                         </Box>
-                                        <Box m={0.5} p={0.5} width="100%">
+                                        <Box m={0.5} p={0.5}>
                                             <Button
                                                 type="button"
                                                 to="/login/"
@@ -207,6 +229,7 @@ function mapStateToProps(state) {
     return {
         isVerifying: state.register.isVerifying,
         registrationProcessComplete: state.register.registrationProcessComplete,
+        registerError: state.register.registerError,
     };
 }
 
@@ -215,6 +238,9 @@ function mapDispatchToProps(dispatch) {
     return {
         registerUser: (email, password) => {
             dispatch(registerUser(email, password));
+        },
+        regProcReset: () => {
+            dispatch(registrationProcessReset());
         },
     };
 }
