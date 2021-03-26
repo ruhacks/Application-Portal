@@ -28,6 +28,7 @@ class Field extends Component {
         initialSize: PropTypes.string,
         maxSize: PropTypes.string,
         staticLinkText: PropTypes.string,
+        disableAllFields: PropTypes.bool,
     };
 
     render() {
@@ -44,6 +45,7 @@ class Field extends Component {
             initialSize,
             maxSize,
             staticLinkText,
+            disableAllFields,
         } = this.props;
 
         if (type === "String" || type === "Integer") {
@@ -66,6 +68,7 @@ class Field extends Component {
                     helperText={errorText}
                     inputProps={{ style: { fontSize: 20 } }} // font size of input text
                     InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
+                    disabled={disableAllFields}
                 />
             );
         } else if (type === "Boolean") {
@@ -94,6 +97,7 @@ class Field extends Component {
                                 titleLabel
                             )
                         }
+                        disabled={disableAllFields}
                         id={name}
                         control={
                             <Checkbox
@@ -120,6 +124,7 @@ class Field extends Component {
                     fullWidth
                     variant="standard"
                     InputLabelProps={{ style: { fontSize: 20 } }} // font size of input label
+                    disabled={disableAllFields}
                 >
                     <InputLabel style={{ fontSize: 20 }} id={name + "-label"}>
                         {titleLabel}

@@ -259,6 +259,7 @@ export const gatherUsers = (sortBy, order, lastUserSnapshot) => async (
 
         profiles.forEach((profile) => {
             profileData.users[profile.id] = profile.data();
+            profileData.users[profile.id].uid = profile.id;
         });
 
         const gettingData = Object.keys(profileData.users).map(

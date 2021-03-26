@@ -20,22 +20,6 @@ import "../../../../css/_userTable.scss";
 import { fields } from "../../../config/defaultState";
 import AppForm from "../../Applications/AppForm";
 
-/*
-<DataGrid
-                rows={rows}
-                columns={data.columns}
-                pagination
-                pageSize={5}
-                rowCount={100}
-                paginationMode="server"
-                onPageChange={handlePageChange}
-                loading={loading}
-            />
-*/
-
-/*
-
-*/
 class Event extends Component {
     static propTypes = {
         gatherUsers: PropTypes.func,
@@ -95,6 +79,7 @@ class Event extends Component {
             let fullName = "",
                 programName = "",
                 schoolName = "",
+                lastSubmitted = "",
                 year = "";
             if (users[uid].application) {
                 const app = users[uid].application;
@@ -102,6 +87,7 @@ class Event extends Component {
                 programName = app.program;
                 schoolName = app.school;
                 year = app.studyLevel;
+                lastSubmitted = app.submittedAt.toDate();
             }
 
             const {
@@ -128,6 +114,7 @@ class Event extends Component {
                 D: declined,
                 Admin: isAdmin,
                 R: rejected,
+                lastSubmitted,
                 uid,
             });
         });
@@ -160,7 +147,7 @@ class Event extends Component {
             {
                 field: "Year",
                 cellClassName: "year-cell",
-                flex: 1,
+                flex: 0.33,
             },
             {
                 field: "CA",
@@ -225,6 +212,13 @@ class Event extends Component {
                         ? "action-cell-complete"
                         : "action-cell-incomplete",
             },
+            {
+                field: "lastSubmitted",
+                flex: 1,
+                type: "dateTime",
+                description: "Last submission of application date/time",
+                cellClassName: "submitted-cell",
+            },
         ];
 
         return GridColumns;
@@ -232,11 +226,14 @@ class Event extends Component {
 
     handleRowClicked(rowDat) {
         const { row } = rowDat;
-        updatedUIDs;
-        this.setState({
-            userSelected: selectedUser,
-            openModal: true,
-        });
+        const { uid } = row;
+        const { users } = this.props.userData;
+        if (users && uid) {
+            this.setState({
+                userSelected: users[uid],
+                openModal: true,
+            });
+        }
     }
 
     componentDidMount() {
@@ -253,6 +250,7 @@ class Event extends Component {
             <AppForm
                 application={this.state.userSelected.application}
                 fields={fields}
+                disableAllFields
             />
         );
     }
@@ -405,12 +403,12 @@ function mapStateToProps(state) {
     if (updatedUIDs) {
         updatedUIDs.forEach((uid) => {
             typeOfUpdate === "admit"
-                ? (userData.users[uid].admitted = true)
-                : (userData.users[uid].rejected = true);
+                ? (userData.users[uid].status.admitted = true)
+                : (userData.users[uid].status.rejected = true);
         });
     }
     return {
-        userData: state.admin.userData,
+        userData,
         gettingUsers: state.admin.gettingUsers,
         updatedUID,
         updatedUIDs,
