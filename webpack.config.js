@@ -1,17 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const dotenv = require("dotenv");
-const webpack = require("webpack");
 
 module.exports = () => {
-    // call dotenv and it will return an Object with a parsed key
-    const env = dotenv.config().parsed;
-
-    const envKeys = Object.keys(env).reduce((prev, next) => {
-        prev[`process.env.${next}`] = JSON.stringify(env[next]);
-        return prev;
-    }, {});
-
     return {
         //entry: "./src/index.js",
         entry: {
@@ -75,7 +65,6 @@ module.exports = () => {
                     { from: "./src/media/favicon.ico" }, // <- your path to favicon
                 ],
             }),
-            new webpack.DefinePlugin(envKeys),
         ],
         resolve: {
             extensions: ["*", ".js", ".jsx"],
