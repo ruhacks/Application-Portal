@@ -90,6 +90,10 @@ module.exports = () => {
             historyApiFallback: {
                 index: "index.html",
             },
+            port: "8080",            // in ASF is METADATA.port,
+            host: "0.0.0.0",         // in ASF is METADATA.host,     
+            public: "0.0.0.0:8080",  // in ASF is METADATA.public,
+            disableHostCheck: true,
         },
     };
 };
