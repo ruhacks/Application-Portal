@@ -11,11 +11,11 @@ class AppForm extends Component {
         application: PropTypes.object,
         fields: PropTypes.array,
         setUsersApplication: PropTypes.func,
+        disableAllFields: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
-
         const getStateVars = () => {
             let vars = {};
 
@@ -224,7 +224,7 @@ class AppForm extends Component {
 
         const emptyApplication = isEmpty(application);
         const renderFields = () => {
-            const { fields } = this.props;
+            const { fields, disableAllFields } = this.props;
             return fields.map((fieldObj) => {
                 const {
                     keyRef,
@@ -264,6 +264,9 @@ class AppForm extends Component {
                             maxSize={maxSize ? maxSize : 3}
                             staticLinkText={
                                 staticLinkText ? staticLinkText : ""
+                            }
+                            disableAllFields={
+                                disableAllFields ? disableAllFields : false
                             }
                         />
                     </Grid>

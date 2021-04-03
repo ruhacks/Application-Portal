@@ -1,11 +1,7 @@
 import { auth, firestore } from "../../firebase";
 import { updateAppRequest } from "./appActions";
 
-import DiscordOauth2 from "discord-oauth2";
-import dotenv from "dotenv";
 import axios from "axios";
-
-dotenv.config({ silent: true });
 
 export const CONFIRMATION_REQUEST = "CONFIRMATION_REQUEST";
 export const CONFIRMATION_SUCCESS = "CONFIRMATION_SUCCESS";
