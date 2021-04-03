@@ -36,11 +36,16 @@ class Confirmation extends Component {
         super(props);
 
         this.state = {
-            name: "",
-            street_address: "",
-            city: "",
-            state: "",
-            zip_code: "",
+            address: {
+                street_number: "",
+                street_address: "",
+                second_address: "",
+                city: "",
+                state: "",
+                postal_code: "",
+                country: "",
+                googleMapLink: "",
+            },
             secondStep: false,
             mapIsReady: false,
         };
@@ -60,6 +65,37 @@ class Confirmation extends Component {
         this.props.getUsersConfirmation();
     }
 
+    componentDidUpdate(prevProps) {
+        if (
+            isEmpty(prevProps.confirmation) &&
+            !isEmpty(this.props.confirmation)
+        ) {
+            if (!isEmpty(this.props.confirmation.address)) {
+                const {
+                    city,
+                    country,
+                    postal_code,
+                    second_address,
+                    state,
+                    street_address,
+                    street_number,
+                } = this.props.confirmation.address;
+                this.setState({
+                    address: {
+                        city,
+                        country,
+                        postal_code,
+                        second_address,
+                        state,
+                        street_address,
+                        street_number,
+                    },
+                    secondStep: true,
+                });
+            }
+        }
+    }
+
     firstStepComplete(address) {
         if (address) {
             this.props.updateUsersAddress(address);
@@ -73,6 +109,7 @@ class Confirmation extends Component {
     render() {
         const { user, confirmation, url, isRequestingDiscordURL } = this.props;
         const { secondStep, mapIsReady } = this.state;
+
         if (
             !user ||
             !user.uid ||
@@ -96,6 +133,7 @@ class Confirmation extends Component {
                 <Paper style={{ padding: 16 }}>
                     <LocationSearchInput
                         callbackFcn={this.firstStepComplete}
+                        address={this.state.address}
                     ></LocationSearchInput>
                     {secondStep && (
                         <div>
