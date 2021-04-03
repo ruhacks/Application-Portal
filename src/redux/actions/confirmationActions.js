@@ -97,7 +97,7 @@ export const updateAddrError = (error) => {
 export const updateUsersAddress = (address) => (dispatch) => {
     dispatch(updateAddrRequest());
     const user = auth.currentUser;
-    const uid = { user };
+    const { uid } = user;
     const confDoc = firestore.doc(`/confirmation/${uid}`);
     confDoc
         .set({ address: address }, { merge: true })
@@ -132,9 +132,10 @@ export const getDiscordURL = () => (dispatch) => {
     dispatch(discordURLRequest());
     const user = auth.currentUser;
     if (!user) return dispatch(updateConfError({ error: "No user found!" }));
-    const DISCORD_API_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/getURL`;
-    //const DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
-
+    let DISCORD_API_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/getURL`;
+    if (process.env.NODE_ENV === "development") {
+        DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
+    }
     if (user) {
         user.getIdToken().then((token) => {
             axios
