@@ -59,18 +59,39 @@ class LocationSearchInput extends React.Component {
     }
 
     initialState() {
+        const { address } = this.props;
         return {
-            street_number: "",
-            street_address: "",
-            second_address: "",
-            city: "",
-            state: "",
-            postal_code: "",
-            country: "",
-            googleMapLink: "",
+            street_number: address.street_number || "",
+            street_address: address.street_address || "",
+            second_address: address.second_address || "",
+            city: address.city || "",
+            state: address.state || "",
+            postal_code: address.postal_code || "",
+            country: address.country || "",
+            googleMapLink: address.googleMapLink || "",
             formError: false,
             errorText: "",
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        ///got address
+        if (
+            !prevProps.address.receivedFromFirestore &&
+            this.props.address.receivedFromFirestore
+        ) {
+            const { address } = this.props;
+            this.setState({
+                street_number: address.street_number || "",
+                street_address: address.street_address || "",
+                second_address: address.second_address || "",
+                city: address.city || "",
+                state: address.state || "",
+                postal_code: address.postal_code || "",
+                country: address.country || "",
+                googleMapLink: address.googleMapLink || "",
+            });
+        }
     }
 
     handleChange(event) {
@@ -186,6 +207,7 @@ class LocationSearchInput extends React.Component {
                             type="text"
                             placeholder="Start typing an address..."
                             style={{ width: "100%" }}
+                            disabled={!isEmpty(this.state.googleMapLink)}
                         />
                     </div>
                     <div className="conf-form-container">
@@ -249,16 +271,18 @@ class LocationSearchInput extends React.Component {
                             style={{ width: "100%" }}
                         />
                     </div>
-                    <div className="conf-form-submit">
-                        <Button
-                            onClick={this.handleSubmit}
-                            variant="contained"
-                            fullWidth
-                            color="primary"
-                        >
-                            Submit
-                        </Button>
-                    </div>
+                    {isEmpty(this.state.googleMapLink) && (
+                        <div className="conf-form-submit">
+                            <Button
+                                onClick={this.handleSubmit}
+                                variant="contained"
+                                fullWidth
+                                color="primary"
+                            >
+                                Submit
+                            </Button>
+                        </div>
+                    )}
                 </form>
             </div>
         );

@@ -45,6 +45,7 @@ class Confirmation extends Component {
                 postal_code: "",
                 country: "",
                 googleMapLink: "",
+                receivedFromFirestore: false,
             },
             secondStep: false,
             mapIsReady: false,
@@ -70,6 +71,7 @@ class Confirmation extends Component {
             isEmpty(prevProps.confirmation) &&
             !isEmpty(this.props.confirmation)
         ) {
+            this.props.getDiscordURL();
             if (!isEmpty(this.props.confirmation.address)) {
                 const {
                     city,
@@ -79,6 +81,7 @@ class Confirmation extends Component {
                     state,
                     street_address,
                     street_number,
+                    googleMapLink,
                 } = this.props.confirmation.address;
                 this.setState({
                     address: {
@@ -89,6 +92,8 @@ class Confirmation extends Component {
                         state,
                         street_address,
                         street_number,
+                        googleMapLink,
+                        receivedFromFirestore: true,
                     },
                     secondStep: true,
                 });
