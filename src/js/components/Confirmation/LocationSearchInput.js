@@ -2,14 +2,47 @@
 import { Button, Typography } from "@material-ui/core";
 import React from "react";
 import PropTypes from "prop-types";
+import { isEmpty } from "react-redux-firebase";
 
 class LocationSearchInput extends React.Component {
     static propTypes = {
         callbackFcn: PropTypes.func,
+        address: PropTypes.object,
     };
     constructor(props) {
         super(props);
+
+        const getAddressVariables = (props) => {
+            const {
+                street_number,
+                street_address,
+                second_address,
+                city,
+                state,
+                postal_code,
+                country,
+                googleMapLink,
+                formError,
+                errorText,
+            } = props.address;
+            return {
+                street_number,
+                street_address,
+                second_address,
+                city,
+                state,
+                postal_code,
+                country,
+                googleMapLink,
+                formError,
+                errorText,
+            };
+        };
+
         this.state = this.initialState();
+        if (!isEmpty(props.address)) {
+            this.state = getAddressVariables(props);
+        }
         this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -131,83 +164,101 @@ class LocationSearchInput extends React.Component {
     }
 
     render() {
+        //need to pass previous address values here
         return (
-            <div>
+            //if values already exist, set all these values
+            <div className="conf">
                 <Typography variant="body1">
                     We need your address in case you win any of the various
-                    prizes were giving away during the hacakthon
+                    prizes during the hackathon! :D
                 </Typography>
                 {this.state.formError && (
                     <Typography component="p" className={"error"}>
                         {"Invalid address!"}
                     </Typography>
                 )}
-                <form onSubmit={this.handleSubmit}>
-                    <input
-                        id="autocomplete"
-                        className="input-field"
-                        ref="input"
-                        type="text"
-                        placeholder="Start typing an address..."
-                        style={{ width: "100%" }}
-                    />
-                    <input
-                        name={"street_number"}
-                        value={this.state.street_number}
-                        placeholder={"Street Number"}
-                        onChange={this.handleChange}
-                        style={{ width: "25%" }}
-                    />
-                    <input
-                        name={"street_address"}
-                        value={this.state.street_address}
-                        placeholder={"Street Address"}
-                        onChange={this.handleChange}
-                        style={{ width: "50%" }}
-                    />
-                    <input
-                        name={"second_address"}
-                        value={this.state.second_address}
-                        placeholder={"Secondary Address"}
-                        onChange={this.handleChange}
-                        style={{ width: "100%" }}
-                    />
-                    <input
-                        name={"city"}
-                        value={this.state.city}
-                        placeholder={"City"}
-                        onChange={this.handleChange}
-                        style={{ width: "100%" }}
-                    />
-                    <input
-                        name={"state"}
-                        value={this.state.state}
-                        placeholder={"State"}
-                        onChange={this.handleChange}
-                        style={{ width: "100%" }}
-                    />
-                    <input
-                        name={"country"}
-                        value={this.state.country}
-                        placeholder={"Country"}
-                        onChange={this.handleChange}
-                        style={{ width: "100%" }}
-                    />
-                    <input
-                        name={"postal_code"}
-                        value={this.state.postal_code}
-                        placeholder={"Postal Code"}
-                        onChange={this.handleChange}
-                        style={{ width: "100%" }}
-                    />
-                    <Button
-                        onClick={this.handleSubmit}
-                        variant="contained"
-                        fullWidth
-                        color="primary"
-                    >
-                        Submit
-                    </Button>
+                <form onSubmit={this.handleSubmit} className="conf-form">
+                    <div className="conf-form-container">
+                        <input
+                            id="autocomplete"
+                            className="input-field"
+                            ref="input"
+                            type="text"
+                            placeholder="Start typing an address..."
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="conf-form-container">
+                        <input
+                            name={"street_number"}
+                            value={this.state.street_number}
+                            placeholder={"Street Number"}
+                            onChange={this.handleChange}
+                            style={{ width: "25%" }}
+                        />
+                        <input
+                            name={"street_address"}
+                            value={this.state.street_address}
+                            placeholder={"Street Address"}
+                            onChange={this.handleChange}
+                            style={{ width: "75%" }}
+                        />
+                    </div>
+                    <div className="conf-form-container">
+                        <input
+                            name={"second_address"}
+                            value={this.state.second_address}
+                            placeholder={"Secondary Address"}
+                            onChange={this.handleChange}
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="conf-form-container">
+                        <input
+                            name={"city"}
+                            value={this.state.city}
+                            placeholder={"City"}
+                            onChange={this.handleChange}
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="conf-form-container">
+                        <input
+                            name={"state"}
+                            value={this.state.state}
+                            placeholder={"State"}
+                            onChange={this.handleChange}
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="conf-form-container">
+                        <input
+                            name={"country"}
+                            value={this.state.country}
+                            placeholder={"Country"}
+                            onChange={this.handleChange}
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="conf-form-container">
+                        <input
+                            name={"postal_code"}
+                            value={this.state.postal_code}
+                            placeholder={"Postal Code"}
+                            onChange={this.handleChange}
+                            style={{ width: "100%" }}
+                        />
+                    </div>
+                    <div className="conf-form-submit">
+                        <Button
+                            onClick={this.handleSubmit}
+                            variant="contained"
+                            fullWidth
+                            color="primary"
+                        >
+                            Submit
+                        </Button>
+                    </div>
                 </form>
             </div>
         );
