@@ -101,6 +101,7 @@ class Field extends Component {
                         id={name}
                         control={
                             <Checkbox
+                                defaultChecked={value}
                                 required={required}
                                 name={titleLabel}
                                 color="primary"
