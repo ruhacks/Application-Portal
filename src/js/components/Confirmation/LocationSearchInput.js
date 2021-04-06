@@ -71,6 +71,7 @@ class LocationSearchInput extends React.Component {
             googleMapLink: address.googleMapLink || "",
             formError: false,
             errorText: "",
+            receivedFromFirestore: false,
         };
     }
 
@@ -90,6 +91,7 @@ class LocationSearchInput extends React.Component {
                 postal_code: address.postal_code || "",
                 country: address.country || "",
                 googleMapLink: address.googleMapLink || "",
+                receivedFromFirestore: address.receivedFromFirestore || false,
             });
         }
     }
@@ -207,7 +209,6 @@ class LocationSearchInput extends React.Component {
                             type="text"
                             placeholder="Start typing an address..."
                             style={{ width: "100%" }}
-                            disabled={!isEmpty(this.state.googleMapLink)}
                         />
                     </div>
                     <div className="conf-form-container">
@@ -271,18 +272,16 @@ class LocationSearchInput extends React.Component {
                             style={{ width: "100%" }}
                         />
                     </div>
-                    {isEmpty(this.state.googleMapLink) && (
-                        <div className="conf-form-submit">
-                            <Button
-                                onClick={this.handleSubmit}
-                                variant="contained"
-                                fullWidth
-                                color="primary"
-                            >
-                                Submit
-                            </Button>
-                        </div>
-                    )}
+                    <div className="conf-form-submit">
+                        <Button
+                            onClick={this.handleSubmit}
+                            variant="contained"
+                            fullWidth
+                            color="primary"
+                        >
+                            Submit
+                        </Button>
+                    </div>
                 </form>
             </div>
         );

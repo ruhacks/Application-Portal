@@ -30,6 +30,7 @@ class Confirmation extends Component {
         url: PropTypes.string,
         updateUsersAddress: PropTypes.func,
         getDiscordURL: PropTypes.func,
+        addressUpdated: PropTypes.bool,
     };
 
     constructor(props) {
@@ -139,6 +140,7 @@ class Confirmation extends Component {
                     <LocationSearchInput
                         callbackFcn={this.firstStepComplete}
                         address={this.state.address}
+                        addressUpdated={this.props.addressUpdated}
                     ></LocationSearchInput>
                     {secondStep && (
                         <div>
@@ -213,6 +215,7 @@ function mapStateToProps(state) {
         confirmation: state.confirmation.conf,
         url: state.confirmation.url,
         isRequestingDiscordURL: state.confirmation.isRequestingDiscordURL,
+        addressUpdated: state.confirmation.addressUpdated,
     };
 }
 

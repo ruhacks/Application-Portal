@@ -152,7 +152,8 @@ export const fields = [
         order: 13,
         type: "String",
         required: false,
-        titleLabel: "Do you have a LinkedIn account?",
+        titleLabel:
+            "Do you have a LinkedIn account? If so please share it here",
         keyRef: "linkedIn",
     },
     {
