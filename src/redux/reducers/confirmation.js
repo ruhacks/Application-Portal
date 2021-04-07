@@ -26,6 +26,7 @@ export default (
         uploadSuccess: false,
         uploadError: "",
         file: {},
+        confirmationFetchError: {},
     },
     action
 ) => {
@@ -81,7 +82,7 @@ export default (
             return {
                 ...state,
                 isRequestingConfirmation: false,
-                error: action.error,
+                confirmationFetchError: action.error,
             };
 
         case DISCORD_URL_REQUEST:

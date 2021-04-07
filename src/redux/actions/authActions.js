@@ -206,7 +206,9 @@ export const sendForgotPassword = (email) => (dispatch) => {
 
 //******************************************************************************************** */
 
-export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
+export const subscribeToUserProfile = (setUnsubscribe) => (dispatch) => {
+    const user = auth.currentUser;
+
     if (!user || Object.keys(user).length === 0) return;
     dispatch(requestProfile());
     const { uid } = user;

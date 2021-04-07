@@ -37,7 +37,7 @@ const text = {
         connectedDiscord:
             "We got you! Now when you join our server we should be able to automatically verify you :)",
         uploadResume:
-            "If you have a resume you'd like to share, you can upload it by pressing the button here. We'll be sharing it with our sponsors",
+            "If you have a resume you'd like to share, you can upload it by pressing the button here. We'll be sharing it with our sponsors. File size limit is 5MB and it must be a .pdf or .doc/.docx",
     },
 };
 

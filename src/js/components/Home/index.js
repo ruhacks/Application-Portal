@@ -69,8 +69,8 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        const { subscribeToUserProfile, user } = this.props;
-        subscribeToUserProfile(user, this.setUnsubscribe);
+        const { subscribeToUserProfile } = this.props;
+        subscribeToUserProfile(this.setUnsubscribe);
     }
 
     componentWillUnmount() {
@@ -301,8 +301,8 @@ function mapDispatchToProps(dispatch) {
         getApplication: (user) => {
             dispatch(getUsersApplication(user));
         },
-        subscribeToUserProfile: (user, setUnsubscribe) => {
-            dispatch(subscribeToUserProfile(user, setUnsubscribe));
+        subscribeToUserProfile: (setUnsubscribe) => {
+            dispatch(subscribeToUserProfile(setUnsubscribe));
         },
         setAppRedirectToFalse: () => {
             dispatch(setAppRedirectToFalse());

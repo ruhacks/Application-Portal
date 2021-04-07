@@ -15,8 +15,12 @@ import rootReducer from "./redux/reducers/"; //Our root reducer map that contain
 import { verifyAuth } from "./redux/actions"; //Import the authentication verification action function that checks for a user
 
 export default function configureStore(preloadedState) {
-    //const middlewares = [loggerMiddleware, thunkMiddleware]; //dev
-    const middlewares = [thunkMiddleware]; //prod
+    let middlewares;
+    if (process.env.NODE_ENV === "development") {
+        middlewares = [loggerMiddleware, thunkMiddleware];
+    } else {
+        middlewares = [thunkMiddleware]; //prod
+    }
     const middlewareEnhancer = applyMiddleware(...middlewares);
 
     const enhancers = [middlewareEnhancer, monitorReducersEnhancer];

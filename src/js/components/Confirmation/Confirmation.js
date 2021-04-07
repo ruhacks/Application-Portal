@@ -21,7 +21,7 @@ import {
 } from "../../../redux/actions/confirmationActions";
 import LocationSearchInput from "./LocationSearchInput";
 import classes from "../../config/classes";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, Redirect } from "react-router-dom";
 
 class Confirmation extends Component {
     static propTypes = {
@@ -41,6 +41,8 @@ class Confirmation extends Component {
         uploadFile: PropTypes.func,
         uploadSuccess: PropTypes.bool,
         isUploading: PropTypes.bool,
+        confirmationFetchError: PropTypes.object,
+        uploadError: PropTypes.object,
     };
 
     constructor(props) {
@@ -68,10 +70,12 @@ class Confirmation extends Component {
             fileName: "Choose a file...",
             error: "",
             mapIsReady: false,
+            unsubscribeFromConfirmation: null,
         };
         this.firstStepComplete = this.firstStepComplete.bind(this);
         this.handleFileUpload = this.handleFileUpload.bind(this);
         this.handleFileSelect = this.handleFileSelect.bind(this);
+        this.setUnsubscribe = this.setUnsubscribe.bind(this);
     }
 
     componentDidMount() {
@@ -84,7 +88,12 @@ class Confirmation extends Component {
             this.setState({ mapIsReady: true });
         });
         document.body.appendChild(script);
-        this.props.getUsersConfirmation();
+        this.props.getUsersConfirmation(this.setUnsubscribe);
+    }
+
+    componentWillUnmount() {
+        if (this.state.unsubscribeFromConfirmation === null) return;
+        this.state.unsubscribeFromConfirmation();
     }
 
     componentDidUpdate(prevProps) {
@@ -135,6 +144,12 @@ class Confirmation extends Component {
         });
     }
 
+    setUnsubscribe(unsubVar) {
+        this.setState({
+            unsubscribeFromProfile: unsubVar,
+        });
+    }
+
     handleFileUpload(e) {
         e.preventDefault();
         this.props.uploadFile(this.state.file);
@@ -155,6 +170,8 @@ class Confirmation extends Component {
             url,
             isRequestingDiscordURL,
             isUploading,
+            confirmationFetchError,
+            uploadError,
         } = this.props;
         const {
             firstStep,
@@ -164,6 +181,10 @@ class Confirmation extends Component {
             file,
             fileName,
         } = this.state;
+
+        if (confirmationFetchError && confirmationFetchError.redirect) {
+            return <Redirect to="/" />;
+        }
 
         if (
             !user ||
@@ -187,7 +208,10 @@ class Confirmation extends Component {
                     <Typography variant="h2">Confirmation</Typography>
                 </Grid>
                 <Typography variant="body1" style={{ color: "red" }}>
-                    {error}
+                    {uploadError && uploadError.message
+                        ? uploadError.message +
+                          ". Please contact our dev team at devs@ruhacks.com"
+                        : ""}
                 </Typography>
                 <Paper style={{ padding: 16 }}>
                     {firstStep && (
@@ -208,7 +232,7 @@ class Confirmation extends Component {
                                 </Typography>
                                 <input
                                     type="file"
-                                    accept="application/pdf|application/doc"
+                                    accept="application/pdf, application/doc, .docx"
                                     className={classes.uploadFile}
                                     id="contained-button-file"
                                     onChange={this.handleFileSelect}
@@ -344,6 +368,7 @@ function mapStateToProps(state) {
     return {
         user: state.auth.user,
         confirmation: state.confirmation.conf,
+        confirmationFetchError: state.confirmation.confirmationFetchError,
         url: state.confirmation.url,
         isRequestingDiscordURL: state.confirmation.isRequestingDiscordURL,
         addressUpdated: state.confirmation.addressUpdated,
@@ -355,8 +380,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getUsersConfirmation: () => {
-            dispatch(getUsersConfirmation());
+        getUsersConfirmation: (setUnsubscribe) => {
+            dispatch(getUsersConfirmation(setUnsubscribe));
         },
         getDiscordURL: () => {
             dispatch(getDiscordURL());

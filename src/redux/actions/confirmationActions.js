@@ -157,22 +157,26 @@ export const updateUsersAddress = (address) => (dispatch) => {
         });
 };
 
-export const getUsersConfirmation = () => (dispatch) => {
+export const getUsersConfirmation = (setUnsubscribe) => (dispatch) => {
     dispatch(requestConfirmation());
     const user = auth.currentUser;
     if (!user) return dispatch(ConfirmationError({ error: "No user found!" }));
 
     if (user && user.uid) {
         const confDoc = firestore.doc(`confirmation/${user.uid}`);
-
-        confDoc
-            .get()
-            .then((response) => {
-                dispatch(ConfirmationReceived(response.data()));
-            })
-            .catch((error) => {
-                dispatch(ConfirmationError(error));
-            });
+        const unsubscribe = confDoc.onSnapshot((conf) => {
+            if (conf.exists) {
+                dispatch(ConfirmationReceived(conf.data()));
+            } else {
+                dispatch(
+                    ConfirmationError({
+                        message: "No conf found",
+                        redirect: true,
+                    })
+                );
+            }
+        });
+        setUnsubscribe(unsubscribe);
     }
 };
 
