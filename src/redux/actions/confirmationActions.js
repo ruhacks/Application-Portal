@@ -182,7 +182,7 @@ export const getDiscordURL = () => (dispatch) => {
     if (!user) return dispatch(updateConfError({ error: "No user found!" }));
     let DISCORD_API_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/getURL`;
     if (process.env.NODE_ENV === "development") {
-        //DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
+        DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
     }
     if (user) {
         user.getIdToken().then((token) => {
