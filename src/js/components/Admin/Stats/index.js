@@ -34,6 +34,7 @@ class Stats extends Component {
 
     render() {
         const { gettingStatistics, getErr, stats } = this.props;
+
         if (gettingStatistics || isEmpty(stats) || !getErr) {
             if (gettingStatistics) {
                 return <CircularProgress />;
