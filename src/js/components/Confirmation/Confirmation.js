@@ -43,6 +43,7 @@ class Confirmation extends Component {
         isUploading: PropTypes.bool,
         confirmationFetchError: PropTypes.object,
         uploadError: PropTypes.object,
+        hackathon: PropTypes.object,
     };
 
     constructor(props) {
@@ -169,6 +170,7 @@ class Confirmation extends Component {
             isUploading,
             confirmationFetchError,
             uploadError,
+            hackathon,
         } = this.props;
         const {
             firstStep,
@@ -179,7 +181,13 @@ class Confirmation extends Component {
             fileName,
         } = this.state;
 
-        if (confirmationFetchError && confirmationFetchError.redirect) {
+        if (
+            (confirmationFetchError && confirmationFetchError.redirect) ||
+            (hackathon &&
+                hackathon.confOpen !== undefined &&
+                hackathon.confOpen !== null &&
+                hackathon.confOpen === false)
+        ) {
             return <Redirect to="/" />;
         }
 
@@ -372,6 +380,7 @@ function mapStateToProps(state) {
         isUploading: state.confirmation.isUploading,
         uploadSuccess: state.confirmation.uploadSuccess,
         uploadError: state.confirmation.uploadError,
+        hackathon: state.hackathon.hackInfo,
     };
 }
 

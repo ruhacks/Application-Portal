@@ -12,6 +12,8 @@ class AppForm extends Component {
         fields: PropTypes.array,
         setUsersApplication: PropTypes.func,
         disableAllFields: PropTypes.bool,
+        appOpen: PropTypes.bool,
+        alreadyAdmitted: PropTypes.bool,
     };
 
     constructor(props) {
@@ -219,7 +221,7 @@ class AppForm extends Component {
     };
 
     render() {
-        const { application } = this.props;
+        const { application, appOpen, alreadyAdmitted } = this.props;
         const { errorText } = this.state;
 
         const emptyApplication = isEmpty(application);
@@ -266,7 +268,9 @@ class AppForm extends Component {
                                 staticLinkText ? staticLinkText : ""
                             }
                             disableAllFields={
-                                disableAllFields ? disableAllFields : false
+                                disableAllFields || !appOpen || alreadyAdmitted
+                                    ? true
+                                    : false
                             }
                         />
                     </Grid>
@@ -285,6 +289,22 @@ class AppForm extends Component {
                     <Typography variant="h2">Application</Typography>
                 </Grid>
                 <hr></hr>
+                {!appOpen && (
+                    <Typography
+                        variant="body1"
+                        style={{ color: "red", textAlign: "center" }}
+                    >
+                        Applications are closed
+                    </Typography>
+                )}
+                {alreadyAdmitted && (
+                    <Typography
+                        variant="body1"
+                        style={{ color: "red", textAlign: "center" }}
+                    >
+                        You have already been admitted!
+                    </Typography>
+                )}
                 <Paper style={{ padding: 16, margin: "2rem" }}>
                     <form id="mainForm" onSubmit={this.handleSubmitForm}>
                         <Grid container alignItems="flex-start" spacing={3}>
@@ -302,6 +322,10 @@ class AppForm extends Component {
                                     type="submit"
                                     variant="contained"
                                     fullWidth
+                                    disabled={
+                                        !this.props.appOpen ||
+                                        this.props.alreadyAdmitted
+                                    }
                                 >
                                     Submit Application
                                 </Button>
