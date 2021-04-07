@@ -128,9 +128,6 @@ class Confirmation extends Component {
                 });
             }
         }
-        if (!prevProps.uploadSuccess && this.props.uploadSuccess) {
-            this.props.getUsersConfirmation();
-        }
     }
 
     firstStepComplete(address) {
