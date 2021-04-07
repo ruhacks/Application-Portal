@@ -1,4 +1,4 @@
-import { auth, firestore } from "../../firebase";
+import { auth, firestore, storage } from "../../firebase";
 import { updateAppRequest } from "./appActions";
 
 import axios from "axios";
@@ -14,6 +14,10 @@ export const UPDATE_ADDR_ERROR = "UPDATE_ADDR_ERROR";
 export const DISCORD_URL_REQUEST = "DISCORD_URL_REQUEST";
 export const DISCORD_URL_SUCCESS = "DISCORD_URL_SUCCESS";
 export const DISCORD_URL_FAILURE = "DISCORD_URL_FAILURE";
+
+export const UPLOAD_FILE_REQUEST = "UPLOAD_FILE_REQUEST";
+export const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
+export const UPLOAD_FILE_FAILURE = "UPLOAD_FILE_FAILURE";
 
 export const requestConfirmation = () => {
     return {
@@ -94,6 +98,50 @@ export const updateAddrError = (error) => {
     };
 };
 
+export const uploadFileRequest = () => {
+    return {
+        type: UPLOAD_FILE_REQUEST,
+    };
+};
+
+export const uploadFileSuccess = () => {
+    return {
+        type: UPLOAD_FILE_SUCCESS,
+    };
+};
+
+export const uploadFileError = (error) => {
+    return {
+        type: UPLOAD_FILE_FAILURE,
+        error,
+    };
+};
+
+export const uploadFile = (file) => (dispatch) => {
+    dispatch(uploadFileRequest());
+    const user = auth.currentUser;
+    const { uid } = user;
+    const storageRef = storage.ref(`Resumes/${uid}/${file.name}`);
+    const confRef = firestore.doc(`/confirmation/${uid}`);
+
+    storageRef
+        .put(file)
+        .then((snapshot) => {
+            dispatch(uploadFileSuccess());
+            const fileName = snapshot.metadata.name;
+            const timeCreated = new Date();
+            snapshot.ref.getDownloadURL().then((URL) => {
+                confRef.set(
+                    { resume: { fileName, URL, timeCreated } },
+                    { merge: true }
+                );
+            });
+        })
+        .catch((error) => {
+            dispatch(uploadFileError(error));
+        });
+};
+
 export const updateUsersAddress = (address) => (dispatch) => {
     dispatch(updateAddrRequest());
     const user = auth.currentUser;
@@ -134,7 +182,7 @@ export const getDiscordURL = () => (dispatch) => {
     if (!user) return dispatch(updateConfError({ error: "No user found!" }));
     let DISCORD_API_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/getURL`;
     if (process.env.NODE_ENV === "development") {
-        DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
+        //DISCORD_API_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/getURL/`;
     }
     if (user) {
         user.getIdToken().then((token) => {

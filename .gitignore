@@ -10,5 +10,6 @@ firestore.rules
 firestore-debug.log
 firebase-debug.log
 ui-debug.log
+storage.rules
 
 functions/

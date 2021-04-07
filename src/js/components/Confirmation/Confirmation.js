@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import {
     Button,
     CircularProgress,
@@ -16,8 +17,11 @@ import {
     getUsersConfirmation,
     getDiscordURL,
     updateUsersAddress,
+    uploadFile,
 } from "../../../redux/actions/confirmationActions";
 import LocationSearchInput from "./LocationSearchInput";
+import classes from "../../config/classes";
+import { Link as RouterLink } from "react-router-dom";
 
 class Confirmation extends Component {
     static propTypes = {
@@ -31,11 +35,19 @@ class Confirmation extends Component {
         updateUsersAddress: PropTypes.func,
         getDiscordURL: PropTypes.func,
         addressUpdated: PropTypes.bool,
+        location: PropTypes.shape({
+            search: PropTypes.string,
+        }),
+        uploadFile: PropTypes.func,
+        uploadSuccess: PropTypes.bool,
+        isUploading: PropTypes.bool,
     };
 
     constructor(props) {
         super(props);
-
+        const fromDiscord = new URLSearchParams(props.location.search).get(
+            "fromDiscord"
+        );
         this.state = {
             address: {
                 street_number: "",
@@ -48,10 +60,18 @@ class Confirmation extends Component {
                 googleMapLink: "",
                 receivedFromFirestore: false,
             },
-            secondStep: false,
+            firstStep: fromDiscord ? false : true,
+            secondStep: fromDiscord ? true : false,
+            uploading: false,
+            percent: 0,
+            file: false,
+            fileName: "Choose a file...",
+            error: "",
             mapIsReady: false,
         };
         this.firstStepComplete = this.firstStepComplete.bind(this);
+        this.handleFileUpload = this.handleFileUpload.bind(this);
+        this.handleFileSelect = this.handleFileSelect.bind(this);
     }
 
     componentDidMount() {
@@ -96,9 +116,11 @@ class Confirmation extends Component {
                         googleMapLink,
                         receivedFromFirestore: true,
                     },
-                    secondStep: true,
                 });
             }
+        }
+        if (!prevProps.uploadSuccess && this.props.uploadSuccess) {
+            this.props.getUsersConfirmation();
         }
     }
 
@@ -108,18 +130,46 @@ class Confirmation extends Component {
         }
         this.props.getDiscordURL();
         this.setState({
+            firstStep: false,
             secondStep: true,
         });
     }
 
+    handleFileUpload(e) {
+        e.preventDefault();
+        this.props.uploadFile(this.state.file);
+    }
+
+    handleFileSelect(e) {
+        const file = e.target.files[0];
+        this.setState({
+            file,
+            fileName: file.name,
+        });
+    }
+
     render() {
-        const { user, confirmation, url, isRequestingDiscordURL } = this.props;
-        const { secondStep, mapIsReady } = this.state;
+        const {
+            user,
+            confirmation,
+            url,
+            isRequestingDiscordURL,
+            isUploading,
+        } = this.props;
+        const {
+            firstStep,
+            secondStep,
+            mapIsReady,
+            error,
+            file,
+            fileName,
+        } = this.state;
 
         if (
             !user ||
             !user.uid ||
             !confirmation ||
+            isUploading ||
             isEmpty(confirmation) ||
             (!url && secondStep) ||
             (!mapIsReady && !secondStep)
@@ -136,71 +186,152 @@ class Confirmation extends Component {
                 >
                     <Typography variant="h2">Confirmation</Typography>
                 </Grid>
+                <Typography variant="body1" style={{ color: "red" }}>
+                    {error}
+                </Typography>
                 <Paper style={{ padding: 16 }}>
-                    <LocationSearchInput
-                        callbackFcn={this.firstStepComplete}
-                        address={this.state.address}
-                        addressUpdated={this.props.addressUpdated}
-                    ></LocationSearchInput>
+                    {firstStep && (
+                        <LocationSearchInput
+                            callbackFcn={this.firstStepComplete}
+                            address={this.state.address}
+                            addressUpdated={this.props.addressUpdated}
+                        ></LocationSearchInput>
+                    )}
                     {secondStep && (
                         <div>
-                            {confirmation && !confirmation.discord && (
-                                <div>
-                                    <Typography variant="body1">
-                                        {text.confirmation.whyDiscord}
-                                    </Typography>
-                                    {isRequestingDiscordURL && (
-                                        <Button
-                                            fullWidth
-                                            color="primary"
-                                            variant="outlined"
+                            <div className={classes.resumeContainer}>
+                                <Typography
+                                    variant="body1"
+                                    style={{ padding: "1rem" }}
+                                >
+                                    {text.confirmation.uploadResume}
+                                </Typography>
+                                <input
+                                    type="file"
+                                    accept="application/pdf|application/doc"
+                                    className={classes.uploadFile}
+                                    id="contained-button-file"
+                                    onChange={this.handleFileSelect}
+                                    hidden
+                                />
+                                <label htmlFor="contained-button-file">
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        component="span"
+                                        fullWidth
+                                    >
+                                        {fileName}
+                                    </Button>
+                                </label>
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    component="span"
+                                    disabled={!file}
+                                    onClick={this.handleFileUpload}
+                                    fullWidth
+                                >
+                                    Upload
+                                </Button>
+                                {confirmation && confirmation.resume && (
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="body1"
+                                            style={{ color: "green" }}
                                         >
-                                            Please wait, generating link...
-                                            <CircularProgress />
-                                        </Button>
-                                    )}
-                                    {url && (
-                                        <Link
-                                            rel="noopener"
-                                            href={url}
-                                            target="_blank"
+                                            Last upload:{" "}
+                                            {confirmation.resume.fileName +
+                                                " at "}
+                                            {confirmation.resume.timeCreated
+                                                .toDate()
+                                                .toLocaleString()}
+                                        </Typography>
+                                    </div>
+                                )}
+                            </div>
+                            <div className={classes.discordContainer}>
+                                {confirmation && !confirmation.discord && (
+                                    <div>
+                                        <Typography
+                                            variant="body1"
+                                            style={{ padding: "1rem" }}
                                         >
+                                            {text.confirmation.whyDiscord}
+                                        </Typography>
+                                        {isRequestingDiscordURL && (
                                             <Button
                                                 fullWidth
                                                 color="primary"
                                                 variant="outlined"
                                             >
-                                                Connect with Discord
+                                                Please wait, generating link...
+                                                <CircularProgress />
                                             </Button>
-                                        </Link>
-                                    )}
-                                    {!url && !isRequestingDiscordURL && (
-                                        <Typography
-                                            variant="body1"
-                                            color="error"
-                                        >
-                                            Error generating link, please try
-                                            refreshing the page :)
-                                        </Typography>
-                                    )}
-                                </div>
-                            )}
-                            {confirmation && confirmation.discord && (
-                                <div>
-                                    <Typography variant="body1">
-                                        {text.confirmation.connectedDiscord}
-                                    </Typography>
-                                    <Button
-                                        fullWidth
-                                        color="primary"
-                                        variant="outlined"
-                                        disabled
-                                    >
-                                        <CheckCircle />
-                                        Discord Connected
-                                    </Button>
-                                </div>
-                            )}
+                                        )}
+                                        {url && (
+                                            <Link
+                                                rel="noopener"
+                                                href={url}
+                                                target="_blank"
+                                            >
+                                                <Button
+                                                    fullWidth
+                                                    color="primary"
+                                                    variant="outlined"
+                                                >
+                                                    Connect with Discord
+                                                </Button>
+                                            </Link>
+                                        )}
+                                        {!url && !isRequestingDiscordURL && (
+                                            <Typography
+                                                variant="body1"
+                                                color="error"
+                                            >
+                                                Error generating link, please
+                                                try refreshing the page :)
+                                            </Typography>
+                                        )}
+                                    </div>
+                                )}
+                                {confirmation && confirmation.discord && (
+                                    <div>
+                                        <div style={{ padding: "1rem" }}>
+                                            <Typography variant="body1">
+                                                {
+                                                    text.confirmation
+                                                        .connectedDiscord
+                                                }
+                                            </Typography>
+                                            <Button
+                                                fullWidth
+                                                color="primary"
+                                                variant="outlined"
+                                                disabled
+                                            >
+                                                <CheckCircle />
+                                                Discord Connected
+                                            </Button>
+                                        </div>
+                                        <RouterLink to="/">
+                                            <Button
+                                                fullWidth
+                                                color="secondary"
+                                                variant="contained"
+                                            >
+                                                You're done! Click here to go
+                                                back home
+                                            </Button>
+                                        </RouterLink>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
                 </Paper>
@@ -216,6 +347,9 @@ function mapStateToProps(state) {
         url: state.confirmation.url,
         isRequestingDiscordURL: state.confirmation.isRequestingDiscordURL,
         addressUpdated: state.confirmation.addressUpdated,
+        isUploading: state.confirmation.isUploading,
+        uploadSuccess: state.confirmation.uploadSuccess,
+        uploadError: state.confirmation.uploadError,
     };
 }
 
@@ -229,6 +363,9 @@ function mapDispatchToProps(dispatch) {
         },
         updateUsersAddress: (address) => {
             dispatch(updateUsersAddress(address));
+        },
+        uploadFile: (file) => {
+            dispatch(uploadFile(file));
         },
     };
 }

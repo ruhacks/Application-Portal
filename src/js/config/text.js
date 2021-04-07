@@ -36,6 +36,8 @@ const text = {
             "We will mainly be using Discord for communications reagrding workshops, judging times, twitch event times etc... and we need to be able to verify you once you join our server",
         connectedDiscord:
             "We got you! Now when you join our server we should be able to automatically verify you :)",
+        uploadResume:
+            "If you have a resume you'd like to share, you can upload it by pressing the button here. We'll be sharing it with our sponsors",
     },
 };
 
