@@ -85,7 +85,7 @@ class DashboardWrapper extends Component {
             daysLeft = "Final Day!";
         } else if (hackathon && hackathon.Hackathon) {
             const hackTime = hackathon.Hackathon.toDate();
-            daysLeft = parseInt((hackTime - currentDate) / (24 * 3600 * 1000));
+            daysLeft = Math.ceil((hackTime - currentDate) / (24 * 3600 * 1000));
         }
 
         const imageSource = this.state.gif ? EggwardImage : EggwardGif;
@@ -109,9 +109,9 @@ class DashboardWrapper extends Component {
             "August",
             "September",
         ];
-        dateText = `${days[currentDate.getDay()]}, ${
+        dateText = `${days[currentDate.getDay() - 1]}, ${
             months[currentDate.getMonth()]
-        } ${currentDate.getUTCDate()}`;
+        } ${currentDate.getDate()}`;
 
         return (
             <div className="db-sidebar__header ">
