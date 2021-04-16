@@ -1,5 +1,4 @@
 import axios from "axios";
-import { team } from "../../../functions/team";
 import { auth, firestore } from "../../firebase";
 
 export const TEAM_CREATE_REQUEST = "TEAM_CREATE_REQUEST";

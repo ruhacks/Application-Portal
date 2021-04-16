@@ -12,7 +12,11 @@ import {
     TEAM_LEAVE_SUCCESS,
     TEAM_LEAVE_FAILURE,
     DELETE_TEAM_REQUEST,
+    DELETE_TEAM_SUCCESS,
+    DELETE_TEAM_FAILURE,
+    TEAM_KICK_REQUEST,
     TEAM_KICK_SUCCESS,
+    TEAM_KICK_FAILURE,
 } from "../actions/teamActions";
 
 export default (
