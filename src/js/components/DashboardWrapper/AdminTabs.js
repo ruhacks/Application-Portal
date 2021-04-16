@@ -13,6 +13,10 @@ export default [
         links: [
             { title: "Application", link: "/application" },
             { title: "Confirmation", link: "/confirmation" },
+            {
+                title: "Team",
+                link: "/team",
+            },
         ],
     },
     {

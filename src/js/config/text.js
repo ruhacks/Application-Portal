@@ -39,6 +39,13 @@ const text = {
         uploadResume:
             "If you have a resume you'd like to share, you can upload it by pressing the button here. We'll be sharing it with our sponsors. File size limit is 5MB and it must be a .pdf or .doc/.docx",
     },
+
+    team: {
+        teamDescriptionNoTeam:
+            "You can either create a team or join a team with a specified ID provided by any of the team members you are trying to join",
+        teamDescriptionTeam:
+            "You can see all your team members along with their emails. The team owner may delete the team or individuals may wish to leave the team",
+    },
 };
 
 export default text;
