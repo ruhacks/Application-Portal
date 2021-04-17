@@ -101,6 +101,15 @@ class Team extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        if (
+            this.state.unsubscribeFromTeam &&
+            this.state.unsubscribeFromTeam !== null
+        ) {
+            this.state.unsubscribeFromTeam();
+        }
+    }
+
     setUnsubscribe(unsubVar) {
         this.setState({
             unsubscribeFromProfile: unsubVar,
