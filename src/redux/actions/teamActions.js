@@ -128,11 +128,12 @@ export const getTeamRequest = () => {
     };
 };
 
-export const getTeamSuccess = (team_ID, team) => {
+export const getTeamSuccess = (team_ID, team, owner) => {
     return {
         type: GET_TEAM_SUCCESS,
         team_ID,
         team,
+        owner,
     };
 };
 
@@ -143,14 +144,12 @@ export const getTeamError = (error) => {
     };
 };
 
-export const kickUser = (uidToKick, team_ID) => (dispatch) => {
-    dispatch(teamKickRequest());
-    const user = auth.currentUser;
+export const kickUsers = (uidsToKick, team_ID) => (dispatch) => {
+    uidsToKick.forEach((uid) => {
+        dispatch(teamKickRequest());
+    });
 
-    let TEAM_API_KICK_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/team/kick`;
-    if (process.env.NODE_ENV === "development") {
-        TEAM_API_KICK_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/team/kick`;
-    }
+    const user = auth.currentUser;
 
     if (!user) {
         return dispatch(
@@ -158,7 +157,7 @@ export const kickUser = (uidToKick, team_ID) => (dispatch) => {
         );
     }
 
-    if (!uidToKick) {
+    if (uidsToKick.length === 0) {
         return dispatch(
             teamKickFailure({
                 userToKick: false,
@@ -167,29 +166,49 @@ export const kickUser = (uidToKick, team_ID) => (dispatch) => {
         );
     }
 
-    axios
-        .post(TEAM_API_KICK_URL, { ID: team_ID, kickID: uidToKick })
-        .then((response) => {
-            if (
-                response &&
-                response.data &&
-                response.data.userKicked &&
-                response.data.userUpdated
-            ) {
-                return dispatch(teamKickSuccess());
-            } else {
-                return dispatch(
-                    teamKickFailure({
-                        message: "There was an error kicking the user",
-                        response,
-                    })
-                );
-            }
-        })
-        .catch((error) => {
-            return dispatch(teamKickFailure(error));
-        });
+    uidsToKick.forEach((uid) => {
+        kickUser(user, uid, team_ID, dispatch);
+    });
 };
+
+function kickUser(user, uidToKick, team_ID, dispatch) {
+    let TEAM_API_KICK_URL = `https://us-central1-ru-hacks-app-page.cloudfunctions.net/team/kick`;
+    if (process.env.NODE_ENV === "development") {
+        TEAM_API_KICK_URL = `http://localhost:5001/ru-hacks-app-page/us-central1/team/kick`;
+    }
+    user.getIdToken().then((token) => {
+        axios
+            .post(
+                TEAM_API_KICK_URL,
+                { ID: team_ID, kickID: uidToKick },
+                {
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                }
+            )
+            .then((response) => {
+                if (
+                    response &&
+                    response.data &&
+                    response.data.userKicked &&
+                    response.data.userUpdated
+                ) {
+                    return dispatch(teamKickSuccess());
+                } else {
+                    return dispatch(
+                        teamKickFailure({
+                            message: "There was an error kicking the user",
+                            response,
+                        })
+                    );
+                }
+            })
+            .catch((error) => {
+                return dispatch(teamKickFailure(error));
+            });
+    });
+}
 
 export const leaveTeam = (team_ID) => (dispatch) => {
     dispatch(teamLeaveRequest());
@@ -205,25 +224,26 @@ export const leaveTeam = (team_ID) => (dispatch) => {
             teamLeaveFailure({ user: false, message: "NO USER FOUND!" })
         );
     }
-
-    axios
-        .request({
-            method: "GET",
-            url: TEAM_API_LEAVE_URL,
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        })
-        .then((response) => {
-            if (response.data.teamLeft && response.data.userUpdated) {
-                dispatch(teamLeaveSuccess());
-            } else {
-                dispatch(teamLeaveFailure(response));
-            }
-        })
-        .catch((error) => {
-            dispatch(teamLeaveFailure(error));
-        });
+    user.getIdToken().then((token) => {
+        axios
+            .request({
+                method: "GET",
+                url: TEAM_API_LEAVE_URL,
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            })
+            .then((response) => {
+                if (response.data.teamLeft && response.data.userUpdated) {
+                    dispatch(teamLeaveSuccess());
+                } else {
+                    dispatch(teamLeaveFailure(response));
+                }
+            })
+            .catch((error) => {
+                dispatch(teamLeaveFailure(error));
+            });
+    });
 };
 
 export const deleteTeam = (team_ID) => (dispatch) => {
@@ -242,24 +262,26 @@ export const deleteTeam = (team_ID) => (dispatch) => {
     }
 
     if (user) {
-        axios
-            .request({
-                method: "GET",
-                url: TEAM_API_DELETE_URL,
-                headers: {
-                    Authorization: "Bearer " + token,
-                },
-            })
-            .then((response) => {
-                if (response.data.teamDeleted) {
-                    dispatch(deleteTeamSuccess());
-                } else {
-                    dispatch(deleteTeamFailure(response));
-                }
-            })
-            .catch((error) => {
-                dispatch(deleteTeamFailure(error));
-            });
+        user.getIdToken().then((token) => {
+            axios
+                .request({
+                    method: "GET",
+                    url: TEAM_API_DELETE_URL,
+                    headers: {
+                        Authorization: "Bearer " + token,
+                    },
+                })
+                .then((response) => {
+                    if (response.data.teamDeleted) {
+                        dispatch(deleteTeamSuccess());
+                    } else {
+                        dispatch(deleteTeamFailure(response));
+                    }
+                })
+                .catch((error) => {
+                    dispatch(deleteTeamFailure(error));
+                });
+        });
     }
 };
 
@@ -323,16 +345,20 @@ export const joinTeam = (joinID) => (dispatch) => {
             axios
                 .request({
                     method: "GET",
-                    url: TEAM_API_CREATE_URL,
+                    url: TEAM_API_JOIN_URL,
                     headers: {
                         Authorization: "Bearer " + token,
                     },
                 })
                 .then((response) => {
-                    if (response.data.teamJoined && team.data.userUpdated) {
+                    if (response.data.teamJoined && response.data.userUpdated) {
                         dispatch(joinTeamSuccess(joinID));
                     } else {
-                        dispatch(joinTeamError(error));
+                        dispatch(
+                            joinTeamError({
+                                message: "Error with joining team",
+                            })
+                        );
                     }
                 })
                 .catch((error) => {
@@ -342,7 +368,7 @@ export const joinTeam = (joinID) => (dispatch) => {
     }
 };
 
-export const getTeam = (team_ID) => async (dispatch) => {
+export const getTeam = (team_ID, setUnsubscribe) => (dispatch) => {
     dispatch(getTeamRequest());
 
     const user = auth.currentUser;
@@ -352,7 +378,21 @@ export const getTeam = (team_ID) => async (dispatch) => {
     }
 
     const teamRef = firestore.doc(`teams/${team_ID}`);
-    let teamSnap;
+
+    const unsubscribe = teamRef.onSnapshot((teamSnap) => {
+        if (teamSnap.exists) {
+            const team = teamSnap.data();
+            let owner = false;
+            if (team && team[user.uid] && team[user.uid].owner) owner = true;
+            dispatch(getTeamSuccess(team_ID, team, owner));
+        } else {
+            dispatch(getTeamError({ message: "Error no team found" }));
+        }
+    });
+
+    setUnsubscribe(unsubscribe);
+
+    /*
     try {
         teamSnap = await teamRef.get();
     } catch (error) {
@@ -360,8 +400,11 @@ export const getTeam = (team_ID) => async (dispatch) => {
     }
 
     if (teamSnap.exists && teamSnap.data()) {
-        dispatch(getTeamSuccess(team_ID, teamSnap.data()));
+        const team = teamSnap.data();
+        let owner = false;
+        if (team && team[user.uid] && team[user.uid].owner) owner = true;
+        dispatch(getTeamSuccess(team_ID, teamSnap.data(), owner));
     } else {
         dispatch(getTeamError({ message: "Error no team found " }));
-    }
+    }*/
 };

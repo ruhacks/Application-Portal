@@ -35,6 +35,7 @@ export default (
         deletingTeamError: {},
         kickingMember: false,
         kickingMemberFailure: {},
+        isOwner: false,
     },
     action
 ) => {
@@ -44,7 +45,6 @@ export default (
                 ...state,
                 creatingTeam: true,
             };
-
         case TEAM_CREATE_SUCCESS:
             return {
                 ...state,
@@ -85,7 +85,8 @@ export default (
                 ...state,
                 gettingTeam: false,
                 team: action.team,
-                team_ID: action.team_ID,
+                teamID: action.team_ID,
+                isOwner: action.owner,
             };
         case GET_TEAM_FAILURE:
             return {

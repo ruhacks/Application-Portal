@@ -8,6 +8,19 @@ const text = {
     noPasswordConfirm: "Password confirmation is empty...",
     passwordsDoNotMatch: "Passwords do not match",
 
+    dialogTitles: {
+        confirmDeleteTeam: "Are you sure you'd like to delete this team?",
+        confirmKickUsers:
+            "Are you sure you'd like to kick this user/these users?",
+    },
+
+    dialogDescriptions: {
+        confirmDeleteTeam:
+            "This is irreversible, all members of the team will be kicked from the team including yourself",
+        confirmKickUsers:
+            "This is irreversible, the selected user(s) will be kicked",
+    },
+
     quickStatus: {
         incompleteApplication: "Application Incomplete!",
         completeApplication: "Application Complete!",
