@@ -12,3 +12,4 @@ firebase-debug.log
 ui-debug.log
 
 functions/
+.DS_Store
