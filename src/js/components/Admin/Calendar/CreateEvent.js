@@ -7,6 +7,8 @@ import {
     Button,
     Select,
     TextField,
+    Typography,
+    CircularProgress,
 } from "@material-ui/core";
 import {
     createEvent,
@@ -16,7 +18,13 @@ import {
 } from "../../../../redux/actions";
 import PropTypes from "prop-types";
 class CreateEvent extends Component {
-    static propTypes = { createEvent: PropTypes.func };
+    static propTypes = {
+        createEvent: PropTypes.func,
+
+        creatingEvent: PropTypes.bool,
+
+        createdEventID: PropTypes.string,
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -84,9 +92,18 @@ class CreateEvent extends Component {
             "Sponsor Open House",
             "Games",
         ];
+
+        if (this.props.creatingEvent) return <CircularProgress />;
+
         return (
             <div className="ce-con">
                 <h1 className="ce-h1">Create an Event</h1>
+                {this.props.createdEventID && (
+                    <Typography variant="body1" style={{ color: "green" }}>
+                        Event {this.props.createdEventID} successfully created
+                    </Typography>
+                )}
+
                 <h2 className="ce-h2">Glossary</h2>
                 <div className="ce-gloss">
                     <h3 className="ce-h3">Main Events</h3>
@@ -326,7 +343,11 @@ class CreateEvent extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+    creatingEvent: state.calendar.creatingEvent,
+    createEventError: state.calendar.createEventError,
+    createdEventID: state.calendar.createdEventID,
+});
 
 const mapDispatchToProps = (dispatch) => ({
     createEvent: (d, i) => dispatch(createEvent(d, i)),
