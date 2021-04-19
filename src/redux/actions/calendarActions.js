@@ -242,55 +242,38 @@ export const getAllCalendarInfo = () => async (dispatch) => {
     const DAY_TWO_EVENTS = firestore.collection("calendar/DAY_TWO/events");
     const DAY_THREE_EVENTS = firestore.collection("calendar/DAY_THREE/events");
 
-    let DAY_ONE_SNAPS;
-    let DAY_TWO_SNAPS;
-    let DAY_THREE_SNAPS;
-
     try {
-        DAY_ONE_SNAPS = await DAY_ONE_EVENTS.get();
+        let DAY_ONE_SNAPS = await DAY_ONE_EVENTS.get();
+        let DAY_TWO_SNAPS = await DAY_TWO_EVENTS.get();
+        let DAY_THREE_SNAPS = await DAY_THREE_EVENTS.get();
+
+        let DAY_FRI_EVENTS = [];
+        let DAY_SAT_EVENTS = [];
+        let DAY_SUN_EVENTS = [];
+        if (!DAY_ONE_SNAPS.empty) {
+            DAY_ONE_SNAPS.forEach((eventDoc) => {
+                DAY_FRI_EVENTS.push({ id: eventDoc.id, ...eventDoc.data() });
+            });
+        }
+
+        if (!DAY_TWO_SNAPS.empty) {
+            DAY_TWO_SNAPS.forEach((eventDoc) => {
+                DAY_SAT_EVENTS.push({ id: eventDoc.id, ...eventDoc.data() });
+            });
+        }
+
+        if (!DAY_THREE_SNAPS.empty) {
+            DAY_THREE_SNAPS.forEach((eventDoc) => {
+                DAY_SUN_EVENTS.push({ id: eventDoc.id, ...eventDoc.data() });
+            });
+        }
+        calendar[DAY_FRI] = DAY_FRI_EVENTS.sort((a, b) => a.startT > b.startT);
+        calendar[DAY_SAT] = DAY_SAT_EVENTS.sort((a, b) => a.startT > b.startT);
+        calendar[DAY_SUN] = DAY_SUN_EVENTS.sort((a, b) => a.startT > b.startT);
+        dispatch(getAllCalSuccess(calendar));
     } catch (error) {
         dispatch(getAllCalFailure(error));
     }
-
-    try {
-        DAY_TWO_SNAPS = await DAY_TWO_EVENTS.get();
-    } catch (error) {
-        dispatch(getAllCalFailure(error));
-    }
-
-    try {
-        DAY_THREE_SNAPS = await DAY_THREE_EVENTS.get();
-    } catch (error) {
-        dispatch(getAllCalFailure(error));
-    }
-
-    const DAY_FRI = {};
-    const DAY_SAT = {};
-    const DAY_SUN = {};
-
-    if (!DAY_ONE_SNAPS.empty) {
-        DAY_ONE_SNAPS.forEach((eventDoc) => {
-            DAY_FRI[eventDoc.id] = eventDoc.data();
-        });
-    }
-
-    if (!DAY_TWO_SNAPS.empty) {
-        DAY_TWO_SNAPS.forEach((eventDoc) => {
-            DAY_SAT[eventDoc.id] = eventDoc.data();
-        });
-    }
-
-    if (!DAY_THREE_SNAPS.empty) {
-        DAY_THREE_SNAPS.forEach((eventDoc) => {
-            DAY_SUN[eventDoc.id] = eventDoc.data();
-        });
-    }
-
-    calendar["DAY_FRI"] = DAY_FRI;
-    calendar["DAY_SAT"] = DAY_SAT;
-    calendar["DAY_SUN"] = DAY_SUN;
-
-    dispatch(getAllCalSuccess(calendar));
 };
 
 export const createEvent = (day, info) => async (dispatch) => {
@@ -378,6 +361,7 @@ export const editEvent = (day, info, event_ID) => async (dispatch) => {
 };
 
 export const deleteEvent = (day, event_ID) => async (dispatch) => {
+    console.log("called????");
     dispatch(deleteEventReq());
 
     const user = auth.currentUser;
@@ -389,7 +373,6 @@ export const deleteEvent = (day, event_ID) => async (dispatch) => {
             })
         );
     }
-
     let databaseDay;
 
     switch (day) {

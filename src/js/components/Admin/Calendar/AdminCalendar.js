@@ -1,9 +1,15 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, CircularProgress, TextField } from "@material-ui/core";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { deleteEvent } from "../../../../redux/actions";
+import {
+    DAY_FRI,
+    DAY_SAT,
+    DAY_SUN,
+    deleteEvent,
+    getAllCalendarInfo,
+} from "../../../../redux/actions";
 import PropTypes from "prop-types";
-
+import Calendar from "../../Calendar";
 class AdminCalendar extends Component {
     static propTypes = {
         deleteEvent: PropTypes.func,
@@ -21,6 +27,13 @@ class AdminCalendar extends Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
+    componentDidMount() {
+        this.loadCalendar();
+    }
+    loadCalendar = () => {
+        console.log("REFRESHING");
+        this.props.getAllCalendarInfo();
+    };
     handleEventIDChange({ target }) {
         this.setState({
             event_ID: target.value,
@@ -38,27 +51,23 @@ class AdminCalendar extends Component {
     }
 
     render() {
+        if (!this.props.calendarLoaded) return <CircularProgress />;
         return (
             <div>
-                <div>Admin Calendar</div>
-                <TextField fullWidth onChange={this.handleEventIDChange} />
-                <TextField fullWidth onChange={this.handleDayChange} />
-                <Button
-                    variant="contained"
-                    onClick={this.handleDelete}
-                    disabled={!this.state.event_ID && !this.state.day}
-                >
-                    Delete Event
-                </Button>
+                <Calendar {...this.props.calendar} admin={true} />
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+    calendar: state.calendar.calendar,
+    calendarLoaded: state.calendar.calendarLoaded,
+});
 
 const mapDispatchToProps = (dispatch) => ({
     deleteEvent: (ID, day) => dispatch(deleteEvent(day, ID)),
+    getAllCalendarInfo: () => dispatch(getAllCalendarInfo()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdminCalendar);

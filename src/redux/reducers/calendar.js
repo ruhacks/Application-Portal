@@ -32,6 +32,7 @@ export default (
         gettingFullCalendar: false,
         calendar: {},
         getinngFullCalendarError: {},
+        calendarLoaded: false,
 
         creatingEvent: false,
         createEventError: {},
@@ -91,6 +92,7 @@ export default (
                 ...state,
                 gettingFullCalendar: false,
                 calendar: action.calendar,
+                calendarLoaded: true,
             };
         case CALENDAR_GET_ALL_FAILURE:
             return {

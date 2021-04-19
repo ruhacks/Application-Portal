@@ -17,6 +17,15 @@ import {
     DAY_SUN,
 } from "../../../../redux/actions";
 import PropTypes from "prop-types";
+import {
+    EVENT_TYPE_CEREMONY,
+    EVENT_TYPE_WORKSHOP,
+    EVENT_TYPE_MEAL_TIME,
+    EVENT_TYPE_NETWORKING_EVENTS,
+    EVENT_TYPE_OPEN_NETOWRKING,
+    EVENT_TYPE_SPONSOR_OPEN_HOUSE,
+    EVENT_TYPE_GAMES,
+} from "../../Calendar";
 class CreateEvent extends Component {
     static propTypes = {
         createEvent: PropTypes.func,
@@ -67,15 +76,15 @@ class CreateEvent extends Component {
             startTimeHour,
             startTimeMin,
         } = this.state;
-        const endT = endTimeHour * 100 + Number(endTimeMin);
-        const startT = startTimeHour * 100 + Number(startTimeMin);
+        const endT = endTimeHour * 60 + Number(endTimeMin);
+        const startT = startTimeHour * 60 + Number(startTimeMin);
         if (endT <= startT) {
             alert("End time should be after start time");
             return;
         }
         let EVENT_ENTRY = {
-            startT,
-            endT,
+            start: startT,
+            end: endT,
             ...this.state,
         };
         delete EVENT_ENTRY["day"];
@@ -84,13 +93,13 @@ class CreateEvent extends Component {
     };
     render() {
         const EVENT_TYPES = [
-            "Ceremony",
-            "Workshop",
-            "Meal Time",
-            "Networking Events",
-            "Open Networking time",
-            "Sponsor Open House",
-            "Games",
+            EVENT_TYPE_CEREMONY,
+            EVENT_TYPE_WORKSHOP,
+            EVENT_TYPE_MEAL_TIME,
+            EVENT_TYPE_NETWORKING_EVENTS,
+            EVENT_TYPE_OPEN_NETOWRKING,
+            EVENT_TYPE_SPONSOR_OPEN_HOUSE,
+            EVENT_TYPE_GAMES,
         ];
 
         if (this.props.creatingEvent) return <CircularProgress />;
