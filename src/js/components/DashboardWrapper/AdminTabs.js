@@ -24,4 +24,16 @@ export default [
             { title: "Events", link: "/admin/events" },
         ],
     },
+    {
+        title: "Calendar",
+        links: [
+            { title: "Create Event", link: "/admin/cevent" },
+            { title: "View Calendar (Admin)", link: "/admin/admincalendar" },
+            {
+                title: "View Calendar (Table Admin)",
+                link: "/admin/admincalendart",
+            },
+            { title: "View Calendar (Hacker)", link: "/admin/calendar" },
+        ],
+    },
 ];

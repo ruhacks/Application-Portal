@@ -7,3 +7,4 @@ export * from "./appActions";
 export * from "./adminActions";
 export * from "./confirmationActions";
 export * from "./hackathonActions";
+export * from "./calendarActions";

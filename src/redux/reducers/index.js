@@ -13,6 +13,7 @@ import app from "./app";
 import confirmation from "./confirmation";
 import admin from "./admin";
 import hackathon from "./hackathon";
+import calendar from "./calendar";
 
 export default combineReducers({
     firebase: firebaseReducer,
@@ -23,4 +24,5 @@ export default combineReducers({
     confirmation,
     admin,
     hackathon,
+    calendar,
 });
