@@ -19,6 +19,9 @@ import Settings from "./Settings";
 import Event from "./Event";
 
 import AdminProtectedRoute from "../Routes/AdminProtectedRoute";
+import AdminCalendarTable from "./Calendar/AdminCalendarTable";
+import AdminCalendar from "./Calendar/AdminCalendar";
+import CreateEvent from "./Calendar/CreateEvent";
 
 class Admin extends Component {
     render() {
@@ -27,7 +30,18 @@ class Admin extends Component {
                 <Route exact path="/admin/stats" component={Stats} />
                 <Route exact path="/admin/users" component={Users} />
                 <Route exact path="/admin/settings" component={Settings} />
-                <Route exact path="/admin/event" component={Event} />
+                <Route exact path="/admin/cevent" component={CreateEvent} />
+                <Route
+                    exact
+                    path="/admin/admincalendar"
+                    component={AdminCalendar}
+                />
+                <Route
+                    exact
+                    path="/admin/admincalendart"
+                    component={AdminCalendarTable}
+                />
+                {/* <Route exact path="/admin/hackercalendar" component={Event} /> */}
             </Switch>
         );
     }

@@ -8,3 +8,4 @@ export * from "./adminActions";
 export * from "./confirmationActions";
 export * from "./hackathonActions";
 export * from "./teamActions";
+export * from "./calendarActions";
