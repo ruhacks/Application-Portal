@@ -361,7 +361,6 @@ export const editEvent = (day, info, event_ID) => async (dispatch) => {
 };
 
 export const deleteEvent = (day, event_ID) => async (dispatch) => {
-    console.log("called????");
     dispatch(deleteEventReq());
 
     const user = auth.currentUser;

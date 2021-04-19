@@ -4,6 +4,7 @@ import { DAY_FRI, DAY_SAT, DAY_SUN, deleteEvent } from "../../../redux/actions";
 import "./styles.scss";
 import DeleteIcon from "@material-ui/icons/Delete";
 import GenerateDayEvents from "./GenerateEvents";
+import PropTypes from "prop-types";
 const dayText = {
     [DAY_FRI]: "Day One: April 30th",
     [DAY_SAT]: "Day Two: April 1st",
@@ -28,6 +29,13 @@ const EVENT_COLOURS = {
     [EVENT_TYPE_GAMES]: "#46BDC6",
 };
 class Calendar extends Component {
+    static propTypes = {
+        start: PropTypes.number,
+        end: PropTypes.number,
+        step: PropTypes.number,
+        admin: PropTypes.string,
+        deleteEvent: PropTypes.func,
+    };
     constructor(props) {
         super(props);
         this.state = {
@@ -173,6 +181,28 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
 
 class CalEvent extends Component {
+    static propTypes = {
+        top: PropTypes.number,
+        left: PropTypes.number,
+        width: PropTypes.number,
+        height: PropTypes.number,
+        eventTitle: PropTypes.string,
+        eventType: PropTypes.string,
+        eventDescp: PropTypes.string,
+        START_TIME: PropTypes.number,
+        startTimeMin: PropTypes.number,
+        startTimeHour: PropTypes.number,
+        endTimeMin: PropTypes.number,
+        endTimeHour: PropTypes.number,
+        platform: PropTypes.string,
+        platformNotes: PropTypes.string,
+        eventHost: PropTypes.string,
+        admin: PropTypes.string,
+
+        id: PropTypes.string,
+        deleteEvent: PropTypes.func,
+        day_select: PropTypes.string,
+    };
     deleteEvent = () => {
         const { admin, id, eventTitle, deleteEvent, day_select } = this.props;
         if (
