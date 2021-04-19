@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "webpack-dev-server --open --mode development",
         "build": "webpack --mode production",
-        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+        "lint": "eslint \"*/**/*.{js,ts,tsx}\" --quiet --fix",
         "format": "prettier-eslint --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
         "prepare": "husky install"
     },
@@ -81,5 +81,10 @@
         "node-sass": "^5.0.0",
         "sass-loader": "^10.1.1",
         "webpack": "^4.46.0"
+    },
+    "husky": {
+      "hooks": {
+        "pre-push": "npm run lint"
+      }
     }
 }
