@@ -106,13 +106,7 @@ export const fields = [
     },
     {
         titleLabel: "Personal Pronouns",
-        options: [
-            "He/Him",
-            "She/Her",
-            "They/Them",
-            "Prefer not to answer",
-            "Other (please specify)",
-        ],
+        options: currentlyUsedPronouns,
         required: true,
         type: "dropdown",
         order: 12,
@@ -193,3 +187,11 @@ export const fieldKeys = fields.map((field) => field.keyRef);
 export const profileUpdateObject = (updatedAt) => ({
     updatedAt,
 });
+
+export const currentlyUsedPronouns = [
+    "He/Him",
+    "She/Her",
+    "They/Them",
+    "Prefer not to answer",
+    "Other (please specify)",
+];

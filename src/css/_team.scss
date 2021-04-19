@@ -1,0 +1,34 @@
+.team-action {
+    &-container {
+        width: 100%;
+    }
+
+    &-create {
+        display: flex;
+        padding: 6rem;
+        justify-content: space-between;
+    }
+
+    &-join {
+        display: flex;
+        padding: 6rem;
+        justify-content: space-between;
+    }
+}
+
+.MuiTextField-root {
+    width: 75%;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+}
+
+.action-buttons {
+    margin: 1em;
+}
+
+button.MuiButton-root {
+    margin: 0.2em;
+}
