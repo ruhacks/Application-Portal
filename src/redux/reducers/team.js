@@ -23,19 +23,14 @@ export default (
     state = {
         creatingTeam: false,
         teamID: "",
-        teamCreateError: {},
         joiningTeam: false,
-        teamJoinError: {},
         gettingTeam: false,
         team: {},
-        gettingTeamError: {},
         leavingTeam: false,
-        leavingTeamError: {},
         deletingTeam: false,
-        deletingTeamError: {},
         kickingMember: false,
-        kickingMemberFailure: {},
         isOwner: false,
+        teamError: {},
     },
     action
 ) => {
@@ -44,6 +39,7 @@ export default (
             return {
                 ...state,
                 creatingTeam: true,
+                teamError: {},
             };
         case TEAM_CREATE_SUCCESS:
             return {
@@ -55,13 +51,14 @@ export default (
             return {
                 ...state,
                 creatingTeam: false,
-                teamCreateError: action.error,
+                teamError: action.error,
             };
 
         case TEAM_JOIN_REQUEST:
             return {
                 ...state,
                 joiningTeam: true,
+                teamError: {},
             };
         case TEAM_JOIN_SUCCESS:
             return {
@@ -73,12 +70,13 @@ export default (
             return {
                 ...state,
                 joiningTeam: false,
-                teamJoinError: action.error,
+                teamError: action.error,
             };
         case GET_TEAM_REQUEST:
             return {
                 ...state,
                 gettingTeam: true,
+                teamError: {},
             };
         case GET_TEAM_SUCCESS:
             return {
@@ -92,12 +90,13 @@ export default (
             return {
                 ...state,
                 gettingTeam: false,
-                gettingTeamError: action.error,
+                teamError: action.error,
             };
         case TEAM_LEAVE_REQUEST:
             return {
                 ...state,
                 leavingTeam: true,
+                teamError: {},
             };
         case TEAM_LEAVE_SUCCESS:
             return {
@@ -110,12 +109,13 @@ export default (
             return {
                 ...state,
                 leavingTeam: false,
-                leavingTeamError: action.error,
+                teamError: action.error,
             };
         case DELETE_TEAM_REQUEST:
             return {
                 ...state,
                 deletingTeam: true,
+                teamError: {},
             };
         case DELETE_TEAM_SUCCESS:
             return {
@@ -128,12 +128,13 @@ export default (
             return {
                 ...state,
                 deletingTeam: false,
-                deletingTeamError: action.error,
+                teamError: action.error,
             };
         case TEAM_KICK_REQUEST:
             return {
                 ...state,
                 kickingMember: true,
+                teamError: {},
             };
         case TEAM_KICK_SUCCESS:
             return {
@@ -143,7 +144,7 @@ export default (
         case TEAM_KICK_FAILURE:
             return {
                 ...state,
-                kickingMemberFailure: action.error,
+                teamError: action.error,
             };
         default:
             return state;

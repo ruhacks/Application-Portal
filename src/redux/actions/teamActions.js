@@ -237,11 +237,13 @@ export const leaveTeam = (team_ID) => (dispatch) => {
                 if (response.data.teamLeft && response.data.userUpdated) {
                     dispatch(teamLeaveSuccess());
                 } else {
-                    dispatch(teamLeaveFailure(response));
+                    dispatch(teamLeaveFailure(response.data));
                 }
             })
             .catch((error) => {
-                dispatch(teamLeaveFailure(error));
+                if (error.isAxiosError) {
+                    dispatch(teamLeaveFailure(error.response.data));
+                }
             });
     });
 };
@@ -275,11 +277,13 @@ export const deleteTeam = (team_ID) => (dispatch) => {
                     if (response.data.teamDeleted) {
                         dispatch(deleteTeamSuccess());
                     } else {
-                        dispatch(deleteTeamFailure(response));
+                        dispatch(deleteTeamFailure(response.data));
                     }
                 })
                 .catch((error) => {
-                    dispatch(deleteTeamFailure(error));
+                    if (error.isAxiosError) {
+                        dispatch(deleteTeamFailure(error.response.data));
+                    }
                 });
         });
     }
@@ -316,11 +320,13 @@ export const createTeam = (name) => (dispatch) => {
                     if (response.data.team_ID) {
                         dispatch(createTeamSuccess(response.data.team_ID));
                     } else {
-                        dispatch(createTeamFailure(response));
+                        dispatch(createTeamFailure(response.data));
                     }
                 })
                 .catch((error) => {
-                    dispatch(createTeamFailure(error));
+                    if (error.isAxiosError) {
+                        dispatch(createTeamFailure(error.response.data));
+                    }
                 });
         });
     }
@@ -362,7 +368,9 @@ export const joinTeam = (joinID) => (dispatch) => {
                     }
                 })
                 .catch((error) => {
-                    dispatch(joinTeamError(error));
+                    if (error.isAxiosError) {
+                        dispatch(joinTeamError(error.response.data));
+                    }
                 });
         });
     }

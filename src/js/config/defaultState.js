@@ -1,3 +1,11 @@
+export const currentlyUsedPronouns = [
+    "He/Him",
+    "She/Her",
+    "They/Them",
+    "Prefer not to answer",
+    "Other (please specify)",
+];
+
 export const fields = [
     {
         type: "String",
@@ -193,11 +201,3 @@ export const fieldKeys = fields.map((field) => field.keyRef);
 export const profileUpdateObject = (updatedAt) => ({
     updatedAt,
 });
-
-export const currentlyUsedPronouns = [
-    "He/Him",
-    "She/Her",
-    "They/Them",
-    "Prefer not to answer",
-    "Other (please specify)",
-];
