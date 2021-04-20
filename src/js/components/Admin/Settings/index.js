@@ -20,6 +20,8 @@ class Settings extends Component {
         hackathonSettings: PropTypes.object,
         setHackSettings: PropTypes.func,
         getHackSettings: PropTypes.func,
+        settingSettings: PropTypes.bool,
+        setSetting: PropTypes.string,
     };
 
     constructor(props) {
@@ -30,7 +32,16 @@ class Settings extends Component {
             close: new Date(),
             confirm: new Date(),
             allowMinors: false,
+            appOpen: false,
+            confOpen: false,
         };
+        this.handleOpenChange = this.handleOpenChange.bind(this);
+        this.handleCloseChange = this.handleCloseChange.bind(this);
+        this.handleConfirmChange = this.handleConfirmChange.bind(this);
+        this.allowMinorsChange = this.allowMinorsChange.bind(this);
+        this.setOption = this.setOption.bind(this);
+        this.handleAppOpenChange = this.handleAppOpenChange.bind(this);
+        this.handleConfOpenChange = this.handleConfOpenChange.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -46,13 +57,15 @@ class Settings extends Component {
                 close: this.props.hackathonSettings.timeClose.toDate(),
                 confirm: this.props.hackathonSettings.timeConfirm.toDate(),
                 allowMinors: this.props.hackathonSettings.allowMinors,
+                appOpen: this.props.hackathonSettings.appOpen,
+                confOpen: this.props.hackathonSettings.confOpen,
             });
         }
-        this.handleOpenChange = this.handleOpenChange.bind(this);
-        this.handleCloseChange = this.handleCloseChange.bind(this);
-        this.handleConfirmChange = this.handleConfirmChange.bind(this);
-        this.allowMinorsChange = this.allowMinorsChange.bind(this);
-        this.setOption = this.setOption.bind(this);
+        if (this.props.setSetting && this.state.loading) {
+            this.setState({
+                loading: false,
+            });
+        }
     }
 
     componentDidMount() {
@@ -75,22 +88,39 @@ class Settings extends Component {
             confirm: newDate,
         });
     }
+    handleAppOpenChange(newState) {
+        this.setState({
+            appOpen: newState.target.checked,
+        });
+    }
+    handleConfOpenChange(newState) {
+        this.setState({
+            confOpen: newState.target.checked,
+        });
+    }
     allowMinorsChange(newState) {
         this.setState({
-            allowMinors: newState.event.checked,
+            allowMinors: newState.target.checked,
         });
     }
     setOption(option, value) {
+        this.props.setHackSettings({ type: option, value });
         this.setState({
             loading: true,
         });
-        this.props.setHackSettings({ type: option, value });
     }
 
     render() {
         if (this.state.loading || isEmpty(this.props.hackathonSettings))
             return <CircularProgress />;
-        const { open, close, confirm, allowMinors } = this.state;
+        const {
+            open,
+            close,
+            confirm,
+            allowMinors,
+            appOpen,
+            confOpen,
+        } = this.state;
         return (
             <div>
                 <Grid
@@ -101,6 +131,18 @@ class Settings extends Component {
                 >
                     <Typography variant="h2">Settings</Typography>
                 </Grid>
+                {this.props.setSetting && (
+                    <Typography
+                        variant="body1"
+                        style={{ textAlign: "center", color: "green" }}
+                    >
+                        {this.props.setSetting + " was sucessfully set"}
+                    </Typography>
+                )}
+
+                <Typography variant="h5" style={{ textAlign: "center" }}>
+                    Dashboard Visual Settings
+                </Typography>
                 <Paper
                     style={{
                         padding: 16,
@@ -164,6 +206,66 @@ class Settings extends Component {
                             Set
                         </Button>
                     </MuiPickersUtilsProvider>
+                </Paper>
+                <Typography variant="h5" style={{ textAlign: "center" }}>
+                    State settings
+                </Typography>
+                <Typography
+                    variant="body1"
+                    style={{ textAlign: "center", color: "red" }}
+                >
+                    Warning: These settings WILL affect all users
+                </Typography>
+                <Paper
+                    style={{
+                        padding: 16,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "1rem",
+                    }}
+                >
+                    <Switch
+                        checked={appOpen}
+                        onChange={this.handleAppOpenChange}
+                        name="appOpen"
+                        color="primary"
+                    />
+                    <Typography variant="subtitle1">
+                        Application Open?
+                    </Typography>
+                    <Button
+                        onClick={(e) => {
+                            this.setOption(
+                                "Application State",
+                                this.state.appOpen
+                            );
+                        }}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Set
+                    </Button>
+                    <Switch
+                        checked={confOpen}
+                        onChange={this.handleConfOpenChange}
+                        name="confOpen"
+                        color="primary"
+                    />
+                    <Typography variant="subtitle1">
+                        Confirmations Open?
+                    </Typography>
+                    <Button
+                        onClick={(e) => {
+                            this.setOption(
+                                "Confirmation State",
+                                this.state.confOpen
+                            );
+                        }}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Set
+                    </Button>
                     <Switch
                         checked={allowMinors}
                         onChange={this.allowMinorsChange}
@@ -198,7 +300,7 @@ function mapStateToProps(state) {
         hackathonSettings: state.admin.hackathonSettings,
         gettingSettings: state.admin.gettingSettings,
         gettingSettingsError: state.admin.gettingSettingsError,
-        settingSettings: state.admin.settingSettings,
+        setSetting: state.admin.setSetting,
     };
 }
 

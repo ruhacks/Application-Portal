@@ -32,11 +32,44 @@ class Application extends Component {
         updatedFieldsSuccessfully: PropTypes.bool,
         setAppRedirectToFalse: PropTypes.func,
         setUsersApplication: PropTypes.func,
+        hackathon: PropTypes.object,
+        profile: PropTypes.object,
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            appOpen: true,
+            alreadyAdmitted: false,
+        };
+    }
 
     componentDidMount() {
         const { getUsersApplication, user } = this.props;
         getUsersApplication(user);
+    }
+
+    componentDidUpdate() {
+        if (
+            this.props.hackathon &&
+            (this.props.hackathon.appOpen !== undefined ||
+                this.props.hackathon.appOpen !== null) &&
+            this.props.hackathon.appOpen !== this.state.appOpen
+        ) {
+            this.setState({
+                appOpen: this.props.hackathon.appOpen,
+            });
+        }
+
+        if (
+            this.props.profile &&
+            this.props.profile.admitted &&
+            this.props.profile.admitted !== this.state.alreadyAdmitted
+        ) {
+            this.setState({
+                alreadyAdmitted: true,
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -57,8 +90,19 @@ class Application extends Component {
             return <CircularProgress />;
         }
 
-        if (appError) {
-            return <div> ERROR </div>;
+        if (
+            appError &&
+            appError.code &&
+            appError.code === "permission-denied"
+        ) {
+            return (
+                <div>
+                    {" "}
+                    403 Error: Permission Denied, Applications are probably
+                    closed. If you suspect that is not the case then contact
+                    devs@ruhacks.com{" "}
+                </div>
+            );
         }
 
         if (updatedFieldsSuccessfully) {
@@ -70,6 +114,8 @@ class Application extends Component {
                 application={application}
                 fields={fields}
                 setUsersApplication={this.props.setUsersApplication}
+                appOpen={this.state.appOpen}
+                alreadyAdmitted={this.state.alreadyAdmitted}
             />
         );
     }
@@ -86,6 +132,7 @@ function mapStateToProps(state) {
         updatedFieldsSuccessfully: state.app.updatedFieldsSuccessfully,
         profile: state.auth.profile,
         user: state.auth.user,
+        hackathon: state.hackathon.hackInfo,
     };
 }
 

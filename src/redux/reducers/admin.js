@@ -157,12 +157,13 @@ export default (
             return {
                 ...state,
                 settingSettings: true,
+                setSetting: "",
             };
         case ADMIN_SET_SETTINGS_SUCCESS:
             return {
                 ...state,
                 settingSettings: false,
-                setSetting: action.settings,
+                setSetting: action.setting,
             };
         case ADMIN_SET_SETTINGS_ERROR:
             return {

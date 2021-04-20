@@ -186,6 +186,12 @@ export const setHackSettings = (setting) => (dispatch) => {
         case "Allow Minors":
             fieldEdit = "allowMinors";
             break;
+        case "Application State":
+            fieldEdit = "appOpen";
+            break;
+        case "Confirmation State":
+            fieldEdit = "confOpen";
+            break;
         default:
             return dispatch(
                 setSettingsError({ MESSAGE: "ERROR NO SETTING FOUND" })
@@ -194,7 +200,7 @@ export const setHackSettings = (setting) => (dispatch) => {
     const updateObj = { [fieldEdit]: setting.value };
     settingsDoc
         .update(updateObj)
-        .then(dispatch(setSettingsSuccess(setting)))
+        .then(dispatch(setSettingsSuccess(setting.type)))
         .catch((error) => dispatch(setSettingsError(error)));
 };
 

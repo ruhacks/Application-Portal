@@ -276,53 +276,6 @@ class Login extends React.Component {
                             </Paper>
                         </Grid>
                     </Grid>
-                    {
-                        <Modal
-                            open={this.state.forgotMode}
-                            onClose={this.setCloseMode}
-                            aria-labelledby="Forgot Password"
-                            aria-describedby="A pop up form for users that forgot their passwords"
-                        >
-                            <div className={classes.modalContainer}>
-                                <Paper className={classes.paper}>
-                                    <TextField
-                                        variant="outlined"
-                                        margin="normal"
-                                        fullWidth
-                                        id="emailForgot"
-                                        label="Email Address"
-                                        name="emailForgot"
-                                        onChange={
-                                            this.handleForgotPasswordEmailChange
-                                        }
-                                    />
-                                    {verificationLinkError && (
-                                        <Typography
-                                            component="p"
-                                            className={classes.errorText}
-                                        >
-                                            {
-                                                "Error sending verification link, please try again later"
-                                            }
-                                        </Typography>
-                                    )}
-                                    <Box m={0.5} p={0.5} width="100%">
-                                        <Button
-                                            fullWidth
-                                            variant="contained"
-                                            color="primary"
-                                            className={classes.submit}
-                                            onClick={
-                                                this.handleForgotPasswordSubmit
-                                            }
-                                        >
-                                            Send Forgot Password Link
-                                        </Button>
-                                    </Box>
-                                </Paper>
-                            </div>
-                        </Modal>
-                    }
                 </div>
             );
         }

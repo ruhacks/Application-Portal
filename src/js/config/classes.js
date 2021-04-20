@@ -12,6 +12,7 @@ const classes = {
     },
     avatar: "avatar",
     descriptionText: "descriptionText",
+    discordContainer: "discordContainer",
     errorText: "error",
     homeContainer: "homeContainer",
     loginContainer: "loginContainer",
@@ -22,11 +23,13 @@ const classes = {
     paper: "paper",
     register: "register",
     resendVerification: "resendVerification",
+    resumeContainer: "resumeContainer",
     submit: "submit",
     successText: "success_text",
     toolbarButtons: "toolbarButtons",
     textLink: "textLink",
     unverifiedBox: "unverifiedBox",
+    uploadFile: "uploadFile",
 };
 
 export default classes;

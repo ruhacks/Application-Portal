@@ -8,6 +8,19 @@ const text = {
     noPasswordConfirm: "Password confirmation is empty...",
     passwordsDoNotMatch: "Passwords do not match",
 
+    dialogTitles: {
+        confirmDeleteTeam: "Are you sure you'd like to delete this team?",
+        confirmKickUsers:
+            "Are you sure you'd like to kick this user/these users?",
+    },
+
+    dialogDescriptions: {
+        confirmDeleteTeam:
+            "This is irreversible, all members of the team will be kicked from the team including yourself",
+        confirmKickUsers:
+            "This is irreversible, the selected user(s) will be kicked",
+    },
+
     quickStatus: {
         incompleteApplication: "Application Incomplete!",
         completeApplication: "Application Complete!",
@@ -22,7 +35,7 @@ const text = {
         completeApplication:
             "Your application is complete, we'll get back to you soon! ",
         confirmed:
-            "We've recieved your confirmation, see our Discord for more details!",
+            "We've received your confirmation! You will receive an invite to our Discord via Email soon, as well as an invite link here, when the server is ready. Please keep an eye out or check back here periodically.",
         admitted:
             "Congratulations! You've been admitted. Please complete your confirmation by clicking on confirmation in the navigation",
         declined:
@@ -33,9 +46,18 @@ const text = {
 
     confirmation: {
         whyDiscord:
-            "We will mainly be using Discord for communications reagrding workshops, judging times, twitch event times etc... and we need to be able to verify you once you join our server",
+            "We will mainly be using Discord for communications regarding workshops, judging times, twitch event times etc... and we need to be able to verify you once you join our server",
         connectedDiscord:
             "We got you! Now when you join our server we should be able to automatically verify you :)",
+        uploadResume:
+            "If you have a resume you'd like to share, you can upload it by pressing the button here. We'll be sharing it with our sponsors. File size limit is 5MB and it must be a .pdf or .doc/.docx",
+    },
+
+    team: {
+        teamDescriptionNoTeam:
+            "You can either create a team or join a team with a specified ID provided by any of the team members you are trying to join",
+        teamDescriptionTeam:
+            "You can see all your team members along with their emails. The team owner may delete the team or individuals may wish to leave the team",
     },
 };
 

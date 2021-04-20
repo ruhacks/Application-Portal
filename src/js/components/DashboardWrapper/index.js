@@ -11,10 +11,14 @@ import {
 } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../../../redux/actions/authActions";
+import {
+    logoutUser,
+    subscribeToUserProfile,
+} from "../../../redux/actions/authActions";
 import NavbarLinks from "./NavbarLinks";
 import { subscribeToHackathonTime } from "../../../redux/actions";
 import { CircularProgress } from "@material-ui/core";
+import isEmpty from "lodash/isEmpty";
 class DashboardWrapper extends Component {
     static propTypes = {
         user: PropTypes.object,
@@ -30,6 +34,7 @@ class DashboardWrapper extends Component {
             name: PropTypes.String,
         }),
         subscribeToHackathonTime: PropTypes.func,
+        subscribeToUserProfile: PropTypes.func,
         hackathon: PropTypes.shape({
             Hackathon: PropTypes.object,
         }),
@@ -42,15 +47,23 @@ class DashboardWrapper extends Component {
             navbarOpen: true,
             unsubHackSettings: null,
             gif: false,
+            unsubscribeFromProfile: null,
         };
 
         this.setUnsubscribe = this.setUnsubscribe.bind(this);
+        this.setUnsubscribeProfile = this.setUnsubscribeProfile.bind(this);
         this.changeIcon = this.changeIcon.bind(this);
     }
 
     setUnsubscribe(unsubVar) {
         this.setState({
             unsubHackSettings: unsubVar,
+        });
+    }
+
+    setUnsubscribeProfile(unsubVar) {
+        this.setState({
+            unsubscribeFromProfile: unsubVar,
         });
     }
 
@@ -72,7 +85,7 @@ class DashboardWrapper extends Component {
             daysLeft = "Final Day!";
         } else if (hackathon && hackathon.Hackathon) {
             const hackTime = hackathon.Hackathon.toDate();
-            daysLeft = parseInt((hackTime - currentDate) / (24 * 3600 * 1000));
+            daysLeft = Math.ceil((hackTime - currentDate) / (24 * 3600 * 1000));
         }
 
         const imageSource = this.state.gif ? EggwardImage : EggwardGif;
@@ -96,9 +109,9 @@ class DashboardWrapper extends Component {
             "August",
             "September",
         ];
-        dateText = `${days[currentDate.getDay()]}, ${
+        dateText = `${days[currentDate.getDay() - 1]}, ${
             months[currentDate.getMonth()]
-        } ${currentDate.getUTCDate()}`;
+        } ${currentDate.getDate()}`;
 
         return (
             <div className="db-sidebar__header ">
@@ -152,11 +165,17 @@ class DashboardWrapper extends Component {
     componentDidMount() {
         if (this.state.unsubHackSettings === null)
             this.props.subscribeToHackathonTime(this.setUnsubscribe);
+        if (isEmpty(this.props.profile))
+            this.props.subscribeToUserProfile(this.setUnsubscribeProfile);
     }
 
     componentWillUnmount() {
-        if (this.state.unsubHackSettings === null) return;
-        this.state.unsubHackSettings();
+        if (this.state.unsubHackSettings !== null) {
+            this.state.unsubHackSettings();
+        }
+        if (this.state.unsubscribeFromProfile !== null) {
+            this.state.unsubscribeFromProfile();
+        }
     }
 
     render() {
@@ -164,7 +183,6 @@ class DashboardWrapper extends Component {
         const { emailVerified } = user;
         const admin = profile.isAdmin ? profile.isAdmin : false;
         const { navbarOpen } = this.state;
-
         return (
             <div className="db-con">
                 <div className={`db-sidebar ${!navbarOpen && "closed"}`}>
@@ -254,6 +272,9 @@ function mapDispatchToProps(dispatch) {
         },
         subscribeToHackathonTime: (setUnsubscribe) => {
             dispatch(subscribeToHackathonTime(setUnsubscribe));
+        },
+        subscribeToUserProfile: (setUnsubscribe) => {
+            dispatch(subscribeToUserProfile(setUnsubscribe));
         },
     };
 }

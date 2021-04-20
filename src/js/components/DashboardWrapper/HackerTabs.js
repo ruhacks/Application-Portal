@@ -37,6 +37,28 @@ const ifVerified = [
     },
 ];
 
+const ifCompleted = [
+    {
+        title: "General",
+        links: [{ title: "Home", link: "/" }],
+    },
+    {
+        title: "Forms",
+        links: [
+            {
+                title: "Application",
+                link: "/application",
+                conditions: ["emailVerified"],
+            },
+            {
+                title: "Team",
+                link: "/team",
+                conditions: ["emailVerified", "completedProfile"],
+            },
+        ],
+    },
+];
+
 const ifAdmitted = [
     {
         title: "General",
@@ -55,6 +77,11 @@ const ifAdmitted = [
                 link: "/confirmation",
                 conditions: ["emailVerified", "admitted"],
             },
+            {
+                title: "Team",
+                link: "/team",
+                conditions: ["emailVerified", "completedProfile"],
+            },
         ],
     },
 ];
@@ -62,6 +89,8 @@ const ifAdmitted = [
 export const generateTabs = (profile, emailVerified) => {
     if (profile.admitted) {
         return ifAdmitted;
+    } else if (profile.completedProfile) {
+        return ifCompleted;
     } else if (emailVerified) {
         return ifVerified;
     } else {
