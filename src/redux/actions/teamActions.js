@@ -241,7 +241,9 @@ export const leaveTeam = (team_ID) => (dispatch) => {
                 }
             })
             .catch((error) => {
-                dispatch(teamLeaveFailure(error));
+                if (error.isAxiosError) {
+                    dispatch(teamLeaveFailure(error.response.data));
+                }
             });
     });
 };
@@ -279,7 +281,9 @@ export const deleteTeam = (team_ID) => (dispatch) => {
                     }
                 })
                 .catch((error) => {
-                    dispatch(deleteTeamFailure(error));
+                    if (error.isAxiosError) {
+                        dispatch(deleteTeamFailure(error.response.data));
+                    }
                 });
         });
     }
@@ -320,7 +324,9 @@ export const createTeam = (name) => (dispatch) => {
                     }
                 })
                 .catch((error) => {
-                    dispatch(createTeamFailure(error));
+                    if (error.isAxiosError) {
+                        dispatch(createTeamFailure(error.response.data));
+                    }
                 });
         });
     }
