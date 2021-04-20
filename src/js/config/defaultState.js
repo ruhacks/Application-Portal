@@ -106,7 +106,13 @@ export const fields = [
     },
     {
         titleLabel: "Personal Pronouns",
-        options: currentlyUsedPronouns,
+        options: [
+            "He/Him",
+            "She/Her",
+            "They/Them",
+            "Prefer not to answer",
+            "Other (please specify)",
+        ],
         required: true,
         type: "dropdown",
         order: 12,
