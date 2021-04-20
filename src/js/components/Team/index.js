@@ -42,6 +42,7 @@ class Team extends React.Component {
         userInfo: PropTypes.object,
         team: PropTypes.object,
         user: PropTypes.object,
+        teamError: PropTypes.object,
 
         getTeam: PropTypes.func,
         createTeam: PropTypes.func,
@@ -112,7 +113,7 @@ class Team extends React.Component {
 
     setUnsubscribe(unsubVar) {
         this.setState({
-            unsubscribeFromProfile: unsubVar,
+            unsubscribeFromTeam: unsubVar,
         });
     }
 
@@ -153,6 +154,22 @@ class Team extends React.Component {
             this.props.getTeam(this.props.teamID, this.setUnsubscribe);
             this.setState({
                 inTeam: true,
+            });
+        }
+
+        if (
+            Object.keys(prevProps.teamError).length === 0 &&
+            Object.keys(this.props.teamError).length > 0
+        ) {
+            this.setState({
+                errorText: this.props.teamError.message,
+            });
+        } else if (
+            Object.keys(this.props.teamError).length === 0 &&
+            Object.keys(prevProps.teamError).length > 0
+        ) {
+            this.setState({
+                errorText: "",
             });
         }
     }
@@ -542,11 +559,10 @@ function mapStateToProps(state) {
         teamID: state.team.teamID,
         joiningTeam: state.team.joiningTeam,
         creatingTeam: state.team.creatingTeam,
-        teamCreateError: state.team.teamCreateError,
         userInfo: state.auth.userInfo,
         gettingTeam: state.team.gettingTeam,
         team: state.team.team,
-        gettingTeamError: state.team.gettingTeamError,
+        teamError: state.team.teamError,
         isOwner: state.team.isOwner,
         user: state.auth.user,
     };
