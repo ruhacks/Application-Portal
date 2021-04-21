@@ -4,7 +4,6 @@ dist/
 
 firebase.json
 firestore.indexes.json
-firestore.rules
 .firebaserc
 .firebase/
 firestore-debug.log
@@ -13,5 +12,10 @@ ui-debug.log
 storage.rules
 .DS_Store
 
-functions/
-.DS_Store
+functions/discord.json
+functions/JWT.json
+functions/back
+functions/firebase
+functions/test
+functions/fields.json
+functions/firestore.rules
