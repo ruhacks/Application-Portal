@@ -10,12 +10,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import CalEvent from "./CalEvent";
 import PropTypes from "prop-types";
-const dayText = {
-    [DAY_FRI]: "Day One: April 30th",
-    [DAY_SAT]: "Day Two: April 1st",
-    [DAY_SUN]: "Day Three: April 2nd",
-};
-
 export const EVENT_TYPE_WORKSHOP = "Workshop";
 export const EVENT_TYPE_CEREMONY = "Ceremony";
 export const EVENT_TYPE_MEAL_TIME = "Meal Time";
@@ -158,7 +152,7 @@ class Calendar extends Component {
                     <div className="cal-bops__box">
                         <div className="cal-bops__title">Calendar Options</div>
                         <div className="cal-bops__filters">
-                            <div class="cal-bops__checkbox">
+                            <div className="cal-bops__checkbox">
                                 <FormControlLabel
                                     control={
                                         <Checkbox
@@ -185,6 +179,7 @@ class Calendar extends Component {
                         <div className="cal-bops__filters all">
                             {filteroptions.map((id) => (
                                 <CalendarCheckbox
+                                    key={id}
                                     filter={this.state.filter}
                                     id={id}
                                     refThis={this}

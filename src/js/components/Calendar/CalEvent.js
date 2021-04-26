@@ -10,8 +10,31 @@ import {
     EVENT_TYPE_SPONSOR_OPEN_HOUSE,
     EVENT_TYPE_WORKSHOP,
 } from ".";
+import PropTypes from "prop-types";
 
 export default class CalEvent extends Component {
+    static propTypes = {
+        top: PropTypes.number,
+        left: PropTypes.number,
+        width: PropTypes.number,
+        height: PropTypes.number,
+        eventTitle: PropTypes.string,
+        eventType: PropTypes.string,
+        eventDescp: PropTypes.string,
+        START_TIME: PropTypes.number,
+        startTimeMin: PropTypes.number,
+        startTimeHour: PropTypes.number,
+        endTimeMin: PropTypes.number,
+        endTimeHour: PropTypes.number,
+        platform: PropTypes.string,
+        platformNotes: PropTypes.string,
+        eventHost: PropTypes.string,
+        admin: PropTypes.string,
+
+        id: PropTypes.string,
+        deleteEvent: PropTypes.func,
+        day_select: PropTypes.string,
+    };
     deleteEvent = () => {
         const { admin, id, eventTitle, deleteEvent, day_select } = this.props;
         if (
