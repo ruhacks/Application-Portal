@@ -2,31 +2,21 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { DAY_FRI, DAY_SAT, DAY_SUN, deleteEvent } from "../../../redux/actions";
 import "./styles.scss";
-import DeleteIcon from "@material-ui/icons/Delete";
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import GenerateDayEvents from "./GenerateEvents";
-const dayText = {
-    [DAY_FRI]: "Day One: April 30th",
-    [DAY_SAT]: "Day Two: April 1st",
-    [DAY_SUN]: "Day Three: April 2nd",
-};
-
+import { Fragment } from "react";
+import CalendarCheckbox from "./CalendarCheckbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import CalEvent from "./CalEvent";
 export const EVENT_TYPE_WORKSHOP = "Workshop";
 export const EVENT_TYPE_CEREMONY = "Ceremony";
 export const EVENT_TYPE_MEAL_TIME = "Meal Time";
 export const EVENT_TYPE_NETWORKING_EVENTS = "Networking Events";
 export const EVENT_TYPE_OPEN_NETOWRKING = "Open Networking";
-export const EVENT_TYPE_SPONSOR_OPEN_HOUSE = "Sponsor Open House";
+export const EVENT_TYPE_SPONSOR_OPEN_HOUSE = "Sponsor Events";
 export const EVENT_TYPE_GAMES = "Games";
-
-const EVENT_COLOURS = {
-    [EVENT_TYPE_WORKSHOP]: "#FFFF00",
-    [EVENT_TYPE_CEREMONY]: "#00FF00",
-    [EVENT_TYPE_MEAL_TIME]: "#CC4125",
-    [EVENT_TYPE_NETWORKING_EVENTS]: "#118AB2",
-    [EVENT_TYPE_OPEN_NETOWRKING]: "#8E7CC3",
-    [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: "#EF476F",
-    [EVENT_TYPE_GAMES]: "#46BDC6",
-};
+export const EVENT_TYPE_SOCIAL = "Social Events";
 class Calendar extends Component {
     constructor(props) {
         super(props);
@@ -35,9 +25,28 @@ class Calendar extends Component {
             [DAY_SUN]: [],
             [DAY_SAT]: [],
             day_select: DAY_FRI,
+            live: true,
+            filter: {
+                [EVENT_TYPE_CEREMONY]: false,
+                [EVENT_TYPE_WORKSHOP]: false,
+                [EVENT_TYPE_MEAL_TIME]: false,
+                [EVENT_TYPE_NETWORKING_EVENTS]: false,
+                [EVENT_TYPE_SOCIAL]: false,
+                [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: false,
+                [EVENT_TYPE_GAMES]: false,
+            },
         };
     }
     componentDidMount() {
+        let TODAY = DAY_FRI;
+        const NOW = new Date();
+        const date = NOW.getDate();
+        const month = NOW.getMonth();
+        if (date === 1 && month === 4) {
+            TODAY = DAY_SAT;
+        } else if (date === 2 && month === 4) {
+            TODAY = DAY_SUN;
+        }
         this.setState({
             [DAY_FRI]: new GenerateDayEvents(
                 this.props[DAY_FRI].map((s) => ({
@@ -63,13 +72,118 @@ class Calendar extends Component {
                 })),
                 document.getElementById("day-event-container").clientWidth
             ),
-            day_select: localStorage.getItem("curDay") || DAY_FRI,
+            day_select: TODAY,
+            live: localStorage.getItem("liveEvents") || false,
         });
     }
     setDay = (d) => {
-        localStorage.setItem("curDay", d);
         this.setState({ day_select: d });
     };
+    renderTitle() {
+        const dayText = {
+            [DAY_FRI]: (
+                <Fragment>
+                    <div
+                        className="cal-title__center"
+                        style={{ marginLeft: 60 }}
+                    >
+                        April 30 2021
+                    </div>
+                    <div
+                        className="cal-title__icon"
+                        onClick={() => this.setDay(DAY_SAT)}
+                    >
+                        <DoubleArrowIcon />
+                    </div>
+                </Fragment>
+            ),
+            [DAY_SAT]: (
+                <Fragment>
+                    <div
+                        className="cal-title__icon L"
+                        onClick={() => this.setDay(DAY_FRI)}
+                    >
+                        <DoubleArrowIcon />
+                    </div>
+                    <div className="cal-title__center">May 01 2021</div>
+                    <div
+                        className="cal-title__icon"
+                        onClick={() => this.setDay(DAY_SUN)}
+                    >
+                        <DoubleArrowIcon />
+                    </div>
+                </Fragment>
+            ),
+            [DAY_SUN]: (
+                <Fragment>
+                    <div
+                        className="cal-title__icon L"
+                        onClick={() => this.setDay(DAY_SAT)}
+                    >
+                        <DoubleArrowIcon />
+                    </div>
+                    <div
+                        className="cal-title__center"
+                        style={{ marginRight: 60 }}
+                    >
+                        May 02 2021
+                    </div>
+                </Fragment>
+            ),
+        };
+
+        return (
+            <div className="cal-title">{dayText[this.state.day_select]}</div>
+        );
+    }
+    renderOptions() {
+        const filteroptions = Object.keys(this.state.filter);
+        return (
+            <div className="cal-body__options">
+                <div className="cal-bops">
+                    <div className="cal-bops__box">
+                        <div className="cal-bops__title">Calendar Options</div>
+                        <div className="cal-bops__filters">
+                            <div class="cal-bops__checkbox">
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={this.state.live}
+                                            onChange={(e) => {
+                                                localStorage.setItem(
+                                                    "liveEvents",
+                                                    e.target.checked
+                                                );
+                                                this.setState({
+                                                    live: e.target.checked,
+                                                });
+                                            }}
+                                            color="primary"
+                                        />
+                                    }
+                                    label="Hide past events"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="cal-bops__box">
+                        <div className="cal-bops__title">Filter</div>
+                        <div className="cal-bops__filters all">
+                            {filteroptions.map((id) => (
+                                <CalendarCheckbox
+                                    filter={this.state.filter}
+                                    id={id}
+                                    refThis={this}
+                                >
+                                    {id}
+                                </CalendarCheckbox>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     render() {
         let { start, end, step, admin } = this.props;
         step = step || 120;
@@ -78,20 +192,26 @@ class Calendar extends Component {
         const date = NOW.getDate();
         const month = NOW.getMonth();
         let START_TIME = step * 0;
-        if (date === 30 && month === 4 && this.state.day_select === DAY_FRI) {
-            START_TIME = step * (NOW.getHours() - 1);
-        } else if (
-            date === 1 &&
-            month === 5 &&
-            this.state.day_select === DAY_SAT
-        ) {
-            START_TIME = step * (NOW.getHours() - 1);
-        } else if (
-            date === 2 &&
-            month === 5 &&
-            this.state.day_select === DAY_SUN
-        ) {
-            START_TIME = step * (NOW.getHours() - 1);
+        if (this.state.live) {
+            if (
+                date === 30 &&
+                month === 3 &&
+                this.state.day_select === DAY_FRI
+            ) {
+                START_TIME = step * (NOW.getHours() - 1);
+            } else if (
+                date === 1 &&
+                month === 4 &&
+                this.state.day_select === DAY_SAT
+            ) {
+                START_TIME = step * (NOW.getHours() - 1);
+            } else if (
+                date === 2 &&
+                month === 4 &&
+                this.state.day_select === DAY_SUN
+            ) {
+                START_TIME = step * (NOW.getHours() - 1);
+            }
         }
         // ===========================================================
         start = start || START_TIME;
@@ -102,18 +222,8 @@ class Calendar extends Component {
         let emptyBlocks = [...Array(Math.floor((end - start) / step))];
         return (
             <div className="cal-con">
-                <div onClick={() => this.setDay(DAY_FRI)}>
-                    Click for Day One Calendar
-                </div>
-                <div onClick={() => this.setDay(DAY_SAT)}>
-                    Click for Day Two Calendar
-                </div>
-                <div onClick={() => this.setDay(DAY_SUN)}>
-                    Click for Day Three Calendar
-                </div>
-                <div className="cal-title">
-                    {dayText[this.state.day_select]}
-                </div>
+                {this.renderTitle()}
+                {this.renderOptions()}
                 <div className="cal-body">
                     <ol className="cal-body__times">
                         {times.map((i) => {
@@ -144,6 +254,19 @@ class Calendar extends Component {
                         <div className="events-con" id="day-event-container">
                             {this.state[this.state.day_select]
                                 .filter(({ start }) => start >= START_TIME)
+                                .filter(({ eventType }) => {
+                                    for (var k of Object.keys(
+                                        this.state.filter
+                                    )) {
+                                        if (
+                                            k === eventType &&
+                                            this.state.filter[k]
+                                        ) {
+                                            return false;
+                                        }
+                                    }
+                                    return true;
+                                })
                                 .map((s) => (
                                     <CalEvent
                                         {...s}
@@ -171,77 +294,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Calendar);
-
-class CalEvent extends Component {
-    deleteEvent = () => {
-        const { admin, id, eventTitle, deleteEvent, day_select } = this.props;
-        if (
-            admin &&
-            window.confirm(`Are you sure you want to delete ${eventTitle}`)
-        ) {
-            deleteEvent(id, day_select);
-        }
-    };
-    render() {
-        const {
-            top,
-            left,
-            width,
-            height,
-            eventTitle = "Title not found",
-            eventType,
-            eventDescp,
-            START_TIME,
-            startTimeMin,
-            startTimeHour,
-            endTimeMin,
-            endTimeHour,
-            platform,
-            platformNotes,
-            eventHost,
-            admin,
-        } = this.props;
-        return (
-            <div
-                className="day-event"
-                key={eventTitle}
-                style={{
-                    top: top - START_TIME,
-                    left,
-                    width,
-                    height,
-                    minHeight: height,
-                    borderLeftColor: EVENT_COLOURS[eventType],
-                }}
-            >
-                <div className="day-event__row">
-                    {admin && (
-                        <div
-                            className="day-event__delete"
-                            onClick={this.deleteEvent}
-                        >
-                            <DeleteIcon />
-                        </div>
-                    )}{" "}
-                    <div className="day-event__title">{eventTitle}</div>
-                    <div className="day-event__date">
-                        {startTimeHour < "10" && "0"}
-                        {startTimeHour}:{startTimeMin} -{" "}
-                        {endTimeHour < "10" && "0"}
-                        {endTimeHour}:{endTimeMin}
-                    </div>
-                </div>
-                {eventHost && (
-                    <div className="day-event__row">Hosted by: {eventHost}</div>
-                )}{" "}
-                {eventHost && (
-                    <div className="day-event__row">
-                        Where: {platform}{" "}
-                        {platformNotes && `- ${platformNotes}`}
-                    </div>
-                )}
-                <div className="day-event__descp">{eventDescp}</div>
-            </div>
-        );
-    }
-}
