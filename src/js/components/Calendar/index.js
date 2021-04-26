@@ -9,6 +9,13 @@ import CalendarCheckbox from "./CalendarCheckbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import CalEvent from "./CalEvent";
+import PropTypes from "prop-types";
+const dayText = {
+    [DAY_FRI]: "Day One: April 30th",
+    [DAY_SAT]: "Day Two: April 1st",
+    [DAY_SUN]: "Day Three: April 2nd",
+};
+
 export const EVENT_TYPE_WORKSHOP = "Workshop";
 export const EVENT_TYPE_CEREMONY = "Ceremony";
 export const EVENT_TYPE_MEAL_TIME = "Meal Time";
@@ -18,6 +25,13 @@ export const EVENT_TYPE_SPONSOR_OPEN_HOUSE = "Sponsor Events";
 export const EVENT_TYPE_GAMES = "Games";
 export const EVENT_TYPE_SOCIAL = "Social Events";
 class Calendar extends Component {
+    static propTypes = {
+        start: PropTypes.number,
+        end: PropTypes.number,
+        step: PropTypes.number,
+        admin: PropTypes.string,
+        deleteEvent: PropTypes.func,
+    };
     constructor(props) {
         super(props);
         this.state = {

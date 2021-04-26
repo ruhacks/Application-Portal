@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/functions";
+import "firebase/storage";
 
 var firebaseConfig = {
     apiKey: "AIzaSyDTWIlRWCDwIQrhqK22HWhyNDFElUJ6mGs",
@@ -18,9 +19,11 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // If emulating local firebase/firestore
-//firebase.firestore().useEmulator("localhost", "4000");
-//firebase.functions().useEmulator("localhost", "5001");
-//firebase.auth().useEmulator("http://localhost:9099");
+if (process.env.NODE_ENV !== "production") {
+    firebase.firestore().useEmulator("localhost", "4000");
+    firebase.functions().useEmulator("localhost", "5001");
+    firebase.auth().useEmulator("http://localhost:9099");
+}
 
 const rrfConfig = {
     userProfile: "users",
@@ -29,6 +32,7 @@ const rrfConfig = {
 
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
+export const storage = firebase.storage();
 export const userProfileDefault = {
     confirmation: {
         discord: "",

@@ -1,3 +1,11 @@
+export const currentlyUsedPronouns = [
+    "He/Him",
+    "She/Her",
+    "They/Them",
+    "Prefer not to answer",
+    "Other (please specify)",
+];
+
 export const fields = [
     {
         type: "String",
@@ -152,7 +160,8 @@ export const fields = [
         order: 13,
         type: "String",
         required: false,
-        titleLabel: "Do you have a LinkedIn account?",
+        titleLabel:
+            "Do you have a LinkedIn account? If so please share it here",
         keyRef: "linkedIn",
     },
     {

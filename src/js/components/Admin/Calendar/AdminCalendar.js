@@ -13,6 +13,9 @@ import Calendar from "../../Calendar";
 class AdminCalendar extends Component {
     static propTypes = {
         deleteEvent: PropTypes.func,
+        getAllCalendarInfo: PropTypes.func,
+        calendarLoaded: PropTypes.bool,
+        calendar: PropTypes.object,
     };
     constructor(props) {
         super(props);
@@ -31,7 +34,6 @@ class AdminCalendar extends Component {
         this.loadCalendar();
     }
     loadCalendar = () => {
-        console.log("REFRESHING");
         this.props.getAllCalendarInfo();
     };
     handleEventIDChange({ target }) {

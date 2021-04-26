@@ -14,7 +14,7 @@ import {
     setUserToNewStatus,
 } from "../../../../redux/actions";
 import isEmpty from "lodash/isEmpty";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import PropTypes from "prop-types";
 import "../../../../css/_userTable.scss";
 import { fields } from "../../../config/defaultState";
@@ -80,6 +80,7 @@ class Event extends Component {
                 programName = "",
                 schoolName = "",
                 lastSubmitted = "",
+                hardwareHack = false,
                 year = "";
             if (users[uid].application) {
                 const app = users[uid].application;
@@ -88,6 +89,7 @@ class Event extends Component {
                 schoolName = app.school;
                 year = app.studyLevel;
                 lastSubmitted = app.submittedAt.toDate();
+                hardwareHack = app.hardwareHack;
             }
 
             const {
@@ -107,10 +109,11 @@ class Event extends Component {
                 Program: programName,
                 School: schoolName,
                 Year: year,
+                HW: hardwareHack,
                 CA: completedProfile,
                 A: admitted,
                 CO: confirmed,
-                inDiscord: checkedIn,
+                inDisc: checkedIn,
                 D: declined,
                 Admin: isAdmin,
                 R: rejected,
@@ -127,7 +130,7 @@ class Event extends Component {
                 field: "Name",
                 cellClassName: "name-cell",
                 type: "string",
-                flex: 1,
+                flex: 0.75,
             },
             {
                 field: "E-mail",
@@ -147,7 +150,16 @@ class Event extends Component {
             {
                 field: "Year",
                 cellClassName: "year-cell",
-                flex: 0.33,
+                flex: 0.35,
+            },
+            {
+                field: "HW",
+                description: "Hardware Hacks interest",
+                flex: 0.25,
+                cellClassName: (params) =>
+                    params.value
+                        ? "action-cell-complete"
+                        : "action-cell-incomplete",
             },
             {
                 field: "CA",
@@ -177,9 +189,9 @@ class Event extends Component {
                         : "action-cell-incomplete",
             },
             {
-                field: "inDiscord",
-                flex: 0.5,
+                field: "inDisc",
                 description: "User joined discord server",
+                flex: 0.38,
                 cellClassName: (params) =>
                     params.value
                         ? "action-cell-complete"
@@ -214,10 +226,11 @@ class Event extends Component {
             },
             {
                 field: "lastSubmitted",
-                flex: 1,
+                flex: 0.45,
                 type: "dateTime",
                 description: "Last submission of application date/time",
                 cellClassName: "submitted-cell",
+                flex: 1,
             },
         ];
 
@@ -313,7 +326,14 @@ class Event extends Component {
         const cols = this.getColumns();
         return (
             <div style={{ height: "100%" }}>
-                <div style={{ display: "flex", height: "90%" }}>
+                <div
+                    style={{
+                        display: "flex",
+                        height: "90%",
+                        width: "150%",
+                        overflowX: "scroll",
+                    }}
+                >
                     <div style={{ flexGrow: 1 }}>
                         <div>
                             <Button
@@ -340,10 +360,14 @@ class Event extends Component {
                         <DataGrid
                             rows={rows}
                             columns={cols}
+                            components={{
+                                Toolbar: GridToolbar,
+                            }}
                             checkboxSelection
                             disableSelectionOnClick={true}
                             onRowClick={this.handleRowClicked}
                             loading={tableLoad}
+                            autoHeight
                             onRowSelected={this.handleSelectingCheckbox}
                             selectionModel={this.state.multipleSelectedIDs}
                             onSelectionModelChange={

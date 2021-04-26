@@ -23,6 +23,7 @@ import {
     FORGOT_FAILURE,
     REQUEST_PROFILE,
     SET_PROFILE,
+    ERROR_PROFILE,
 } from "../actions/authActions";
 
 export default (
@@ -45,6 +46,7 @@ export default (
         loginErrorObject: {},
         gettingProfile: false,
         profile: {},
+        userInfo: {},
     },
     action
 ) => {
@@ -153,6 +155,12 @@ export default (
                 ...state,
                 profile: action.profile,
                 gettingProfile: false,
+                userInfo: action.userInfo,
+            };
+        case ERROR_PROFILE:
+            return {
+                ...state,
+                error: action.error,
             };
         default:
             return state;

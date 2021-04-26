@@ -13,6 +13,7 @@ import app from "./app";
 import confirmation from "./confirmation";
 import admin from "./admin";
 import hackathon from "./hackathon";
+import team from "./team";
 import calendar from "./calendar";
 
 export default combineReducers({
@@ -24,5 +25,6 @@ export default combineReducers({
     confirmation,
     admin,
     hackathon,
+    team,
     calendar,
 });

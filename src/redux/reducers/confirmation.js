@@ -8,6 +8,9 @@ import {
     DISCORD_URL_REQUEST,
     DISCORD_URL_SUCCESS,
     DISCORD_URL_FAILURE,
+    UPLOAD_FILE_REQUEST,
+    UPLOAD_FILE_SUCCESS,
+    UPLOAD_FILE_FAILURE,
 } from "../actions/confirmationActions";
 
 export default (
@@ -19,10 +22,33 @@ export default (
         addressError: {},
         discordData: {},
         url: "",
+        isUploading: false,
+        uploadSuccess: false,
+        uploadError: "",
+        file: {},
+        confirmationFetchError: {},
     },
     action
 ) => {
     switch (action.type) {
+        case UPLOAD_FILE_REQUEST:
+            return {
+                ...state,
+                isUploading: true,
+            };
+        case UPLOAD_FILE_SUCCESS:
+            return {
+                ...state,
+                isUploading: false,
+                uploadSuccess: true,
+                file: action.file,
+            };
+        case UPLOAD_FILE_FAILURE:
+            return {
+                ...state,
+                isUploading: false,
+                uploadError: action.error,
+            };
         case UPDATE_ADDR_REQUEST:
             return {
                 ...state,
@@ -56,7 +82,7 @@ export default (
             return {
                 ...state,
                 isRequestingConfirmation: false,
-                error: action.error,
+                confirmationFetchError: action.error,
             };
 
         case DISCORD_URL_REQUEST:

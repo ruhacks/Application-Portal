@@ -31,6 +31,7 @@ export const FORGOT_FAILURE = "FORGOT_FAILURE";
 
 export const REQUEST_PROFILE = "REQUEST_PROFILE";
 export const SET_PROFILE = "SET_PROFILE";
+export const ERROR_PROFILE = "ERROR_PROFILE";
 
 //action functions that returns action objects to the reducer (redux/reducers/auth.js) so the reducer knows how to adjust the variables
 
@@ -72,10 +73,18 @@ export const requestProfile = () => {
     };
 };
 
-export const setProfile = (profile) => {
+export const setProfile = (profile, userInfo = {}) => {
     return {
         type: SET_PROFILE,
         profile,
+        userInfo,
+    };
+};
+
+export const errorProfile = (error) => {
+    return {
+        type: ERROR_PROFILE,
+        error,
     };
 };
 
@@ -206,14 +215,29 @@ export const sendForgotPassword = (email) => (dispatch) => {
 
 //******************************************************************************************** */
 
-export const subscribeToUserProfile = (user, setUnsubscribe) => (dispatch) => {
+export const subscribeToUserProfile = (setUnsubscribe) => async (dispatch) => {
+    const user = auth.currentUser;
+
     if (!user || Object.keys(user).length === 0) return;
     dispatch(requestProfile());
     const { uid } = user;
     const userRef = firestore.doc(`users/${uid}/status/fields`);
+    const userInfoRef = firestore.doc(`users/${uid}`);
+    let userInfoSnap, userInfo;
+
+    try {
+        userInfoSnap = await userInfoRef.get();
+    } catch (error) {
+        dispatch(errorProfile(error));
+    }
+
+    if (userInfoSnap) {
+        userInfo = userInfoSnap.data();
+    }
+
     const unsubscribe = userRef.onSnapshot((profile) => {
         if (profile.exists) {
-            dispatch(setProfile(profile.data()));
+            dispatch(setProfile(profile.data(), userInfo));
         } else {
             const currentTime = new Date();
             const newProfile = profileUpdateObject(currentTime);

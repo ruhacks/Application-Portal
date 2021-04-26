@@ -25,7 +25,7 @@ import Application from "./Applications";
 import { Confirmation } from "./Confirmation";
 import Admin from "./Admin";
 import AdminProtectedRoute from "./Routes/AdminProtectedRoute";
-import Stats from "./Admin/Stats";
+import Team from "./Team";
 
 class App extends React.Component {
     // This is where we dsecribe our prop variables that we import from the mapStateToProps
@@ -61,6 +61,14 @@ class App extends React.Component {
                     exact
                     path="/confirmation"
                     component={Confirmation}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
+                    emailVerified={emailVerified}
+                />
+                <ProtectedRouteEmailVerified
+                    exact
+                    path="/team"
+                    component={Team}
                     isAuthenticated={isAuthenticated}
                     isVerifying={isVerifying}
                     emailVerified={emailVerified}
