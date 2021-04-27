@@ -49,9 +49,9 @@ export const fields = [
         type: "Integer",
         order: 5,
         required: true,
-        titleLabel: "What is your age?",
+        titleLabel: "What is your age? (14+)",
         keyRef: "age",
-        limit: [12, 100],
+        limit: [14, 100],
     },
     {
         required: true,

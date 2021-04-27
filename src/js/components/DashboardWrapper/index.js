@@ -90,13 +90,13 @@ class DashboardWrapper extends Component {
 
         const imageSource = this.state.gif ? EggwardImage : EggwardGif;
         const days = [
+            "Sunday",
             "Monday",
             "Tuesday",
             "Wednesday",
             "Thursday",
             "Friday",
             "Saturday",
-            "Sunday",
         ];
         const months = [
             "January",
@@ -109,7 +109,7 @@ class DashboardWrapper extends Component {
             "August",
             "September",
         ];
-        dateText = `${days[currentDate.getDay() - 1]}, ${
+        dateText = `${days[currentDate.getDay()]}, ${
             months[currentDate.getMonth()]
         } ${currentDate.getDate()}`;
 
@@ -147,12 +147,12 @@ class DashboardWrapper extends Component {
             {
                 name: "fb",
                 icon: <Facebook />,
-                link: "https://www.instagram.com/ruhacks/?hl=en",
+                link: "https://www.facebook.com/ryersonuhacks",
             },
             {
                 name: "in",
                 icon: <Instagram />,
-                link: "https://www.facebook.com/ryersonuhacks",
+                link: "https://www.instagram.com/ruhacks/?hl=en",
             },
         ];
         return socials.map(({ icon, link, name }) => (

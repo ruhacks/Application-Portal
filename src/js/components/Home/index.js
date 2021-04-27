@@ -5,7 +5,6 @@ import classes from "../../config/classes";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 
 import {
     resendVerificationLink,
@@ -21,6 +20,7 @@ import {
     Typography,
     CircularProgress,
     Icon,
+    Link,
 } from "@material-ui/core";
 
 import Brightness1Icon from "@material-ui/icons/Brightness1";
@@ -256,6 +256,19 @@ class Home extends React.Component {
                         </div>
                     </div>
                     {renderStatusText()}
+                    {confirmed && (
+                        <a href="https://discord.gg/BPvwRA6B">
+                            <Typography
+                                variant="h4"
+                                style={{
+                                    color: "blue",
+                                    textDecoration: "underline",
+                                }}
+                            >
+                                Join our discord here
+                            </Typography>
+                        </a>
+                    )}
                     {!emailVerified && (
                         <Button
                             type="button"

@@ -35,7 +35,7 @@ const text = {
         completeApplication:
             "Your application is complete, we'll get back to you soon! ",
         confirmed:
-            "We've received your confirmation! You will receive an invite to our Discord via Email soon, as well as an invite link here, when the server is ready. Please keep an eye out or check back here periodically.",
+            "We've received your confirmation! You can join our Discord by clicking below:",
         admitted:
             "Congratulations! You've been admitted. Please complete your confirmation by clicking on confirmation in the navigation",
         declined:
