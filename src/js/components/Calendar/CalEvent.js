@@ -105,9 +105,7 @@ export default class CalEvent extends Component {
                     </div>
                 </div>
                 {eventHost && (
-                    <div className="day-event__row">
-                        Hosted by: {eventType} {eventHost}
-                    </div>
+                    <div className="day-event__row">Hosted by: {eventHost}</div>
                 )}
                 {
                     <div className="day-event__row">
