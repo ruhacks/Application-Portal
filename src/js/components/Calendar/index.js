@@ -35,13 +35,13 @@ class Calendar extends Component {
             day_select: DAY_FRI,
             live: true,
             filter: {
-                [EVENT_TYPE_CEREMONY]: false,
-                [EVENT_TYPE_WORKSHOP]: false,
-                [EVENT_TYPE_MEAL_TIME]: false,
-                [EVENT_TYPE_NETWORKING_EVENTS]: false,
-                [EVENT_TYPE_SOCIAL]: false,
-                [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: false,
-                [EVENT_TYPE_GAMES]: false,
+                [EVENT_TYPE_CEREMONY]: true,
+                [EVENT_TYPE_WORKSHOP]: true,
+                [EVENT_TYPE_MEAL_TIME]: true,
+                [EVENT_TYPE_NETWORKING_EVENTS]: true,
+                [EVENT_TYPE_SOCIAL]: true,
+                [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: true,
+                [EVENT_TYPE_GAMES]: true,
             },
             offsetTop: 0,
         };
@@ -177,7 +177,7 @@ class Calendar extends Component {
                         </div>
                     </div> */}
                     <div className="cal-bops__box">
-                        <div className="cal-bops__title">Filter</div>
+                        <div className="cal-bops__title">Show Events:</div>
                         <div className="cal-bops__filters all">
                             {filteroptions.map((id) => (
                                 <CalendarCheckbox
@@ -281,10 +281,10 @@ class Calendar extends Component {
                                             k === eventType &&
                                             this.state.filter[k]
                                         ) {
-                                            return false;
+                                            return true;
                                         }
                                     }
-                                    return true;
+                                    return false;
                                 })
                                 .map((s) => (
                                     <CalEvent
