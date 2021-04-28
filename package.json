@@ -9,7 +9,9 @@
         "build": "webpack --mode production",
         "lint": "eslint \"*/**/*.{js,ts,tsx}\" --quiet --fix",
         "format": "prettier-eslint --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "deploy": "firebase deploy --only hosting",
+        "emulator": "emulators:start --import ./functions/back_up"
     },
     "repository": {
         "type": "git",

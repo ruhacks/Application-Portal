@@ -123,9 +123,9 @@ span.hour {
         overflow-y: auto;
         overflow-x: hidden;
         &__options {
-            padding: 15px;
-            padding-bottom: 0;
-            @media (max-width: 800) {
+            padding: 0 15px;
+            // padding-bottom: 0;
+            @media (max-width: 800px) {
                 display: none;
             }
         }
