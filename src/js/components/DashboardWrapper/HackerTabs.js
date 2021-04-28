@@ -62,7 +62,10 @@ const ifCompleted = [
 const ifAdmitted = [
     {
         title: "General",
-        links: [{ title: "Home", link: "/" }],
+        links: [
+            { title: "Home", link: "/" },
+            { title: "Schedule", link: "/schedule" },
+        ],
     },
     {
         title: "Forms",

@@ -66,10 +66,10 @@ export default class CalEvent extends Component {
         const EVENT_COLOURS = {
             [EVENT_TYPE_WORKSHOP]: "#ffe268",
             [EVENT_TYPE_CEREMONY]: "#9ede73",
-            [EVENT_TYPE_MEAL_TIME]: "#ee99a0",
-            [EVENT_TYPE_NETWORKING_EVENTS]: "#46BDC6",
+            [EVENT_TYPE_MEAL_TIME]: "#f39189",
+            [EVENT_TYPE_NETWORKING_EVENTS]: "#cee6b4",
             [EVENT_TYPE_OPEN_NETOWRKING]: "#8E7CC3",
-            [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: "#ee99a0",
+            [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: "#ffc996",
             [EVENT_TYPE_GAMES]: "#ffab73",
             [EVENT_TYPE_SOCIAL]: "#b8b5ff",
         };
@@ -101,7 +101,8 @@ export default class CalEvent extends Component {
                         {startTimeHour}:
                         {startTimeMin == 0 ? "00" : startTimeMin} -{" "}
                         {endTimeHour < "10" && "0"}
-                        {endTimeHour}:{endTimeMin == 0 ? "00" : endTimeMin}
+                        {endTimeHour == "24" ? "00" : endTimeHour}:
+                        {endTimeMin == 0 ? "00" : endTimeMin}
                     </div>
                 </div>
                 {eventHost && (

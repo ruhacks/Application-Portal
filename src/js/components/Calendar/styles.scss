@@ -10,6 +10,7 @@ $black: #000;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     transition: transform 0.2s;
     background-color: inherit;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -59,17 +60,36 @@ span.hour {
     font-weight: bold;
 }
 .cal {
+    &-edt {
+        padding-left: 35px;
+        padding-top: 15px;
+    }
+    &-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding-bottom: 15px;
+        z-index: 1000;
+        background-color: #f9fcfeaa;
+        transition: background-color 0.5s;
+        &:hover {
+            background-color: #f9fcfe;
+        }
+    }
     &-con {
         background-color: #f9fcfe;
         display: flex;
         flex-direction: column;
         width: 100%;
+        overflow-x: hidden;
+        position: relative;
     }
     &-bops {
         display: flex;
         height: fit-content;
         align-items: flex-start;
-        padding-left: 80px;
+        padding-left: 20px;
         &__box {
             display: flex;
             flex-direction: column;
@@ -95,7 +115,13 @@ span.hour {
     }
     &-body {
         display: flex;
+        box-sizing: border-box;
         padding: 25px;
+        max-height: calc(100vh - 180px);
+        margin-right: -25px;
+        padding-right: 25px;
+        overflow-y: auto;
+        overflow-x: hidden;
         &__options {
             padding: 15px;
             padding-bottom: 0;
