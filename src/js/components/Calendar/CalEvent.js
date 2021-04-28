@@ -11,6 +11,7 @@ import {
     EVENT_TYPE_WORKSHOP,
 } from ".";
 import PropTypes from "prop-types";
+import { DAY_FRI, DAY_SAT, DAY_SUN } from "../../../redux/actions";
 
 export default class CalEvent extends Component {
     static propTypes = {
@@ -56,6 +57,7 @@ export default class CalEvent extends Component {
             START_TIME,
             startTimeMin,
             startTimeHour,
+            day_select,
             endTimeMin,
             endTimeHour,
             platform,
@@ -73,6 +75,42 @@ export default class CalEvent extends Component {
             [EVENT_TYPE_GAMES]: "#ffab73",
             [EVENT_TYPE_SOCIAL]: "#b8b5ff",
         };
+        let evmonth = 5;
+        let evday = 2;
+        if (day_select == DAY_FRI) {
+            evmonth = 4;
+            evday = 30;
+        } else if (day_select == DAY_SAT) {
+            evday = 1;
+        }
+        function convertToLocalTime(h, m, today) {
+            if (today == DAY_FRI) {
+                return new Date(
+                    `Fri, 30 Apr 2021 ${h < "10" ? "0" : ""}${h}:${
+                        m < "10" ? "0" : ""
+                    }${m}:00 EDT`
+                );
+            } else if (today == DAY_SAT) {
+                return new Date(
+                    `Sat, 1 May 2021 ${h < "10" ? "0" : ""}${h}:${
+                        m < "10" ? "0" : ""
+                    }${m}:00 EDT`
+                );
+            }
+            return new Date(
+                `Sun, 2 May 2021 ${h < "10" ? "0" : ""}${h}:${
+                    m < "10" ? "0" : ""
+                }${m}:00 EDT`
+            );
+        }
+        const startDate = convertToLocalTime(
+            startTimeHour,
+            startTimeMin,
+            day_select
+        );
+
+        const endDate = convertToLocalTime(endTimeHour, endTimeMin, day_select);
+
         return (
             <div
                 className="day-event"
@@ -84,6 +122,13 @@ export default class CalEvent extends Component {
                     height,
                     minHeight: height,
                     backgroundColor: EVENT_COLOURS[eventType],
+                }}
+                onClick={() => {
+                    alert(
+                        `\nEvent: ${eventTitle}\nEvent Type: ${eventType}\nStart: ${startDate.toLocaleString()}\nEnd: ${endDate.toLocaleString()}\n${
+                            eventHost && `\nHosted by: ${eventHost}`
+                        }\nPlatform: ${platform} - ${platformNotes}`
+                    );
                 }}
             >
                 <div className="day-event__row">
