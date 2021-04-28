@@ -43,6 +43,7 @@ class Calendar extends Component {
                 [EVENT_TYPE_SPONSOR_OPEN_HOUSE]: false,
                 [EVENT_TYPE_GAMES]: false,
             },
+            offsetTop: 0,
         };
     }
     componentDidMount() {
@@ -56,6 +57,7 @@ class Calendar extends Component {
             TODAY = DAY_SUN;
         }
         this.setState({
+            offsetTop: document.getElementById("cal-header").clientHeight,
             [DAY_FRI]: new GenerateDayEvents(
                 this.props[DAY_FRI].map((s) => ({
                     ...s,
@@ -149,7 +151,7 @@ class Calendar extends Component {
         return (
             <div className="cal-body__options">
                 <div className="cal-bops">
-                    <div className="cal-bops__box">
+                    {/* <div className="cal-bops__box">
                         <div className="cal-bops__title">Calendar Options</div>
                         <div className="cal-bops__filters">
                             <div className="cal-bops__checkbox">
@@ -173,7 +175,7 @@ class Calendar extends Component {
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="cal-bops__box">
                         <div className="cal-bops__title">Filter</div>
                         <div className="cal-bops__filters all">
@@ -231,9 +233,17 @@ class Calendar extends Component {
         let emptyBlocks = [...Array(Math.floor((end - start) / step))];
         return (
             <div className="cal-con">
-                {this.renderTitle()}
-                {this.renderOptions()}
-                <div className="cal-body">
+                <div className="cal-header" id={"cal-header"}>
+                    {this.renderTitle()}
+                    <div className="cal-edt">
+                        This schedule is written in <strong>EDT</strong>
+                    </div>
+                    {this.renderOptions()}
+                </div>
+                <div
+                    className="cal-body"
+                    style={{ paddingTop: this.state.offsetTop }}
+                >
                     <ol className="cal-body__times">
                         {times.map((i) => {
                             let hour = Math.floor(i / step);
