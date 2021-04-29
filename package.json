@@ -11,7 +11,7 @@
         "format": "prettier-eslint --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
         "prepare": "husky install",
         "deploy": "firebase deploy --only hosting",
-        "emulator": "emulators:start --import ./functions/back_up"
+        "emulator": "firebase emulators:start --import ./functions/back_up"
     },
     "repository": {
         "type": "git",
@@ -85,8 +85,8 @@
         "webpack": "^4.46.0"
     },
     "husky": {
-      "hooks": {
-        "pre-push": "npm run lint"
-      }
+        "hooks": {
+            "pre-push": "npm run lint"
+        }
     }
 }
