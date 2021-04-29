@@ -127,7 +127,9 @@ export default class CalEvent extends Component {
                     alert(
                         `\nEvent: ${eventTitle}\nEvent Type: ${eventType}\nStart: ${startDate.toLocaleString()}\nEnd: ${endDate.toLocaleString()}\n${
                             eventHost && `\nHosted by: ${eventHost}`
-                        }\nPlatform: ${platform} - ${platformNotes}`
+                        }\nPlatform: ${platform} ${
+                            platformNotes && `- ${platformNotes}`
+                        }`
                     );
                 }}
             >
