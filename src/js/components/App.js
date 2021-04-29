@@ -44,7 +44,6 @@ class App extends React.Component {
         return (
             <Switch>
                 <ProtectedRoute
-                    exact
                     path="/"
                     component={InformationGuide}
                     isAuthenticated={isAuthenticated}
