@@ -257,7 +257,7 @@ class Home extends React.Component {
                     </div>
                     {renderStatusText()}
                     {confirmed && (
-                        <a href="https://discord.gg/BPvwRA6B">
+                        <a href="https://discord.gg/CmXAgJkWm2">
                             <Typography
                                 variant="h4"
                                 style={{
