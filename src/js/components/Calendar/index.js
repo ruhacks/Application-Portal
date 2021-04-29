@@ -246,7 +246,7 @@ class Calendar extends Component {
                 >
                     <ol className="cal-body__times">
                         {times.map((i) => {
-                            let hour = Math.floor(i / step) % 12;
+                            let hour = Math.floor(i / step);
                             return (
                                 <li style={{ marginBottom: step - 14 }} key={i}>
                                     <span className="hours">
