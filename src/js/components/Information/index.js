@@ -28,6 +28,7 @@ class InformationGuideRouter extends Component {
                 <Route path="/rules" exact component={Rules}></Route>
                 <Route path="/faq" exact component={FAQ}></Route>
                 <Route path="/" exact component={Welcome}></Route>
+                <Route path="/welcome" exact component={Welcome}></Route>
             </Switch>
         );
     }

@@ -43,20 +43,7 @@ class App extends React.Component {
         const { isAuthenticated, isVerifying, emailVerified } = this.props;
         return (
             <Switch>
-                <ProtectedRoute
-                    path="/"
-                    component={InformationGuide}
-                    isAuthenticated={isAuthenticated}
-                    isVerifying={isVerifying}
-                />
-
-                <ProtectedRoute
-                    exact
-                    path="/"
-                    component={Home}
-                    isAuthenticated={isAuthenticated}
-                    isVerifying={isVerifying}
-                />
+                {" "}
                 <ProtectedRouteEmailVerified
                     exact
                     path="/schedule"
@@ -89,6 +76,13 @@ class App extends React.Component {
                     isVerifying={isVerifying}
                     emailVerified={emailVerified}
                 />
+                <ProtectedRoute
+                    exact
+                    path="/"
+                    component={Home}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
+                />
                 <AdminProtectedRoute
                     path="/admin"
                     component={Admin}
@@ -97,6 +91,13 @@ class App extends React.Component {
                 />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
+                <ProtectedRouteEmailVerified
+                    path="/"
+                    component={InformationGuide}
+                    isAuthenticated={isAuthenticated}
+                    isVerifying={isVerifying}
+                    emailVerified={emailVerified}
+                />
             </Switch>
         );
     }

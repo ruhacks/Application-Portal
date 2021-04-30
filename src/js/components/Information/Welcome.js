@@ -6,8 +6,7 @@ const paragraphs = [
         a: (
             <span>
                 <p>
-                    {" "}
-                    RU Hacks is a unique hackathon at Ryerson University.
+                    RU Hacks is the official hackathon of Ryerson University.
                     Hackers meet new people, learn new skills and have fun while
                     showcasing their talents over the course of 48 hours of
                     creativity and innovation.
@@ -25,12 +24,14 @@ const paragraphs = [
                     a problem. As was done for the previous year, this
                     year&apos;s hackathon will be completely virtual. We will
                     run the opening and closing ceremonies, events, workshops
-                    and activities over a livestream. We will be using Hopin for
-                    the livestream, Devpost for project submission and Discord
-                    to allow for easy communication with hackers, organizers,
-                    mentors and more. Head over to the Hacker Guide for more
-                    information on how the server has been organized and how you
-                    can interact with everyone involved in the event!
+                    and activities over a livestream. We will be using{" "}
+                    <strong>Hopin</strong> for the livestream,{" "}
+                    <strong>Devpost</strong> for project submission and{" "}
+                    <strong>Discord</strong> to allow for easy communication
+                    with hackers, organizers, mentors and more. Head over to the
+                    Hacker Guide for more information on how the server has been
+                    organized and how you can interact with everyone involved in
+                    the event!
                 </p>
                 <p>
                     If you’re new, no need to worry at all! We know this is a
@@ -60,13 +61,18 @@ const paragraphs = [
                 <ul>
                     <li>
                         Ensure you register for a Devpost account to be able to
-                        submit your project and form your team:
-                        https://ru-hacks-2021.devpost.com/?ref_feature=challenge&ref_medium=discover
+                        submit your project and form your team:{" "}
+                        <a
+                            href="https://ru-hacks-2021.devpost.com/"
+                            style={{ color: "#3399cc" }}
+                        >
+                            RU Hacks 2021 Devpost
+                        </a>
                     </li>
                     <li>
-                        Join us on Hopin: By now, you will have received your
-                        ticket to access the event through Hopin. So, be sure to
-                        register so you can access the event.
+                        Join us on Hopin! By now, you will have received your
+                        ticket by email to access the event through Hopin. So,
+                        be sure to register so you can access the event.
                     </li>
                     <li>
                         Stay up to date will all events, workshops and
@@ -94,7 +100,7 @@ const paragraphs = [
 export default class Welcome extends Component {
     render() {
         return (
-            <div>
+            <div className="guide">
                 <h1>Welcome!</h1>
                 <p>
                     We are so happy to have you at the event. Please check
@@ -103,6 +109,12 @@ export default class Welcome extends Component {
                     on Discord if you have any additional questions.
                 </p>
                 <h2>General Information</h2>
+                {paragraphs.map(({ q, a }) => (
+                    <div className="gd-wcsec" key={q}>
+                        <h3>{q}</h3>
+                        <div>{a}</div>
+                    </div>
+                ))}
             </div>
         );
     }

@@ -2,17 +2,21 @@ import React, { Component } from "react";
 
 const FAQData = [
     {
-        q: "Who Can Attend?",
-        a:
-            "If you are a student enrolled in any high school or post secondary institution, you are eligible to apply and attend RU Hacks.",
-    },
-    {
-        q: <span>When can I sign up for RU Hacks?</span>,
+        q: <span>Who can attend?</span>,
         a: (
             <span>
                 If you are a student enrolled in any high school or post
                 secondary institution, you are eligible to apply and attend RU
                 Hacks.
+            </span>
+        ),
+    },
+    {
+        q: <span>When can I sign up for RU Hacks?</span>,
+        a: (
+            <span>
+                RU Hacks 2021 will be fully virtual due to COVID-19, and will
+                take place April 30th - May 2nd. Registration is now closed.
             </span>
         ),
     },
@@ -35,7 +39,7 @@ const FAQData = [
         q: <span>Can I start working on my hack before the event?</span>,
         a: (
             <span>
-                No, we do not allow participants to work on pre-existing
+                o, we do not allow participants to work on pre-existing
                 projects. RU Hacks hackers are required to start and complete
                 their project during the hackathon. However, you are welcome to
                 familiarize yourself with specific tools and technologies
@@ -92,11 +96,10 @@ const FAQData = [
         q: <span>What platforms are we using?</span>,
         a: (
             <span>
-                The primary platforms will be this Discord server, as well as
-                HopIn, for which you will receive an invite early-mid next week.
-                We will also be using Kumospace for networking events, which is
-                a drop-in, drop-out event platform. Don&apos;t worry - no need
-                to set anything up for this one.
+                The primary platforms will be the RU Hacks 2021 Discord server,
+                as well as Hopin. We will also be using Kumospace for networking
+                events, which is a drop-in, drop-out event platform. Don&apos;t
+                worry - no need to set anything up for this one.
             </span>
         ),
     },
@@ -117,15 +120,15 @@ const FAQData = [
         q: <span>What can I expect at the event?</span>,
         a: (
             <span>
-                Workshops, networking, games, giveaways, and more! And
-                GM&apos;s. My phone is going to hate me by the end of the
+                Workshops, networking, games, giveaways, and more! And GMs, lots
+                of GM&apos;s. My phone is going to hate me by the end of the
                 weekend.
                 <br></br>We&apos;ll have many technical workshops ranging from
                 data analytics to web dev, and even if you are a new hacker
                 without much coding experience, there&apos;ll be plenty to learn
                 about UX, accessibility, and staying in demand in 2021.
-                Additionally, free #》resources will become available closer to
-                the event start.
+                Additionally, free resources (which you can find in #resources)
+                will become available closer to the start of the event.
             </span>
         ),
     },
@@ -134,17 +137,35 @@ const FAQData = [
         a: (
             <span>
                 Please stay respectful on the server and be kind to one another.
-                We&apos;ve never had to actually take punitive measures on a
-                participant for breaking any of our rules in the #❗〡read-me
-                before, and we sincerely hope we won&apos;t have to this year
-                either. If you have questions, message us in #help-desk or PM an
-                @Administrators for more private inquiries and concerns.
+                If you have questions, message us in{" "}
+                <a
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="discord"
+                    title="Hold ctrl then click to open this channel"
+                    href="https://discord.com/channels/768510911597117501/834135090069504081"
+                >
+                    # help-desk
+                </a>{" "}
+                or PM any of the Administrators (which you can find listed on
+                the RU Hacks Discord server) for more private inquiries and
+                concerns.
             </span>
         ),
     },
 ];
 export default class FAQ extends Component {
     render() {
-        return <div></div>;
+        return (
+            <div className="guide">
+                <h1>Frequently Asked Questions</h1>
+                {FAQData.map(({ q, a }) => (
+                    <div key={q}>
+                        <h3>{q}</h3>
+                        <p>{a}</p>
+                    </div>
+                ))}
+            </div>
+        );
     }
 }

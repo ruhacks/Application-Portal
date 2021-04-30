@@ -65,14 +65,19 @@ const ifAdmitted = [
         links: [
             { title: "Home", link: "/" },
             { title: "Schedule", link: "/schedule" },
+            { title: "Rules", link: "/rules" },
+        ],
+    },
+    {
+        title: "Help",
+        links: [
             { title: "Discord", link: "/discord" },
             { title: "Hopin", link: "/hopin" },
             {
                 title: "Submitting your Project",
                 link: "/submitting-your-project",
             },
-            { title: "FAQ", link: "/rules" },
-            { title: "Rules", link: "/faq" },
+            { title: "FAQ", link: "/faq" },
         ],
     },
     {
