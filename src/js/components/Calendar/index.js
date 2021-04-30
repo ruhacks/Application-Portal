@@ -252,7 +252,6 @@ class Calendar extends Component {
                                     <span className="hours">
                                         {hour < 10 ? `0${hour}` : hour}:00
                                     </span>
-                                    {i < 720 * 2 ? "AM" : "PM"}
                                 </li>
                             );
                         })}

@@ -126,6 +126,8 @@ export default class CalEvent extends Component {
                 onClick={() => {
                     alert(
                         `\nEvent: ${eventTitle}\nEvent Type: ${eventType}\nStart: ${startDate.toLocaleString()}\nEnd: ${endDate.toLocaleString()}\n${
+                            eventDescp && `\n${eventDescp}`
+                        }${
                             eventHost && `\nHosted by: ${eventHost}`
                         }\nPlatform: ${platform} ${
                             platformNotes && `- ${platformNotes}`
