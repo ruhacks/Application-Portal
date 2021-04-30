@@ -63,7 +63,8 @@ const ifAdmitted = [
     {
         title: "General",
         links: [
-            { title: "Home", link: "/" },
+            { title: "Welcome Page", link: "/welcome" },
+            { title: "Application Status", link: "/" },
             { title: "Schedule", link: "/schedule" },
             { title: "Rules", link: "/rules" },
         ],
