@@ -3,9 +3,21 @@ export default [
         title: "General",
         links: [
             { title: "Home", link: "/" },
-            { title: "Schedule", link: "" },
-            { title: "Guide", link: "" },
-            { title: "Rules", link: "" },
+            { title: "Home2", link: "/welcome" },
+            { title: "Schedule", link: "/schedule" },
+            { title: "Rules", link: "/rules" },
+        ],
+    },
+    {
+        title: "Help",
+        links: [
+            { title: "Discord", link: "/discord" },
+            { title: "Hopin", link: "/hopin" },
+            {
+                title: "Submitting your Project",
+                link: "/submitting-your-project",
+            },
+            { title: "FAQ", link: "/faq" },
         ],
     },
     {
@@ -26,18 +38,6 @@ export default [
             { title: "Users", link: "/admin/users" },
             { title: "Hackathon Settings", link: "/admin/settings" },
             { title: "Events", link: "/admin/events" },
-        ],
-    },
-    {
-        title: "Calendar",
-        links: [
-            { title: "Create Event", link: "/admin/cevent" },
-            { title: "View Calendar (Admin)", link: "/admin/admincalendar" },
-            {
-                title: "View Calendar (Table Admin)",
-                link: "/admin/admincalendart",
-            },
-            { title: "View Calendar (Hacker)", link: "/admin/calendar" },
         ],
     },
 ];

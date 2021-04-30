@@ -14,9 +14,9 @@ $black: #000;
     transition: transform 0.2s;
     background-color: inherit;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    &:hover {
+    &:hover,
+    &:active {
         max-height: unset;
-        z-index: 200;
         transform: scale(1.075);
         cursor: help;
         border: 0.5px solid #0001;
@@ -70,7 +70,7 @@ span.hour {
         left: 0;
         width: 100%;
         padding-bottom: 15px;
-        z-index: 1000;
+        z-index: 90;
         background-color: #f9fcfeaa;
         transition: background-color 0.5s;
         &:hover {
@@ -123,8 +123,11 @@ span.hour {
         overflow-y: auto;
         overflow-x: hidden;
         &__options {
-            padding: 15px;
-            padding-bottom: 0;
+            padding: 0 15px;
+            // padding-bottom: 0;
+            @media (max-width: 800px) {
+                display: none;
+            }
         }
         &__times {
             float: left;
