@@ -2,8 +2,8 @@ export default [
     {
         title: "General",
         links: [
-            { title: "Home", link: "/" },
-            { title: "Home2", link: "/welcome" },
+            { title: "Welcome Page", link: "/welcome" },
+            { title: "Application Status", link: "/" },
             { title: "Schedule", link: "/schedule" },
             { title: "Rules", link: "/rules" },
         ],
