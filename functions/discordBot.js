@@ -39,6 +39,7 @@ discordCheck.get("/user/:uid", async (req, res) => {
   });
 
   const userRef = firestore.doc(`users/${fireID}/application/fields`);
+  const profileRef = firestore.doc(`users/${fireID}/status/fields`);
   let userSnap;
   try {
     userSnap = await userRef.get();
@@ -49,9 +50,8 @@ discordCheck.get("/user/:uid", async (req, res) => {
   const user = userSnap.data();
 
   const {email, name, pronouns} = user;
-  console.log(pronouns);
 
-  console.log(user);
+  await profileRef.update({checkedIn: true});
 
   return res.status(200).send({user: {
     email,
