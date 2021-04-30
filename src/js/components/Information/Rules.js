@@ -21,21 +21,8 @@ export default class Rules extends Component {
                         help-desk
                     </DiscordText>{" "}
                     channel on Discord! Further, if you see any inappropriate
-                    content, please message the{" "}
-                    <span
-                        className="discord"
-                        style={{ backgroundColor: "#52484E", color: "#CE6C67" }}
-                    >
-                        @RU Hacks Team
-                    </span>{" "}
-                    or{" "}
-                    <span
-                        className="discord"
-                        style={{ backgroundColor: "#3B4A4E", color: "#287E66" }}
-                    >
-                        @Moderators
-                    </span>{" "}
-                    on the server or privately.
+                    content, please message the @RU Hacks Team or @Moderators on
+                    the server or privately.
                 </p>
                 <ul>
                     <li>
